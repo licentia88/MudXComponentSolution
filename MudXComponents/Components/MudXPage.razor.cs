@@ -10,6 +10,10 @@ namespace MudXComponents.Components
 {
 	public partial class MudXPage<TModel> : UIMudBase<TModel> where TModel : new() 
 	{
+        
+        [Parameter]
+        public bool EnableModelValidation { get; set; }
+
         [Parameter]
         public ViewState ViewState { get; set; }
 

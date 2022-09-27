@@ -35,7 +35,7 @@
 
         </MudCardHeader>
 
-        <MudGrid Style="padding-right:1.75rem!important; padding-top:5%!important" Justify="Justify.FlexEnd">
+         <MudGrid  Style="padding-right:1.75rem!important; padding-top:5%!important" Justify="Justify.FlexEnd">
 
             @{
                 if (HeaderButtons is not null)
@@ -46,7 +46,10 @@
 
 
         </MudGrid>
-        <MudTable FixedHeader="true" Items="@DataSource" Dense="true" Hover="true" Breakpoint="Breakpoint.None" Filter="new Func<TModel,bool>(SearchFilter)">
+
+        
+
+        <MudTable FixedHeader="true" Elevation="0" Items="@DataSource" Dense="true" Hover="true" Breakpoint="Breakpoint.None" Filter="new Func<TModel,bool>(SearchFilter)">
 
             <ToolBarContent>
 
@@ -111,4 +114,5 @@
 
 
 </CascadingValue>
+
 

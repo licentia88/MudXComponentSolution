@@ -1,8 +1,7 @@
-﻿using System;
-using Microsoft.AspNetCore.Components;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
@@ -10,11 +9,15 @@ using MudXComponents.Interfaces;
 
 namespace MudXComponents.Components
 {
+     
+
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
         [CascadingParameter(Name = nameof(ParentContext))]
-        public object ParentContext { get; set; }
+        public  object ParentContext { get; set; }
 
+        [Parameter,AllowNull]
+        public bool EnableModelValidation { get; set; } 
         //private MudTable<TModel> MyTable { get; set; }
 
         private bool isFirstRender = true;
@@ -50,7 +53,7 @@ namespace MudXComponents.Components
         [Parameter, AllowNull]
         public virtual EventCallback<TModel> OnUpdate { get; set; }
 
-
+      
 
         #region Dialog
 
@@ -61,9 +64,9 @@ namespace MudXComponents.Components
 
         public DialogParameters Parameters { get; set; } = new DialogParameters();
 
-        protected DialogOptions Options { get; set; }
+        protected  DialogOptions Options { get; set; }
 
-
+        
 
         #endregion Dialog
 
@@ -97,11 +100,11 @@ namespace MudXComponents.Components
                 Position = DialogPosition.Center
             };
 
-
+            
         }
         private List<TType> GetComponentOf<TType>()
         {
-            return Components.
+            return  Components.
                 Where(x => x is TType).
                 Exclude<ColumnBase<TModel>, IButton>()
                 .Exclude<ColumnBase<TModel>, GridSpacer<TModel>>()
@@ -110,10 +113,8 @@ namespace MudXComponents.Components
 
 
         /// Add a child component (will be done by the child itself)
-        [SuppressMessage("Usage", "BL0005:Component parameter should not be set outside of its component.", Justification = "<Pending>")]
         public void AddChildComponent(ColumnBase<TModel> pChildComponent)
         {
-            Console.WriteLine($"{pChildComponent.GetType().Name}");
 
             if (GetComponentOf<ColumnBase<TModel>>().Any(x => x.BindingField == pChildComponent.BindingField))
             {
@@ -124,31 +125,30 @@ namespace MudXComponents.Components
             {
                 if (!button.OnClick.HasDelegate && button.ViewState != ViewState.None)
                 {
+
                     var CurrentModel = button.Context ?? new();
 
-
+ 
                     (string, RenderFragment) DetailGridParameter = new(nameof(MudXPage<TModel>.DetailGrid), DetailGrid);
 
 
-                    (string, ViewState) crudStateParameter = new(nameof(MudXPage<TModel>.ViewState), button.ViewState);
+                    (string, ViewState) crudStateParameter = new (nameof(MudXPage<TModel>.ViewState),button.ViewState);
                     (string, string) TitleParameter = new(nameof(MudXPage<TModel>.DialogTitle), button.Title);
 
-                    Console.WriteLine($"page size : {button.PageSize}");
 
 
-
-                    button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowPage<MudXPage<TModel>>(CurrentModel, button.PageSize, crudStateParameter, TitleParameter, DetailGridParameter));
+                    button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowPage<MudXPage<TModel>>(CurrentModel,button.PageSize, crudStateParameter,TitleParameter,DetailGridParameter));
                 }
             }
 
-            Components.Add(pChildComponent);
+             Components.Add(pChildComponent);
 
         }
 
-
+ 
         #endregion RenderFragments
 
-
+       
 
         protected virtual TModel OnClose()
         {
@@ -164,40 +164,37 @@ namespace MudXComponents.Components
 
             var newParamList = parameters.ToList();
 
-
+            newParamList.Add((nameof(ViewModel), cloned));
             newParamList.Add((nameof(MudXPage<TModel>.Components), Components));
             newParamList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
             newParamList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
             newParamList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
+            newParamList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
+
 
             Options.MaxWidth = PageSize;
 
 
-            var result = await ShowDialogAsync<TPage>(cloned, newParamList.ToArray());
-
-            if (result is not null)
-                DataSource.Add(result);
+            var result = await ShowDialogAsync<TPage>(newParamList.ToArray());
+ 
 
             Parameters = new DialogParameters();
         }
 
-        protected virtual Task ShowPage<TPage>(TModel viewModel, params (string, object)[] parameters) where TPage : UIBase
+        protected virtual  Task ShowPage<TPage>(TModel viewModel, params (string, object)[] parameters) where TPage : UIBase
         {
-
             return ShowPage<TPage>(viewModel, MaxWidth.Medium, parameters);
         }
-
-
-        public virtual async ValueTask<TModel> ShowDialogAsync<TPage>(TModel model, params (string key, object value)[] additionalParameters) where TPage : UIBase
+ 
+     
+        public virtual async ValueTask<TModel> ShowDialogAsync<TPage>(params (string key, object value)[] additionalParameters) where TPage : UIBase
         {
             // if (typeof(TPage) == typeof(BlankPage)) return default;
 
-
-            //Console.WriteLine($"Model Username : {model.GetPropertyValue("UserName")}");
-            Parameters = new DialogParameters
-            {
-                { nameof(ViewModel), model }
-            };
+            Parameters = new DialogParameters();
+            //{
+            //    { nameof(ViewModel), model }
+            //};
 
 
             foreach (var prm in additionalParameters)
@@ -207,8 +204,7 @@ namespace MudXComponents.Components
 
             var dialogTItle = additionalParameters.FirstOrDefault(x => x.key.Equals(nameof(MudXPage<TModel>.DialogTitle)));
 
-            Console.WriteLine(Options.MaxWidth);
-            var dialogReference = DialogService.Show<TPage>(dialogTItle.value.ToString(), Parameters, Options);
+            var dialogReference = DialogService.Show<TPage>(dialogTItle.value?.ToString(), Parameters, Options);
 
             DialogResult = await dialogReference.Result;
 
@@ -248,13 +244,12 @@ namespace MudXComponents.Components
                 var columnValue = model.GetPropertyValue(prop.Name);
 
                 if (columnValue is null) continue;
-
+                
                 if (columnValue.ToString()!.Contains(searchString, StringComparison.OrdinalIgnoreCase))
                     return true;
             }
-
+            
             return false;
         }
     }
 }
-

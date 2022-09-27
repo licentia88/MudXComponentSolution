@@ -10,8 +10,14 @@
 <EditForm Model="@ViewModel" OnValidSubmit="async ()=> await SubmitClick()">
     <MudDialog DefaultFocus="DefaultFocus.Element">
         <DialogContent>
-            <DataAnnotationsValidator />
-            <ValidationSummary />
+
+            @{
+                if (EnableModelValidation)
+                {
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+                }
+            }
             <MudContainer Style="max-height: 80vh; overflow-y: auto ">
                 @{
 
