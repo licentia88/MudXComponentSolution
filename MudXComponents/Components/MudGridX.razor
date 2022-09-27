@@ -1,0 +1,114 @@
+﻿@typeparam TModel where TModel : new()
+@inherits UIMudBase<TModel>
+
+<CascadingValue Value="this" Name="ParentComponent">
+
+    @{
+        if (GridColumns is not null && isFirstRender)
+        {
+            @GridColumns
+
+            isFirstRender = false;
+        }
+    }
+
+
+    <MudCard Elevation="4">
+        <MudCardHeader>
+            <CardHeaderContent>
+
+                <MudGrid>
+
+                    <MudText Style="margin:1rem!important" Align="Align.Start" Typo="Typo.h6">@Title</MudText>
+                    <MudSpacer />
+                    @{
+                        if (EnableSearch)
+                        {
+                            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+
+                        }
+                    }
+
+                </MudGrid>
+
+            </CardHeaderContent>
+
+        </MudCardHeader>
+
+        <MudGrid Style="padding-right:1.75rem!important; padding-top:5%!important" Justify="Justify.FlexEnd">
+
+            @{
+                if (HeaderButtons is not null)
+                {
+                    @HeaderButtons
+                }
+            }
+
+
+        </MudGrid>
+        <MudTable FixedHeader="true" Items="@DataSource" Dense="true" Hover="true" Breakpoint="Breakpoint.None" Filter="new Func<TModel,bool>(SearchFilter)">
+
+            <ToolBarContent>
+
+
+
+            </ToolBarContent>
+
+            <HeaderContent>
+
+                @{
+                    foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                    {
+
+                        <MudTh>
+                            @item.Label
+                        </MudTh>
+                    }
+
+                }
+
+            </HeaderContent>
+            <RowTemplate>
+                @{
+
+                    foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                    {
+                        <MudTd @onclick:stopPropagation="true">
+                            @item.RenderComponent(context, ComponentTypes.Grid)
+                        </MudTd>
+                    }
+                }
+
+
+                <MudTd DataLabel="" Style="text-align: right" @onclick:stopPropagation="true">
+                    @{
+                        if (GridButtons is not null)
+                        {
+                            <CascadingValue Value="context" Name="Context">
+                                @GridButtons(context)
+                            </CascadingValue>
+
+                        }
+                    }
+
+                </MudTd>
+            </RowTemplate>
+
+            <PagerContent>
+                @{
+                    if (EnablePagination)
+                    {
+                        <MudTablePager />
+                    }
+                }
+            </PagerContent>
+
+
+
+        </MudTable>
+
+    </MudCard>
+
+
+</CascadingValue>
+

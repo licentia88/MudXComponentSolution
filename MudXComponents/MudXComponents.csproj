@@ -2,17 +2,36 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
-        <Nullable>enable</Nullable>
+        <!--<Nullable>false</Nullable>-->
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
 
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
     <ItemGroup>
-        <SupportedPlatform Include="browser"/>
+        <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.9" />
+        <PackageReference Include="MudBlazor" Version="6.0.16" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Args\" />
+      <None Remove="Enums\" />
+      <None Remove="Extensions\" />
+      <None Remove="Components\" />
+      <None Remove="MudBlazor" />
+      <None Remove="Interfaces\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Args\" />
+      <Folder Include="Enums\" />
+      <Folder Include="Extensions\" />
+      <Folder Include="Components\" />
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
 </Project>

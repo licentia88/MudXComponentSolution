@@ -1,0 +1,23 @@
+﻿@typeparam TModel  where TModel : new()
+@inherits ColumnBase<TModel>
+@implements IButton
+
+
+<MudFab @onclick="@(async ()=> await OnClick.InvokeAsync(Context))"
+        Class="@Class"
+        Style="@Style"
+        Color="@Color"
+        Size="@Size"
+        StartIcon="@StartIcon"
+        Disabled="@Disabled"
+        Label="@Label"
+        Title="@Title"
+        Tag="@Tag"
+        Href="@Href"
+        ButtonType="@ButtonType"
+        EndIcon="@EndIcon"
+        Target="@Target"
+        IconColor="IconColor"
+        IconSize="Size"
+        DisableElevation="@DisableElevation"
+        DisableRipple="@DisableRipple" />

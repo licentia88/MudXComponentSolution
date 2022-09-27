@@ -1,0 +1,91 @@
+﻿@typeparam TModel        where TModel : new()
+@typeparam TSourceModel  where TSourceModel : class
+
+@inherits ColumnBase<TModel>
+
+@if (Context is null) { return; }
+
+@{
+    if (ComponentType == ComponentTypes.Grid)
+    {
+        @DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField) == Context.GetPropertyValue(BindingField))?.GetPropertyValue(TextField)
+    }
+    else
+    {
+
+        Console.WriteLine($"Datasource count is : {DataSource.Count()}");
+        var currentValue = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
+
+        <MudSelect T="TSourceModel"
+                   Adornment="@Adornment"
+                   AdornmentAriaLabel="@AdornmentAriaLabel"
+                   AdornmentColor="@AdornmentColor"
+                   AdornmentIcon="@AdornmentIcon"
+                   AdornmentText="@AdornmentText"
+                   ReadOnly="@ReadOnly"
+                   Required="@Required"
+                   AutoFocus="@AutoFocus"
+                   Clearable="@Clearable"
+                   Class="@Class"
+                   Style="@Style"
+                   Label="@Label"
+                   Disabled="@Disabled"
+                   Value="@currentValue"
+                   ToStringFunc="@StringConverter"
+                   Placeholder="@Placeholder"
+                   Variant="@Variant"
+                   CheckedIcon="@CheckedIcon"
+                   CloseIcon="@CloseIcon"
+                   Counter="@Counter"
+                   Culture="@Culture"
+                   Delimiter="@Delimiter"
+                   Dense="@Dense"
+                   Direction="@Direction"
+                   Immediate="@Immediate"
+                   DisableUnderLine="@DisableUnderLine"
+                   Error="@Error"
+                   ErrorId="@ErrorId"
+                   ErrorText="@ErrorText"
+                   RequiredError="@RequiredError"
+                   For="@For"
+                   Format="@Format"
+                   FullWidth="@FullWidth"
+                   HelperText="@HelperText"
+                   HelperTextOnFocus="@HelperTextOnFocus"
+                   IconSize="@IconSize"
+                   InputMode="InputMode"
+                   Lines="@Lines"
+                   Margin="@Margin"
+                   MaxLength="@MaxLength"
+                   Pattern="@Pattern"
+                   Tag="@Tag"
+                   IndeterminateIcon="@IndeterminateIcon"
+                   UserAttributes="@UserAttributes"
+                   TextUpdateSuppression="@TextUpdateSuppression"
+                   KeyDownPreventDefault="@KeyDownPreventDefault"
+                   KeyPressPreventDefault="@KeyPressPreventDefault"
+                   KeyUpPreventDefault="KeyUpPreventDefault"
+                   AnchorOrigin="@AnchorOrigin"
+                   LockScroll="@LockScroll"
+                   MaxHeight="@MaxHeight"
+                   MultiSelection="@MultiSelection"
+                   MultiSelectionTextFunc="@MultiSelectionTextFunc"
+                   OpenIcon="@OpenIcon"
+                   SelectAll="@SelectAll"
+                   SelectAllText="@SelectAllText"
+                   PopoverClass="@PopoverClass"
+                   TransformOrigin="@TransformOrigin"
+                   UncheckedIcon="@UncheckedIcon"
+                   ValueChanged="OnValueChanged">
+
+            @{
+                foreach (var data in DataSource)
+                {
+                    <MudSelectItem Value="@data" />
+                }
+            }
+
+        </MudSelect>
+    }
+
+}
