@@ -23,8 +23,6 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter]
     public Origin TransformOrigin { get; set; } = Origin.TopCenter;
 
-
-
     [Parameter]
     public string TextField { get; set; }
 
@@ -33,7 +31,6 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
 
     [Parameter]
     public IEnumerable<TSourceModel> DataSource { get; set; }
-
 
     [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
     public ComponentTypes ComponentType { get; set; }
@@ -133,7 +130,6 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter]
     public Origin AnchorOrigin { get; set; } = Origin.BottomCenter;
 
-
     [Parameter]
     public string CheckedIcon { get; set; }
 
@@ -145,9 +141,6 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
 
     [Parameter]
     public Variant Variant { get; set; } = Variant.Outlined;
-
-    [Parameter]
-    public Adornment Adornment { get; set; }
 
     [Parameter]
     public int MaxHeight { get; set; } = 300;
@@ -165,17 +158,19 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     public string SelectAllText { get; set; }
 
     [Parameter]
+    public Adornment Adornment { get; set; } = Adornment.End;
+
+    [Parameter]
     public string AdornmentAriaLabel { get; set; }
 
     [Parameter]
     public string OpenIcon { get; set; }
 
-
     [Parameter]
     public Color AdornmentColor { get; set; }
 
     [Parameter]
-    public string AdornmentIcon { get; set; }
+    public string AdornmentIcon { get; set; } = Icons.Filled.ArrowDropDown;
 
     [Parameter]
     public string AdornmentText { get; set; }
@@ -195,13 +190,9 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter]
     public bool Required { get; set; }
 
-
     private void OnValueChanged(TSourceModel model)
     {
         Context.SetPropertyValue(BindingField, model.GetPropertyValue(ValueField));
     }
-
-
-
 }
 
