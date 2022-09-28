@@ -1,11 +1,7 @@
-﻿<Properties StartupConfiguration="{B5F1B842-1804-4B01-85B1-27D2CA3FD7A2}|Mudblazor.Template">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+﻿<Properties StartupConfiguration="{71CC3E59-04B8-4FE6-B510-81F174000003}|Default">
   <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.MudXComponents.Examples PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/MudXPage.razor.cs">
     <Files>
       <File FileName="MudXComponents/Components/MudGridX.razor" Line="1" Column="1" />
@@ -41,4 +37,7 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints />
 </Properties>

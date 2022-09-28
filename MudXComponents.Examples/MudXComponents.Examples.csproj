@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Pages\Grids\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Pages\Grids\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MudBlazor" Version="6.0.16" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MudXComponents.Shared\MudXComponents.Shared.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\MudXComponents\MudXComponents.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
