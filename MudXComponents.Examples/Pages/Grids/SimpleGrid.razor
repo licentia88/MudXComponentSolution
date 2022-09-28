@@ -23,20 +23,13 @@
                        StartIcon="@Icons.Filled.Add"
                        TModel="USERS" />
 
-        @* <GridFabButton *@
-        @*                Label="Excel" *@
-        @*                Color="Color.Tertiary" Style="margin-left:5px" *@
-        @*                PageSize="MaxWidth.Small" *@
-        @*                StartIcon="@Icons.Custom.FileFormats.FileExcel" *@
-        @*                TModel="DummyModel" /> *@
 
-        @*<GridFabButton Color="Color.Tertiary" Style="margin-left:5px"
+        <GridFabButton 
+            OnClick="() =>  CustomCommand()"
+            Color="Color.Tertiary" Style="margin-left:5px"
                        StartIcon="@Icons.Custom.FileFormats.FileMusic"
                        TModel="DummyModel" />
-
-        <GridFabButton Color="Color.Tertiary" Style="margin-left:5px"
-                       StartIcon="@Icons.Custom.FileFormats.FilePdf"
-                       TModel="DummyModel" />*@
+ 
     </HeaderButtons>
 
     <GridColumns>
@@ -147,5 +140,13 @@
     {
         Console.WriteLine("opening page in DeleteMode");
         return Task.CompletedTask;
+    }
+
+    public async Task CustomCommand()
+    {
+        //await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small);
+
+        await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small,("ViewModel", new DummyModel()));
+
     }
 }

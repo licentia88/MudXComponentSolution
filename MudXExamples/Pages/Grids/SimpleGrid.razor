@@ -23,20 +23,12 @@
                        StartIcon="@Icons.Filled.Add"
                        TModel="USERS" />
 
-        @* <GridFabButton *@
-        @*                Label="Excel" *@
-        @*                Color="Color.Tertiary" Style="margin-left:5px" *@
-        @*                PageSize="MaxWidth.Small" *@
-        @*                StartIcon="@Icons.Custom.FileFormats.FileExcel" *@
-        @*                TModel="DummyModel" /> *@
 
-        @*<GridFabButton Color="Color.Tertiary" Style="margin-left:5px"
-                       StartIcon="@Icons.Custom.FileFormats.FileMusic"
-                       TModel="DummyModel" />
-
-        <GridFabButton Color="Color.Tertiary" Style="margin-left:5px"
-                       StartIcon="@Icons.Custom.FileFormats.FilePdf"
-                       TModel="DummyModel" />*@
+     @*<GridFabButton        OnClick="()=> CustomCommand()"
+                           Color="Color.Tertiary" Style="margin-left:5px"
+                           StartIcon="@Icons.Custom.FileFormats.FileMusic"
+                           TModel="DummyModel" />*@
+        
     </HeaderButtons>
 
     <GridColumns>
@@ -68,8 +60,8 @@
             Dense="true"
             Placeholder="Seciniz"
             BindingField="@(nameof(USERS.U_COUNTRY_CODE))"
-            TextField="@(nameof(COUNTRIES.C_CODE))"
-            ValueField="@(nameof(COUNTRIES.C_DESC))"
+            TextField="@(nameof(COUNTRIES.C_DESC))"
+            ValueField="@(nameof(COUNTRIES.C_CODE))"
             Label="Country" />
         
         <GridSpacer TModel="USERS" 
@@ -146,6 +138,11 @@
     public Task DeleteCommand(USERS model)
     {
         Console.WriteLine("opening page in DeleteMode");
+        return Task.CompletedTask;
+    }
+
+    public Task CustomCommand()
+    {
         return Task.CompletedTask;
     }
 }

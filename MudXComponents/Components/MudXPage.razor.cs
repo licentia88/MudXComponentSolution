@@ -46,9 +46,11 @@ namespace MudXComponents.Components
 
         protected override Task OnInitializedAsync()
         {
-            Console.WriteLine($"Model Username : {ViewModel.GetPropertyValue("UserName")}");
+            SubmitText = SubmitText.Equals(string.Empty)? ViewState.ToString() :SubmitText;
 
-            SubmitText = ViewState.ToString();
+            CancelText = CancelText.Equals(string.Empty) ? "Cancel" : CancelText;
+
+
             return base.OnInitializedAsync();
         }
 

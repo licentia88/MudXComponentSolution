@@ -22,18 +22,25 @@
                 @{
 
                     <MudGrid Justify="Justify.FlexStart" Spacing="0">
-                        @foreach (var component in Components.Where(x => x is not IButton))
-                        {
-                            <MudItem xs="component.xs"
-                                     sm="component.sm"
-                                     md="component.md"
-                                     lg="component.lg"
-                                     xl="component.xl"
-                                     xxl="component.xxl">
-                                @*Rendering is done Here*@
-                                @component.RenderComponent(ViewModel, ComponentTypes.Form)
-                            </MudItem>
+
+                        @{
+                            if (Components is not null)
+                            {
+                                @foreach (var component in Components.Where(x => x is not IButton))
+                                {
+                                    <MudItem xs="component.xs"
+                                                sm="component.sm"
+                                                md="component.md"
+                                                lg="component.lg"
+                                                xl="component.xl"
+                                                xxl="component.xxl">
+                                        @*Rendering is done Here*@
+                                        @component.RenderComponent(ViewModel, ComponentTypes.Form)
+                                    </MudItem>
+                                }
+                            }
                         }
+
                     </MudGrid>
 
 
@@ -47,7 +54,7 @@
 
         </DialogContent>
         <DialogActions>
-            <MudButton OnClick="Cancel">Cancel</MudButton>
+            <MudButton OnClick="Cancel">@CancelText</MudButton>
             <MudButton Color="Color.Success" Variant="Variant.Filled" ButtonType="MudBlazor.ButtonType.Submit">@SubmitText</MudButton>
         </DialogActions>
     </MudDialog>
