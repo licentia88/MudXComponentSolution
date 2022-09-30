@@ -31,7 +31,7 @@ public static class RenderExtensions
 
         if (component.HasProperty(nameof(GridColumn<TModel, Default>.ComponentType)))
         {
-            Console.WriteLine($"Adding attribute {componentType}");
+            //Console.WriteLine($"Adding attribute {componentType}");
             builder.AddAttribute(100, nameof(componentType), componentType);
         }
 

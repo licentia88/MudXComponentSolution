@@ -5,12 +5,14 @@
 @code{}
 
 <MudGridX
+        SmartCrud="true"
         EnableModelValidation="true"
         EnableSearch="true"
         EnablePagination="true"
         OnCreate="@CreateCommand"
         OnDelete="@DeleteCommand"
         OnUpdate="@UpdateCommand"
+        OnLoad="@OnLoad"
         TModel="USERS"
         DataSource="@DataSource"
         Title="@Title">
@@ -21,7 +23,7 @@
                        Color="Color.Tertiary"
                        PageSize="MaxWidth.Medium"
                        StartIcon="@Icons.Filled.Add"
-                       TModel="USERS" />
+                       TModel="USERS"/>
 
 
         <GridFabButton 
@@ -94,15 +96,13 @@
                        StartIcon="@Icons.Filled.Delete"
                        TModel="USERS" />
     </GridButtons>
-    <DetailGrid >
-        @*<MudTabs Class="pt-1 pb-2">
+    <DetailGrid>
+        <MudTabs Class="pt-1 pb-2">
             <MudTabPanel Text="Orders">
-                <OrderGrid Title="Orders" />
+                <OrdersGrid   />
             </MudTabPanel>
-            <MudTabPanel Text="Preferences">
-                <OrderGrid Title="Preferences" />
-            </MudTabPanel>
-        </MudTabs>*@
+             
+        </MudTabs>
     </DetailGrid>
 </MudGridX>
 
@@ -131,14 +131,13 @@
 
     public Task UpdateCommand(USERS model)
     {
-        //Console.WriteLine(DataSource.Any(x=> x.Equals));
-        //UpdateDatasource(model);
+        DataSource.UpdateCollection(model);
         return Task.CompletedTask;
     }
 
     public Task DeleteCommand(USERS model)
     {
-        Console.WriteLine("opening page in DeleteMode");
+        DataSource.RemoveFromCollection(model);
         return Task.CompletedTask;
     }
 
@@ -148,5 +147,10 @@
 
         await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small,("ViewModel", new DummyModel()));
 
+    }
+
+    public async Task OnLoad(MudXPage<USERS> page)
+    {
+        Console.WriteLine();
     }
 }

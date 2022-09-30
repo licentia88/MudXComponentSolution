@@ -8,74 +8,76 @@
 
 
 @{
-    BindingType valueToDisplay = (BindingType)Context.GetPropertyValue(BindingField); //as BindingType;
+    BindingType valueToDisplay = Context.GetPropertyValue<TModel, BindingType>(BindingField); //as BindingType;
+
+    if (ComponentType == ComponentTypes.Grid)
+    {
+        @valueToDisplay
+    }
+    else
+    {
+        <MudTextField Class="@Class"
+                      Style="@Style"
+                      T="BindingType"
+                      Immediate="@Immediate"
+                      TextChanged="OnValueChanged"
+                      Label="@Label"
+                      Variant="@Variant"
+                      Adornment="@Adornment"
+                      AdornmentAriaLabel="@AdornmentAriaLabel"
+                      AdornmentColor="@AdornmentColor"
+                      AdornmentIcon="@AdornmentIcon"
+                      AdornmentText="@AdornmentText"
+                      ReadOnly="@ReadOnly"
+                      Required="@Required"
+                      AutoFocus="@AutoFocus"
+                      Clearable="@Clearable"
+                      Culture="@Culture"
+                      DebounceInterval="@DebounceInterval"
+                      Disabled="@Disabled"
+                      DisableUnderLine="@DisableUnderLine"
+                      Error="@Error"
+                      ErrorId="@ErrorId"
+                      ErrorText="@ErrorText"
+                      RequiredError="@RequiredError"
+                      For="@For"
+                      Format="@Format"
+                      FullWidth="@FullWidth"
+                      HelperText="@HelperText"
+                      HelperTextOnFocus="@HelperTextOnFocus"
+                      IconSize="@IconSize"
+                      InputMode="InputMode"
+                      InputType="@InputType"
+                      Lines="@Lines"
+                      Margin="@Margin"
+                      Mask="@Mask"
+                      MaxLength="@MaxLength"
+                      Pattern="@Pattern"
+                      Placeholder="@Placeholder"
+                      Tag="@Tag"
+                      Validation="@Validation"
+                      UserAttributes="@UserAttributes"
+                      TextUpdateSuppression="@TextUpdateSuppression"
+                      KeyDownPreventDefault="@KeyDownPreventDefault"
+                      KeyPressPreventDefault="@KeyPressPreventDefault"
+                      KeyUpPreventDefault="KeyUpPreventDefault"
+                      Value="@valueToDisplay">
+        </MudTextField>
+    }
 }
 
-@if (ComponentType == ComponentTypes.Grid)
-{
-    @valueToDisplay
 
-}
-else
-{
-    Console.WriteLine(BindingField);
-    <MudTextField Class="@Class"
-                  Style="@Style"
-                  T="BindingType"
-                  Immediate="@Immediate"
-                  TextChanged="OnValueChanged"
-                  Label="@Label"
-                  Variant="@Variant"
-                  Adornment="@Adornment"
-                  AdornmentAriaLabel="@AdornmentAriaLabel"
-                  AdornmentColor="@AdornmentColor"
-                  AdornmentIcon="@AdornmentIcon"
-                  AdornmentText="@AdornmentText"
-                  ReadOnly="@ReadOnly"
-                  Required="@Required"
-                  AutoFocus="@AutoFocus"
-                  Clearable="@Clearable"
-                  Culture="@Culture"
-                  DebounceInterval="@DebounceInterval"
-                  Disabled="@Disabled"
-                  DisableUnderLine="@DisableUnderLine"
-                  Error="@Error"
-                  ErrorId="@ErrorId"
-                  ErrorText="@ErrorText"
-                  RequiredError="@RequiredError"
-                  For="@For"
-                  Format="@Format"
-                  FullWidth="@FullWidth"
-                  HelperText="@HelperText"
-                  HelperTextOnFocus="@HelperTextOnFocus"
-                  IconSize="@IconSize"
-                  InputMode="InputMode"
-                  InputType="@InputType"
-                  Lines="@Lines"
-                  Margin="@Margin"
-                  Mask="@Mask"
-                  MaxLength="@MaxLength"
-                  Pattern="@Pattern"
-                  Placeholder="@Placeholder"
-                  Tag="@Tag"
-                  Validation="@Validation"
-                  UserAttributes="@UserAttributes"
-                  TextUpdateSuppression="@TextUpdateSuppression"
-                  KeyDownPreventDefault="@KeyDownPreventDefault"
-                  KeyPressPreventDefault="@KeyPressPreventDefault"
-                  KeyUpPreventDefault="KeyUpPreventDefault"
-                  Value="@valueToDisplay">
-    </MudTextField>
-}
 
 @code{
 
-    public void OnValueChanged(string text)
+    public void OnValueChanged(object text)
     {
-        if (text is BindingType txt)
-        {
-            Context.SetPropertyValue(BindingField, txt);
+        Context.SetPropertyValue<TModel, BindingType>(BindingField, text);
 
-        }
+        //if (text is BindingType txt)
+        //{
+        //    Context.SetPropertyValue<TModel,BindingType>(BindingField, txt);
+
+        //}
     }
 }

@@ -8,7 +8,7 @@
 
 
 <EditForm Model="@ViewModel" OnValidSubmit="async ()=> await SubmitClick()">
-    <MudDialog DefaultFocus="DefaultFocus.Element">
+    <MudDialog DefaultFocus="DefaultFocus.Element" OnBackdropClick="Cancel" >
         <DialogContent>
 
             @{
@@ -44,9 +44,13 @@
                     </MudGrid>
 
 
-                    <CascadingValue Value="ViewModel"
-                                    Name="@(nameof(MudGridX<TModel>.ParentContext))">
-                        @DetailGrid
+                    <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
+                        <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
+                            <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
+                                @DetailGrid
+                            </CascadingValue>
+
+                        </CascadingValue>           
                     </CascadingValue>
                 }
             </MudContainer>

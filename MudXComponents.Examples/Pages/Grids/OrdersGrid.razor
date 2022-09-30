@@ -1,0 +1,94 @@
+﻿
+<MudGridX EnableModelValidation="true"
+          EnableSearch="true"
+          EnablePagination="true"
+          OnCreate="@CreateCommand"
+          OnDelete="@DeleteCommand"
+          OnUpdate="@UpdateCommand"
+          OnLoad="@OnLoadAsync"
+          TModel="ORDERS"
+          DataSource="@DataSource"
+          Title="Orders">
+
+    <HeaderButtons>
+        <GridFabButton Title="New Order"
+                       ViewState="ViewState.Create"
+                       Color="Color.Tertiary"
+                       PageSize="MaxWidth.Medium"
+                       StartIcon="@Icons.Filled.Add"
+                       TModel="ORDERS" />
+
+    </HeaderButtons>
+
+    <GridColumns>
+        <GridColumn
+                    BindingType="string"
+                    Order="1"
+                    xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
+                    TModel="ORDERS"
+                    BindingField="@(nameof(ORDERS.OR_NAME))"
+                    Label="Name" />
+
+        <GridSpacer TModel="ORDERS"
+                    Order="2"
+                    xs="12" sm="12" md="2" lg="2" xl="2" xxl="2" />
+
+        <GridColumn
+                    BindingType="string"
+                    Order="3"
+                    xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
+                    TModel="ORDERS" BindingField="@(nameof(ORDERS.OR_QUANTITY))" Label="Miktar" />
+
+    
+
+    </GridColumns>
+
+    <GridButtons>
+        <GridFabButton Title="Edit"
+                       PageSize="MaxWidth.ExtraExtraLarge"
+                       ViewState="ViewState.Update"
+                       Color="Color.Tertiary"
+                       StartIcon="@Icons.Filled.Edit"
+                       TModel="ORDERS" />
+
+        <GridFabButton Title="Remove"
+                       ViewState="ViewState.Remove"
+                       Color="Color.Tertiary"
+                       StartIcon="@Icons.Filled.Delete"
+                       TModel="ORDERS" />
+    </GridButtons>
+     
+</MudGridX>
+
+@code{
+
+    public System.Collections.ObjectModel.ObservableCollection<ORDERS> DataSource { get; set; } = new();
+
+
+
+    public Task CreateCommand(ORDERS model)
+    {
+        DataSource.Add(model);
+        return Task.CompletedTask;
+    }
+
+    public Task UpdateCommand(ORDERS model)
+    {
+        DataSource.UpdateCollection(model);
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteCommand(ORDERS model)
+    {
+        DataSource.RemoveFromCollection(model);
+        return Task.CompletedTask;
+    }
+
+
+    public Task OnLoadAsync(MudXPage<ORDERS> frm)
+    {
+
+        return Task.CompletedTask;
+    }
+
+}

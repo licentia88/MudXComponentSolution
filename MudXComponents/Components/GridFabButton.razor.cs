@@ -64,6 +64,7 @@ public partial class GridFabButton<TModel> : ColumnBase<TModel>, IButton where T
     [Parameter, AllowNull]
     public ViewState ViewState { get; set; } = ViewState.None;
 
+
     [CascadingParameter(Name = nameof(Context))]
     public override TModel Context { get; set; }
 

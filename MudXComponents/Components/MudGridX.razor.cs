@@ -14,14 +14,20 @@ namespace MudXComponents.Components
 
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
+        [CascadingParameter(Name =nameof(SmartCrud))]
+        private bool _smartCrud { get; set; }
+
+        [Parameter, AllowNull]
+        public bool SmartCrud { get { return _smartCrud; } set { _smartCrud = value; } }
+
+
         [CascadingParameter(Name = nameof(ParentContext))]
-        public  object ParentContext { get; set; }
+        public object ParentContext { get; set; }
 
         [Parameter,AllowNull]
         public bool EnableModelValidation { get; set; } 
         //private MudTable<TModel> MyTable { get; set; }
 
-        private bool isFirstRender = true;
 
         [Parameter, AllowNull]
         public ObservableCollection<TModel> DataSource { get; set; }
@@ -54,7 +60,10 @@ namespace MudXComponents.Components
         [Parameter, AllowNull]
         public virtual EventCallback<TModel> OnUpdate { get; set; }
 
-      
+        [Parameter, AllowNull]
+        public virtual EventCallback<MudXPage<TModel>> OnLoad { get; set; }
+
+
 
         #region Dialog
 
@@ -88,6 +97,11 @@ namespace MudXComponents.Components
         private string _searchString = "";
 
         public ObservableCollection<ColumnBase<TModel>> Components { get; set; } = new();
+
+        private bool isFirstRender = true;
+
+        [CascadingParameter(Name =nameof(IsChild))]
+        internal bool IsChild { get; set; }
 
         public MudGridX()
         {
@@ -136,14 +150,18 @@ namespace MudXComponents.Components
                     paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
                     paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
                     paramList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
+                    paramList.Add((nameof(MudXPage<TModel>.OnLoad), OnLoad));
+                    
                     paramList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
                     paramList.Add((nameof(MudXPage<TModel>.DetailGrid), DetailGrid));
                     paramList.Add((nameof(MudXPage<TModel>.ViewState), button.ViewState));
                     paramList.Add((nameof(MudXPage<TModel>.DialogTitle), button.Title));
-                    
-
+                    paramList.Add((nameof(MudXPage<TModel>.IsChild), IsChild));
+                    paramList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
 
                     button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowDialogAsync<MudXPage<TModel>>(CurrentModel,button.PageSize, paramList.ToArray()));
+
+                    
                 }
             }
 
@@ -161,7 +179,7 @@ namespace MudXComponents.Components
             return !DialogResult.Cancelled ? ViewModel : default;
         }
 
-        public virtual async ValueTask<TModel> ShowDialogAsync<TMudXPage>(params (string key, object value)[] parameters) where TMudXPage : UIBase
+        public virtual async ValueTask<DialogResult> ShowDialogAsync<TMudXPage>(params (string key, object value)[] parameters) where TMudXPage : UIBase
         {
           
 
@@ -175,13 +193,14 @@ namespace MudXComponents.Components
 
             var dialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), Parameters, Options);
 
-            DialogResult = await dialogReference.Result;
+            return await dialogReference.Result;
 
-            return (TModel)DialogResult.Data;
-        }
+            
+
+         }
 
 
-        public virtual async ValueTask<TModel> ShowDialogAsync<TMudXPage>(TModel viewModel ,params (string key, object value)[] parameters) where TMudXPage : UIBase
+        public virtual async ValueTask<DialogResult> ShowDialogAsync<TMudXPage>(TModel viewModel ,params (string key, object value)[] parameters) where TMudXPage : UIBase
         {
             var stringifiedModel = JsonSerializer.Serialize(viewModel);
 
@@ -194,14 +213,14 @@ namespace MudXComponents.Components
             return await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
         }
 
-        public virtual async ValueTask<TModel> ShowDialogAsync<TMudXPage>(MaxWidth pageSize, params (string key, object value)[] parameters) where TMudXPage : UIBase
+        public virtual async ValueTask<DialogResult> ShowDialogAsync<TMudXPage>(MaxWidth pageSize, params (string key, object value)[] parameters) where TMudXPage : UIBase
         {
             Options.MaxWidth = pageSize;
 
             return await ShowDialogAsync<TMudXPage>(parameters);
         }
 
-        public virtual async ValueTask<TModel> ShowDialogAsync<TMudXPage>(TModel viewModel, MaxWidth pageSize, params (string key, object value)[] parameters) where TMudXPage : UIBase
+        public virtual async ValueTask<DialogResult> ShowDialogAsync<TMudXPage>(TModel viewModel, MaxWidth pageSize, params (string key, object value)[] parameters) where TMudXPage : UIBase
         {
             var stringifiedModel = JsonSerializer.Serialize(viewModel);
 
@@ -209,84 +228,33 @@ namespace MudXComponents.Components
 
             var newParamList = parameters.ToList();
 
-            newParamList.Add((nameof(ViewModel), cloned));
+            //var original = viewModel;
+            //var cloned = viewModel.ToImmutable();
+
+            newParamList.Add((nameof(MudXPage<TModel>.ViewModel), cloned));
+
+            //newParamList.Add((nameof(MudXPage<TModel>.Original), cloned));
 
             Options.MaxWidth = pageSize;
 
-            return await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
+            var dialogResult = await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
+
+
+            //if (dialogResult.Cancelled)
+            //{
+            //    viewModel = cl
+            //    var param1 = parameters.FirstOrDefault(((string key, object value) arg) => arg.key.Equals(nameof(MudXPage<TModel>.ViewModel)));
+
+            //    var param2 = parameters.FirstOrDefault(((string key, object value) arg) => arg.key.Equals(nameof(MudXPage<TModel>.Original)));
+
+            //    param1.value = param2.value;
+            //    ViewModel = (TModel)DialogResult.Data;
+            //}
+
+            return dialogResult;
+
         }
 
-
-        //protected virtual async Task ShowPageAsync<TMudXPage>(TModel viewModel, MaxWidth PageSize, params (string, object)[] parameters) where TMudXPage : UIBase
-        //{
-
-        //    var stringifiedModel = JsonSerializer.Serialize(viewModel);
-
-        //    var cloned = JsonSerializer.Deserialize<TModel>(stringifiedModel);
-
-        //    var newParamList = parameters.ToList();
-
-        //    newParamList.Add((nameof(ViewModel), cloned));
-        //    newParamList.Add((nameof(MudXPage<TModel>.Components), Components));
-        //    newParamList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
-        //    newParamList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
-        //    newParamList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
-        //    newParamList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
-
-
-        //    Options.MaxWidth = PageSize;
-
-
-        //    var result = await ShowPageAsync<TMudXPage>(newParamList.ToArray());
-
-
-        //    DialogParameters = new DialogParameters();
-        //}
-
-        //protected virtual  Task ShowPageAsync<TMudXPage>(TModel viewModel, params (string, object)[] parameters) where TMudXPage : UIBase
-        //{
-        //    return ShowPageAsync<TMudXPage>(viewModel, MaxWidth.Medium, parameters);
-        //}
-
-        //public virtual async ValueTask<TModel> ShowPageAsync<TMudXPage>(params (string key, object value)[] additionalParameters) where TMudXPage : UIBase
-        //{
-
-        //    DialogParameters = new DialogParameters();
-
-
-        //    foreach (var prm in additionalParameters)
-        //    {
-        //        DialogParameters.Add(prm.key, prm.value);
-        //    }
-
-        //    var dialogTItle = additionalParameters.FirstOrDefault(x => x.key.Equals(nameof(MudXPage<TModel>.DialogTitle)));
-
-        //    var dialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), DialogParameters, Options);
-
-        //    DialogResult = await dialogReference.Result;
-
-        //    return (TModel)DialogResult.Data;
-        //}
-
-        //protected void UpdateResponseData(TModel updatedItem)
-        //{
-        //    UpdateResponseData(DataSource, updatedItem);
-        //}
-
-        //protected void UpdateResponseData(IList<TModel> collection, TModel updatedItem)
-        //{
-        //    var primaryKey = typeof(TModel).GetKey();
-
-        //    var itemToUpdate = collection.FirstOrDefault(x =>
-        //        primaryKey != null && x.GetType().GetProperty(primaryKey)!.GetValue(x)!
-        //            .Equals(updatedItem.GetType().GetProperty(primaryKey)?.GetValue(updatedItem)));
-
-        //    if (itemToUpdate is null) return;
-
-        //    var index = collection.IndexOf(itemToUpdate);
-
-        //    collection[index] = updatedItem;
-        //}
 
         private bool SearchFilter(TModel element) => SearchFilterFunc(element, _searchString);
 

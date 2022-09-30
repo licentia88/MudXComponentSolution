@@ -26,8 +26,12 @@ namespace MudXComponents.Components
         [Parameter]
         public string DialogTitle { get; set; } = string.Empty;
 
-        protected virtual void Cancel() => MudDialog.Cancel();
+        [Parameter]
+        public bool IsChild { get; set; }
 
+        [Parameter]
+        public bool SmartCrud { get; set; }
+        
         [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
         public RenderFragment DetailGrid { get; set; }
 
@@ -43,17 +47,24 @@ namespace MudXComponents.Components
         [Parameter]
         public EventCallback<TModel> OnDelete { get; set; }
 
-
-        protected override Task OnInitializedAsync()
+        [Parameter]
+        public EventCallback<MudXPage<TModel>> OnLoad { get; set; }
+        
+        protected override async Task OnInitializedAsync()
         {
             SubmitText = SubmitText.Equals(string.Empty)? ViewState.ToString() :SubmitText;
 
             CancelText = CancelText.Equals(string.Empty) ? "Cancel" : CancelText;
 
+            await base.OnInitializedAsync();
 
-            return base.OnInitializedAsync();
+            await OnLoad.InvokeAsync(this);
         }
 
+        protected virtual void Cancel()
+        {
+            MudDialog.Cancel();
+        }
 
         protected async ValueTask SubmitClick()
         {
