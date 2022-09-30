@@ -4,8 +4,20 @@ using MudBlazor;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Components.Web;
+using static MudBlazor.CategoryTypes;
+using System.Threading;
+using static MudBlazor.Colors;
+using System.Timers;
+using MudXComponents.Extensions;
 
 namespace MudXComponents.Components;
+
+public class MyTextField<TModel, BindingType> : MudTextField<TModel> where TModel : new()
+{
+    public new MudBlazor.Converter<BindingType, BindingType> Converter { get; set; }
+ 
+}
 
 public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where TModel : new()
 {
@@ -59,8 +71,24 @@ public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where 
     [Parameter]
     public int DebounceInterval { get; set; }
 
-    //[Parameter]
-    //public MudBlazor.Converter<BindingType, string> Converter { get; set; }
+    
+    //public MudBlazor.Converter<BindingType, BindingType> Converter { get; set; }
+    //= new MudBlazor.Converter<BindingType, BindingType>
+    //{
+    //    SetFunc = value =>
+    //    {
+    //        if (value is not null)
+    //        {
+    //            return value;
+    //        }
+    //        return default;
+    //    },
+    //    GetFunc = text =>
+    //    {
+    //        //text.TryParse<BindingType>(out BindingType val);
+    //        return text;
+    //    }
+    //};
 
     [Parameter]
     public CultureInfo Culture { get; set; }
@@ -129,7 +157,7 @@ public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where 
 
 
     [Parameter]
-    public Func<BindingType, bool> Validation { get; set; }
+    public Func<BindingType, IEnumerable<string>> Validation { get; set; }
 
 
     [Parameter]
@@ -149,5 +177,20 @@ public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where 
     [Parameter]
     public bool KeyUpPreventDefault { get; set; }
 
+    private EventCallback<BindingType> _ValueChanged;
+    public BindingType CurrentValue { get; set; }
+    private string Value;
+
+    protected override Task OnInitializedAsync()
+    {
+        //_ValueChanged = EventCallback.Factory.Create<BindingType>(Context,
+        //    EventCallback.Factory.CreateInferred(Context, _value =>
+        //        Context.SetPropertyValue(BindingField,_value),
+        //        //typeof(TModel).GetProperty(BindingField).SetValue(Context, _value),
+        //        (BindingType)Context.GetPropertyValue(BindingField)));
+
+
+        return base.OnInitializedAsync();
+    }
 }
 

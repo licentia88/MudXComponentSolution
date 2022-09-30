@@ -117,6 +117,11 @@ namespace MudXComponents.Components
 
             
         }
+
+        protected override Task OnInitializedAsync()
+        {
+            return base.OnInitializedAsync();
+        }
         private List<TType> GetComponentOf<TType>()
         {
             return  Components.
@@ -145,7 +150,6 @@ namespace MudXComponents.Components
 
                     var paramList = new List<(string key, object value)>();
 
-                    //newParamList.Add((nameof(ViewModel), cloned));
                     paramList.Add((nameof(MudXPage<TModel>.Components), Components));
                     paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
                     paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
@@ -158,7 +162,9 @@ namespace MudXComponents.Components
                     paramList.Add((nameof(MudXPage<TModel>.DialogTitle), button.Title));
                     paramList.Add((nameof(MudXPage<TModel>.IsChild), IsChild));
                     paramList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
-
+                    paramList.Add((nameof(MudXPage<TModel>.ParentContext), ParentContext));
+                    paramList.Add((nameof(MudXPage<TModel>.ParentGrid), this));
+                    //ParentGrid
                     button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowDialogAsync<MudXPage<TModel>>(CurrentModel,button.PageSize, paramList.ToArray()));
 
                     

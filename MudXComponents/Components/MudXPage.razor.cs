@@ -10,7 +10,12 @@ namespace MudXComponents.Components
 {
 	public partial class MudXPage<TModel> : UIMudBase<TModel> where TModel : new() 
 	{
-        
+        [Parameter,EditorBrowsable(EditorBrowsableState.Never)]
+        public MudGridX<TModel> ParentGrid { get; set; }
+
+        [Parameter]
+        public object ParentContext { get; set; }
+
         [Parameter]
         public bool EnableModelValidation { get; set; }
 
@@ -30,7 +35,7 @@ namespace MudXComponents.Components
         public bool IsChild { get; set; }
 
         [Parameter]
-        public bool SmartCrud { get; set; }
+        public bool SmartCrud { get;  set; }
         
         [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
         public RenderFragment DetailGrid { get; set; }
@@ -72,7 +77,36 @@ namespace MudXComponents.Components
 
             if (ViewState == ViewState.Create)
             {
-                await OnCreate.InvokeAsync(ViewModel);
+                if (IsChild && SmartCrud)
+                {
+                    //try
+                    //{
+                    //    var listToAdd = ParentContext.GetPropertyValue(typeof(TModel).Name);
+
+                    //    var method = listToAdd.GetType().GetMethod("Add");
+
+                    //    method.Invoke(listToAdd, new[] { (object)ViewModel });
+                    //}
+                    //catch (Exception ex)
+                    //{
+
+                    //}
+                    var listToAppend = ((IEnumerable<TModel>)ParentContext.GetPropertyValue(typeof(TModel).Name)).Cast<TModel>().ToList();
+
+                    listToAppend.Add(ViewModel);
+
+                    ParentContext.SetPropertyValue(typeof(TModel).Name, listToAppend);
+
+                    ParentGrid.DataSource = listToAppend.ToObservableCollection();
+
+                    //await OnCreate.InvokeAsync(ViewModel);
+                    //ParentContext.SetPropertyValue(typeof(TModel).Name, ViewModel);
+                }
+                else
+                {
+                    await OnCreate.InvokeAsync(ViewModel);
+
+                }
             }
             else if (ViewState == ViewState.Update)
             {

@@ -21,4 +21,7 @@ public class USERS
 
     [ForeignKey(nameof(Shared.ORDERS.OR_USER_REFNO))]
     public ICollection<ORDERS> ORDERS { get; set; } = new HashSet<ORDERS>();
+
+    [ForeignKey(nameof(Shared.TRANSACTIONS.T_USER_REFNO))]
+    public ICollection<TRANSACTIONS> TRANSACTIONS { get; set; } = new HashSet<TRANSACTIONS>();
 }

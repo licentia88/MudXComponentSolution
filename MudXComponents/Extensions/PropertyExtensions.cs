@@ -5,7 +5,6 @@ namespace MudXComponents.Extensions;
 public static class PropertyExtensions
 {
    
-
     public static void SetPropertyValue(this object inputObject, string propertyName, object propertyValue)
     {
         var type = inputObject.GetType();
@@ -18,7 +17,7 @@ public static class PropertyExtensions
 
         //propertyValue =  Convert.ChangeType(propertyValue, targetType!);
 
-        propInfo?.SetValue(inputObject, propertyValue, null);
+        propInfo?.SetValue(inputObject, propertyValue);
     }
 
     public static void SetPropertyValue<TModel,TBindingType>(this TModel inputObject, string propertyName, object propertyValue)
@@ -29,9 +28,12 @@ public static class PropertyExtensions
 
         var propertyType = propInfo?.PropertyType;
 
-        TryParse(propertyValue, propertyType, out object typedValue);
+        object typedValue ;
 
-        propInfo?.SetValue(inputObject, typedValue, null);
+        TryParse(propertyValue, propertyType, out typedValue);
+
+
+        propInfo?.SetValue(inputObject, typedValue);
     }
 
     public static object GetPropertyValue(this object obj, string propName)

@@ -1,5 +1,5 @@
 ﻿@typeparam TModel   where TModel : new()
-@typeparam BindingType
+@typeparam BindingType  
 @inherits ColumnBase<TModel>
 
 
@@ -8,11 +8,11 @@
 
 
 @{
-    BindingType valueToDisplay = Context.GetPropertyValue<TModel, BindingType>(BindingField); //as BindingType;
+    CurrentValue = Context.GetPropertyValue<TModel, BindingType>(BindingField); //as BindingType;
 
     if (ComponentType == ComponentTypes.Grid)
     {
-        @valueToDisplay
+        @CurrentValue
     }
     else
     {
@@ -20,7 +20,7 @@
                       Style="@Style"
                       T="BindingType"
                       Immediate="@Immediate"
-                      TextChanged="OnValueChanged"
+                      ValueChanged="(BindingType arg) => Context.SetPropertyValue<TModel,BindingType>(BindingField,arg)"
                       Label="@Label"
                       Variant="@Variant"
                       Adornment="@Adornment"
@@ -61,23 +61,10 @@
                       KeyDownPreventDefault="@KeyDownPreventDefault"
                       KeyPressPreventDefault="@KeyPressPreventDefault"
                       KeyUpPreventDefault="KeyUpPreventDefault"
-                      Value="@valueToDisplay">
+                      Value="@CurrentValue">
         </MudTextField>
     }
 }
 
 
 
-@code{
-
-    public void OnValueChanged(object text)
-    {
-        Context.SetPropertyValue<TModel, BindingType>(BindingField, text);
-
-        //if (text is BindingType txt)
-        //{
-        //    Context.SetPropertyValue<TModel,BindingType>(BindingField, txt);
-
-        //}
-    }
-}
