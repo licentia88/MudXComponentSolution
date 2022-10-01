@@ -89,6 +89,7 @@
     public Task OnLoadAsync(MudXPage<TRANSACTIONS> frm)
     {
 
+        frm.ViewModel.T_DATE = DateTime.Now.Date;
         return Task.CompletedTask;
     }
 

@@ -13,11 +13,7 @@ using MudXComponents.Extensions;
 
 namespace MudXComponents.Components;
 
-public class MyTextField<TModel, BindingType> : MudTextField<TModel> where TModel : new()
-{
-    public new MudBlazor.Converter<BindingType, BindingType> Converter { get; set; }
  
-}
 
 public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where TModel : new()
 {
@@ -71,7 +67,8 @@ public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where 
     [Parameter]
     public int DebounceInterval { get; set; }
 
-    
+
+    //[Parameter]
     //public MudBlazor.Converter<BindingType, BindingType> Converter { get; set; }
     //= new MudBlazor.Converter<BindingType, BindingType>
     //{
@@ -183,6 +180,10 @@ public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where 
 
     protected override Task OnInitializedAsync()
     {
+        if(typeof(BindingType) == typeof(DateTime) || typeof(BindingType) == typeof(Nullable<DateTime>) && string.IsNullOrEmpty(Format))
+        {
+            Format = "yyyy-MM-dd";
+        }
         //_ValueChanged = EventCallback.Factory.Create<BindingType>(Context,
         //    EventCallback.Factory.CreateInferred(Context, _value =>
         //        Context.SetPropertyValue(BindingField,_value),

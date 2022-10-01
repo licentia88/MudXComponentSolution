@@ -1,5 +1,5 @@
 ﻿@typeparam TModel   where TModel : new()
-@typeparam BindingType  
+@typeparam BindingType
 @inherits ColumnBase<TModel>
 
 
@@ -16,11 +16,20 @@
     }
     else
     {
-        <MudTextField Class="@Class"
+        //var type = Context.GetType().GetProperty(BindingField).PropertyType;
+
+        //var d1 = typeof(MudSelect<>);
+        //Type[] typeArgs = { type };
+        //var genericMudSelect = d1.MakeGenericType(typeArgs);
+
+        Console.WriteLine();
+
+        <MudTextField Value="CurrentValue"
+                      Class="@Class"
                       Style="@Style"
                       T="BindingType"
                       Immediate="@Immediate"
-                      ValueChanged="(BindingType arg) => Context.SetPropertyValue<TModel,BindingType>(BindingField,arg)"
+                      ValueChanged="OnValueChanged"
                       Label="@Label"
                       Variant="@Variant"
                       Adornment="@Adornment"
@@ -60,11 +69,16 @@
                       TextUpdateSuppression="@TextUpdateSuppression"
                       KeyDownPreventDefault="@KeyDownPreventDefault"
                       KeyPressPreventDefault="@KeyPressPreventDefault"
-                      KeyUpPreventDefault="KeyUpPreventDefault"
-                      Value="@CurrentValue">
+                      KeyUpPreventDefault="KeyUpPreventDefault">
         </MudTextField>
     }
 }
 
+@code{
 
+    public void OnValueChanged(BindingType arg)
+    {
+        Context.SetPropertyValue(BindingField, arg);
+    }
+}
 

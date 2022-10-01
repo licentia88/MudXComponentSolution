@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using MudXComponents.Extensions;
+using Microsoft.AspNetCore.Components.Rendering;
 
 namespace MudXComponents.Components;
 
@@ -73,6 +74,13 @@ public class ColumnBase<TModel> : ComponentBase where TModel : new()
         Context = context;
         this.Render(builder, context, componentType);
     };
+
+   
+
+    //public virtual RenderFragment RenderUIComponent(Type genericType, params (string key, object value)[] parameters) => builder =>
+    //{
+    //    this.RenderUIComponent(genericType,builder);
+    //};
 
     protected override void OnInitialized()
     {

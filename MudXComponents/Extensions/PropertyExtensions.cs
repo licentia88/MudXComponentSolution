@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using MudBlazor;
+using static MudBlazor.CategoryTypes;
 
 namespace MudXComponents.Extensions;
 
@@ -19,7 +21,7 @@ public static class PropertyExtensions
 
         propInfo?.SetValue(inputObject, propertyValue);
     }
-
+   
     public static void SetPropertyValue<TModel,TBindingType>(this TModel inputObject, string propertyName, object propertyValue)
     {
         var type = typeof(TModel);
