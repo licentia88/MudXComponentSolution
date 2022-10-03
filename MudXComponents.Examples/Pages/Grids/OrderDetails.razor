@@ -5,18 +5,17 @@
           OnCreate="@CreateCommand"
           OnDelete="@DeleteCommand"
           OnUpdate="@UpdateCommand"
-          OnLoad="@OnLoadAsync"
-          TModel="ORDERS"
+          TModel="ORDER_DETAILS"
           DataSource="@DataSource"
           Title="Orders">
 
     <HeaderButtons>
-        <GridFabButton Title="New Order"
+        <GridFabButton Title="New Order Detail"
                        ViewState="ViewState.Create"
                        Color="Color.Tertiary"
                        PageSize="MaxWidth.Medium"
                        StartIcon="@Icons.Filled.Add"
-                       TModel="ORDERS" />
+                       TModel="ORDER_DETAILS" />
 
     </HeaderButtons>
 
@@ -25,19 +24,11 @@
                     BindingType="string"
                     Order="1"
                     xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
-                    TModel="ORDERS"
-                    BindingField="@(nameof(ORDERS.OR_NAME))"
+                    TModel="ORDER_DETAILS"
+                    BindingField="@(nameof(ORDER_DETAILS.ORD_ADDRESS))"
                     Label="Name" />
 
-        <GridSpacer TModel="ORDERS"
-                    Order="2"
-                    xs="12" sm="12" md="2" lg="2" xl="2" xxl="2" />
-
-        <GridColumn
-                    BindingType="string"
-                    Order="3"
-                    xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
-                    TModel="ORDERS" BindingField="@(nameof(ORDERS.OR_QUANTITY))" Label="Miktar" />
+        
 
     
 
@@ -49,53 +40,40 @@
                        ViewState="ViewState.Update"
                        Color="Color.Tertiary"
                        StartIcon="@Icons.Filled.Edit"
-                       TModel="ORDERS" />
+                       TModel="ORDER_DETAILS" />
 
         <GridFabButton Title="Remove"
                        ViewState="ViewState.Remove"
                        Color="Color.Tertiary"
                        StartIcon="@Icons.Filled.Delete"
-                       TModel="ORDERS" />
+                       TModel="ORDER_DETAILS" />
     </GridButtons>
-    <DetailGrid>
-        <MudTabs Class="pt-1 pb-2">
-            <MudTabPanel Text="Order Detail">
-                <OrderDetails />
-            </MudTabPanel>
-          
-        </MudTabs>
-    </DetailGrid>
+     
 </MudGridX>
 
 @code{
 
-    public System.Collections.ObjectModel.ObservableCollection<ORDERS> DataSource { get; set; } = new();
+    public System.Collections.ObjectModel.ObservableCollection<ORDER_DETAILS> DataSource { get; set; } = new();
 
 
 
-    public Task CreateCommand(ORDERS model)
+    public Task CreateCommand(ORDER_DETAILS model)
     {
         DataSource.Add(model);
         return Task.CompletedTask;
     }
 
-    public Task UpdateCommand(ORDERS model)
+    public Task UpdateCommand(ORDER_DETAILS model)
     {
         DataSource.UpdateCollection(model);
         return Task.CompletedTask;
     }
 
-    public Task DeleteCommand(ORDERS model)
+    public Task DeleteCommand(ORDER_DETAILS model)
     {
         DataSource.RemoveFromCollection(model);
         return Task.CompletedTask;
     }
-
-
-    public Task OnLoadAsync(MudXPage<ORDERS> frm)
-    {
-
-        return Task.CompletedTask;
-    }
+ 
 
 }

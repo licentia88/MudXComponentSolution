@@ -9,17 +9,24 @@ public static class PropertyExtensions
    
     public static void SetPropertyValue(this object inputObject, string propertyName, object propertyValue)
     {
-        var type = inputObject.GetType();
+        try
+        {
+            var type = inputObject.GetType();
 
-        var propInfo = type.GetProperty(propertyName);
+            var propInfo = type.GetProperty(propertyName);
 
-        var propertyType = propInfo?.PropertyType;
+            var propertyType = propInfo?.PropertyType;
 
-        var targetType = IsNullable(propertyType) ? Nullable.GetUnderlyingType(propertyType!) : propertyType;
+            var targetType = IsNullable(propertyType) ? Nullable.GetUnderlyingType(propertyType!) : propertyType;
 
-        //propertyValue =  Convert.ChangeType(propertyValue, targetType!);
+            propertyValue = Convert.ChangeType(propertyValue, targetType!);
 
-        propInfo?.SetValue(inputObject, propertyValue);
+            propInfo?.SetValue(inputObject, propertyValue);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
    
     public static void SetPropertyValue<TModel,TBindingType>(this TModel inputObject, string propertyName, object propertyValue)

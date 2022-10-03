@@ -5,7 +5,7 @@ using MudBlazor;
 
 namespace MudXComponents.Components;
 
-public class UIMudBase<TModel> : UIBase
+public class UIMudBase<TModel> : UIBase where TModel : new () 
 {
     [Parameter, AllowNull]
     public TModel ViewModel { get; set; }

@@ -3,6 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
@@ -14,11 +16,19 @@ namespace MudXComponents.Components
 
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
+     
+
         [CascadingParameter(Name =nameof(SmartCrud))]
         private bool _smartCrud { get; set; }
 
         [Parameter, AllowNull]
         public bool SmartCrud { get { return _smartCrud; } set { _smartCrud = value; } }
+
+ 
+
+        [Inject]
+        public IMemoryCache MemoryCache { get; set; }
+
 
 
         [CascadingParameter(Name = nameof(ParentContext))]
@@ -59,6 +69,10 @@ namespace MudXComponents.Components
 
         [Parameter, AllowNull]
         public virtual EventCallback<TModel> OnUpdate { get; set; }
+
+        [Parameter, AllowNull]
+        public virtual EventCallback<TModel> OnBeforeSubmit { get; set; }
+
 
         [Parameter, AllowNull]
         public virtual EventCallback<MudXPage<TModel>> OnLoad { get; set; }
@@ -103,6 +117,16 @@ namespace MudXComponents.Components
         [CascadingParameter(Name =nameof(IsChild))]
         internal bool IsChild { get; set; }
 
+      
+
+        private MemoryCacheEntryOptions options(IMemoryCache cache) => new MemoryCacheEntryOptions()
+                               .SetSlidingExpiration(TimeSpan.FromMinutes(10))
+                               .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
+                               //.SetPriority(CacheItemPriority.NeverRemove)
+                               .RegisterPostEvictionCallback(PostEvictionCallBack, cache);
+
+        public string CacheKey { get; set; }
+
         public MudGridX()
         {
             Options = new DialogOptions
@@ -115,13 +139,36 @@ namespace MudXComponents.Components
                 Position = DialogPosition.Center
             };
 
-            
+
+           
         }
+
 
         protected override Task OnInitializedAsync()
         {
+            if (!IsChild)
+            {
+                CacheKey = Guid.NewGuid().ToString();
+
+                MemoryCache.Set<string>(nameof(CacheKey), CacheKey, options(MemoryCache));
+
+                CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
+            }
+
+            if(IsChild)
+            {
+                CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
+
+                ReloadDataSource();
+            }
+
+
+
+
             return base.OnInitializedAsync();
         }
+
+
         private List<TType> GetComponentOf<TType>()
         {
             return  Components.
@@ -155,7 +202,8 @@ namespace MudXComponents.Components
                     paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
                     paramList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
                     paramList.Add((nameof(MudXPage<TModel>.OnLoad), OnLoad));
-                    
+                    paramList.Add((nameof(MudXPage<TModel>.OnBeforeSubmit), OnBeforeSubmit));
+ 
                     paramList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
                     paramList.Add((nameof(MudXPage<TModel>.DetailGrid), DetailGrid));
                     paramList.Add((nameof(MudXPage<TModel>.ViewState), button.ViewState));
@@ -234,33 +282,39 @@ namespace MudXComponents.Components
 
             var newParamList = parameters.ToList();
 
-            //var original = viewModel;
-            //var cloned = viewModel.ToImmutable();
-
             newParamList.Add((nameof(MudXPage<TModel>.ViewModel), cloned));
-
-            //newParamList.Add((nameof(MudXPage<TModel>.Original), cloned));
+            newParamList.Add((nameof(MudXPage<TModel>.Original), viewModel));
 
             Options.MaxWidth = pageSize;
 
             var dialogResult = await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
 
 
-            //if (dialogResult.Cancelled)
-            //{
-            //    viewModel = cl
-            //    var param1 = parameters.FirstOrDefault(((string key, object value) arg) => arg.key.Equals(nameof(MudXPage<TModel>.ViewModel)));
-
-            //    var param2 = parameters.FirstOrDefault(((string key, object value) arg) => arg.key.Equals(nameof(MudXPage<TModel>.Original)));
-
-            //    param1.value = param2.value;
-            //    ViewModel = (TModel)DialogResult.Data;
-            //}
+        
 
             return dialogResult;
 
         }
 
+        private void ReloadDataSource()
+        {
+            var existingData = MemoryCache.Get<ObservableCollection<TModel>>($"{CacheKey}{typeof(TModel).Name}");
+
+            if (existingData is not null && existingData.Any())
+            {
+                foreach (var data in existingData)
+                {
+                    DataSource.Add(data);
+                }
+            }
+        }
+
+        private async void PostEvictionCallBack(object cacheKey, object cacheValue, EvictionReason evictionReason, object state)
+        {
+
+            await InvokeAsync(() => MudDialog?.CancelAll());
+
+        }
 
         private bool SearchFilter(TModel element) => SearchFilterFunc(element, _searchString);
 
