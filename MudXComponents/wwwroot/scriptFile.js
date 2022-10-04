@@ -4,3 +4,9 @@
 export function showPrompt(message) {
   return prompt(message, 'Type anything here');
 }
+
+export function GetWidth(element) {
+    let box = document.querySelector(element);
+    let width = box.offsetWidth;
+    return width;
+}

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
+using MudBlazor.Services;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
 using MudXComponents.Interfaces;
@@ -16,7 +17,9 @@ namespace MudXComponents.Components
 
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
-     
+
+        [Inject]
+        public JavaScriptService js { get; set; }
 
         [CascadingParameter(Name =nameof(SmartCrud))]
         private bool _smartCrud { get; set; }
@@ -91,7 +94,6 @@ namespace MudXComponents.Components
         protected  DialogOptions Options { get; set; }
 
         
-
         #endregion Dialog
 
         #region RenderFragments
@@ -129,6 +131,7 @@ namespace MudXComponents.Components
 
         public MudGridX()
         {
+            
             Options = new DialogOptions
             {
                 MaxWidth = MaxWidth.Medium,
@@ -143,8 +146,43 @@ namespace MudXComponents.Components
            
         }
 
+        
 
-        protected override Task OnInitializedAsync()
+        public void ShowDetailAsync(TModel context)
+        {
+            //if(VisibleDetailKey)
+            //if(context.GetPrimaryKeyValue().ToString() == VisibleDetailKey.ToString())
+
+            isClicked = !isClicked;
+
+            if (isClicked)
+            {
+                VisibleDetailKey = context.GetPrimaryKeyValue();
+
+            }
+            else if (VisibleDetailKey.ToString() != context.GetPrimaryKeyValue().ToString())
+            {
+                VisibleDetailKey = context.GetPrimaryKeyValue().ToString();
+                ShowDetailAsync(context);
+            }
+            else
+                VisibleDetailKey = null;
+
+
+        }
+
+        private bool ShouldDisplay(TModel context)
+        {
+            if (VisibleDetailKey is null) return false;
+
+            return isClicked && (context.GetPrimaryKeyValue().ToString() == VisibleDetailKey.ToString());
+        }
+
+        private bool isClicked;
+
+        private object VisibleDetailKey;
+
+        protected override async Task OnInitializedAsync()
         {
             if (!IsChild)
             {
@@ -160,14 +198,14 @@ namespace MudXComponents.Components
                 CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
 
                 ReloadDataSource();
+
+
             }
-
-
-
-
-            return base.OnInitializedAsync();
+ 
+            await base.OnInitializedAsync();
         }
 
+        
 
         private List<TType> GetComponentOf<TType>()
         {

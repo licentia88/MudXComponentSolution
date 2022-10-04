@@ -9,20 +9,29 @@ namespace MudXComponents;
 // This class can be registered as scoped DI service and then injected into Blazor
 // components for use.
 
-public class ExampleJsInterop : IAsyncDisposable
+public class JavaScriptService : IAsyncDisposable
 {
     private readonly Lazy<Task<IJSObjectReference>> moduleTask;
 
-    public ExampleJsInterop(IJSRuntime jsRuntime)
+    public JavaScriptService(IJSRuntime jsRuntime)
     {
         moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-            "import", "./_content/MudXComponents/exampleJsInterop.js").AsTask());
+            "import", "./_content/MudXComponents/scriptFile.js").AsTask());
     }
 
     public async ValueTask<string> Prompt(string message)
     {
         var module = await moduleTask.Value;
         return await module.InvokeAsync<string>("showPrompt", message);
+    }
+
+    public async ValueTask<decimal> GetWidth(string element)
+    {
+        var module = await moduleTask.Value;
+
+        var result = await module.InvokeAsync<decimal>("GetWidth", element);
+
+        return result;
     }
 
     public async ValueTask DisposeAsync()

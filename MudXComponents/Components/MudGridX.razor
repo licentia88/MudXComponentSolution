@@ -47,68 +47,119 @@
 
         </MudGrid>
 
-        
+ 
 
-        <MudTable FixedHeader="true" Elevation="0" Items="@DataSource" Dense="true" Hover="true" Breakpoint="Breakpoint.None" Filter="new Func<TModel,bool>(SearchFilter)">
+         <MudTable
+                   FixedHeader="true"
+                   Elevation="0"
+                   Items="@DataSource"
+                   Dense="true"
+                   Hover="true"
+                   Breakpoint="Breakpoint.None"
+                   Filter="new Func<TModel,bool>(SearchFilter)">
 
-            <ToolBarContent>
-
-
-
-            </ToolBarContent>
-
-            <HeaderContent>
-
-                @{
-                    foreach (var item in GetComponentOf<ColumnBase<TModel>>())
-                    {
-
-                        <MudTh>
-                            @item.Label
-                        </MudTh>
-                    }
-
-                }
-
-            </HeaderContent>
-            <RowTemplate>
-                @{
-
-                    foreach (var item in GetComponentOf<ColumnBase<TModel>>())
-                    {
-                        <MudTd @onclick:stopPropagation="true">
-                            @item.RenderComponent(context, ComponentTypes.Grid)
-                        </MudTd>
-                    }
-                }
-
-
-                <MudTd DataLabel="" Style="text-align: right" @onclick:stopPropagation="true">
-                    @{
-                        if (GridButtons is not null)
-                        {
-                            <CascadingValue Value="context" Name="Context">
-                                @GridButtons(context)
-                            </CascadingValue>
-
-                        }
-                    }
-
-                </MudTd>
-            </RowTemplate>
-
-            <PagerContent>
-                @{
-                    if (EnablePagination)
-                    {
-                        <MudTablePager />
-                    }
-                }
-            </PagerContent>
+             <ToolBarContent>
 
 
 
-        </MudTable>
+             </ToolBarContent>
+
+             <HeaderContent>
+
+                 @{
+                     foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                     {
+                         <MudTh>
+                             @item.Label
+                         </MudTh>
+                     }
+
+                 }
+
+             </HeaderContent>
+             <RowTemplate>
+               
+                 @{
+                     if (DetailGrid is not null && !SmartCrud)
+                     {
+
+                         
+                         var mudIcon = Icons.Material.Filled.AddCircle;
+
+                         if(ShouldDisplay(context))
+                         {
+                             mudIcon = Icons.Material.Filled.ArrowDropDownCircle;
+                         }
+
+                         <MudTd DataLabel="">
+                             <MudIcon
+                                     Icon="@mudIcon"
+                                     Size="Size.Small"
+                                     @onclick="@(()=> {
+                                                     ShowDetailAsync(context);
+                                                 })"/>
+                         </MudTd>
+                     }
+                 }
+
+
+                 @{
+
+                     foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                     {
+                         <MudTd @onclick:stopPropagation="true">
+                             @item.RenderComponent(context, ComponentTypes.Grid)
+                         </MudTd>
+                     }
+                 }
+
+
+                 <MudTd DataLabel="" Style="text-align: right" @onclick:stopPropagation="true">
+                     @{
+                         if (GridButtons is not null)
+                         {
+                             <CascadingValue Value="context" Name="Context">
+                                 @GridButtons(context)
+                             </CascadingValue>
+
+                         }
+                     }
+
+                 </MudTd>
+
+             </RowTemplate>
+
+             
+             <ChildRowContent>
+                 @{
+
+                     if (ShouldDisplay(context) && !SmartCrud)
+                     {
+                        <tr style="display:table-row!important;overflow:hidden">
+                            <td style="display:table-cell!important;overflow:hidden" colspan="12">
+                                <CascadingValue Value="context" Name="@(nameof(MudGridX<TModel>.ParentContext))">
+                                    @DetailGrid
+                                </CascadingValue>
+                            </td>
+                        </tr>
+                     }
+
+
+                 }
+             </ChildRowContent>
+
+             <PagerContent>
+                 @{
+                     if (EnablePagination)
+                     {
+                         <MudTablePager />
+                     }
+                 }
+             </PagerContent>
+
+
+
+         </MudTable>
 
     </MudCard>
 

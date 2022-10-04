@@ -18,42 +18,46 @@
                     <ValidationSummary />
                 }
             }
-            <MudContainer Style="max-height: 80vh; overflow-y: auto ">
-                @{
+        <MudContainer Style="max-height: 80vh; overflow-y: auto ">
+            @{
 
-                    <MudGrid Justify="Justify.FlexStart" Spacing="0">
+                <MudGrid Justify="Justify.FlexStart" Spacing="0">
 
-                        @{
-                            if (Components is not null)
+                    @{
+                        if (Components is not null)
+                        {
+                            @foreach (var component in Components.Where(x => x is not IButton))
                             {
-                                @foreach (var component in Components.Where(x => x is not IButton))
-                                {
-                                    <MudItem xs="component.xs"
-                                                sm="component.sm"
-                                                md="component.md"
-                                                lg="component.lg"
-                                                xl="component.xl"
-                                                xxl="component.xxl">
-                                        @*Rendering is done Here*@
-                                        @component.RenderComponent(ViewModel, ComponentTypes.Form)
-                                    </MudItem>
-                                }
+                                <MudItem xs="component.xs"
+                                         sm="component.sm"
+                                         md="component.md"
+                                         lg="component.lg"
+                                         xl="component.xl"
+                                         xxl="component.xxl">
+                                    @*Rendering is done Here*@
+                                    @component.RenderComponent(ViewModel, ComponentTypes.Form)
+                                </MudItem>
                             }
                         }
+                    }
 
-                    </MudGrid>
+                </MudGrid>
+               
+                    if (SmartCrud)
+                    {
+                        <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
+                            <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
+                                <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
+                                    @DetailGrid
+                                </CascadingValue>
 
-
-                    <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
-                        <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
-                            <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
-                                @DetailGrid
                             </CascadingValue>
+                        </CascadingValue>
+                    }
+                
 
-                        </CascadingValue>           
-                    </CascadingValue>
-                }
-            </MudContainer>
+            }
+        </MudContainer>
 
 
         </DialogContent>
