@@ -20,7 +20,7 @@ public static class DependencyExtensions
     public static void InjectServices(this IServiceCollection service)
     {
         service.AddMemoryCache();
-        service.AddScoped<JavaScriptService>();
+        //service.AddScoped<JavaScriptService>();
         //service.AddScoped<PageMemoryService>();
         //service.AddScoped<SiteManagerService>();
     }

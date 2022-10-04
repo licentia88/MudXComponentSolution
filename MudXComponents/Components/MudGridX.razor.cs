@@ -18,9 +18,6 @@ namespace MudXComponents.Components
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
 
-        [Inject]
-        public JavaScriptService js { get; set; }
-
         [CascadingParameter(Name =nameof(SmartCrud))]
         private bool _smartCrud { get; set; }
 
