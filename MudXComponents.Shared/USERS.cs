@@ -5,11 +5,13 @@ namespace MudXComponents.Shared;
 
 public class USERS
 {
+    [Required]
     [Key,DatabaseGenerated((DatabaseGeneratedOption.Identity))]
     public int U_ROWID { get; set; }
 
     public string U_NAME { get; set; }
 
+    [Required(ErrorMessage ="surname field is required")]
     public string U_SURNAME { get; set; }
 
     public string U_DESCRIPTION { get; set; }

@@ -1,10 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Caching.Memory;
-using MudBlazor;
-using MudXComponents.Components;
-using static MudBlazor.CategoryTypes;
-using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
+﻿using Microsoft.Extensions.Caching.Memory;
 
 namespace MudXComponents.Extensions
 {

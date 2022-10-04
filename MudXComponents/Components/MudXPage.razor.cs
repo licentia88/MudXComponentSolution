@@ -9,11 +9,13 @@ using Microsoft.Extensions.Caching.Memory;
 using static MudBlazor.CategoryTypes;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace MudXComponents.Components
 {
 	public partial class MudXPage<TModel> : UIMudBase<TModel>, IDisposable where TModel : new() 
 	{
+
         [Inject]
         public IMemoryCache MemoryCache { get; set; }
 
@@ -78,6 +80,7 @@ namespace MudXComponents.Components
 
             CancelText = CancelText.Equals(string.Empty) ? "Cancel" : CancelText;
 
+
             await OnLoad.InvokeAsync(this);
 
             await base.OnInitializedAsync();
@@ -95,7 +98,10 @@ namespace MudXComponents.Components
 
         protected async ValueTask SubmitClick()
         {
+
             if (ViewModel is null) return;
+
+              
 
             await  OnBeforeSubmit.InvokeAsync(ViewModel);
 

@@ -4,7 +4,7 @@
 
 @code{}
 
-<MudGridX
+<MudGridX Context="ctx"
         SmartCrud="false"
         EnableModelValidation="true"
         EnableSearch="true"
@@ -16,12 +16,13 @@
         TModel="USERS"
         DataSource="@DataSource"
         Title="Im Just a simple grid">
-
+ 
     <HeaderButtons >
         <GridFabButton Title="Yeni Kullanici"
                        ViewState="ViewState.Create"
                        Color="Color.Tertiary"
                        PageSize="MaxWidth.Medium"
+                      
                        StartIcon="@Icons.Filled.Add"
                        TModel="USERS"/>
 
@@ -35,31 +36,32 @@
     </HeaderButtons>
 
     <GridColumns>
-        <GridColumn BindingType="int"
-                    Order="0"
+        <GridColumn
+                    BindingType="int"
+                    Order="1"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
                     TModel="USERS"
                     BindingField="@(nameof(USERS.U_ROWID))"
                     Label="rowid" />
 
         <GridColumn BindingType="string"
-                    Order="1"
+                    Order="2"
                     xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
                     TModel="USERS"
                     BindingField="@(nameof(USERS.U_NAME))"
                     Label="Name" />
 
         <GridSpacer TModel="USERS"
-                    Order="2"
+                    Order="3"
                     xs="12" sm="12" md="2" lg="2" xl="2" xxl="2" />
 
         <GridColumn BindingType="string"
-                    Order="3"
+                    Order="4"
                     xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
                     TModel="USERS" BindingField="@(nameof(USERS.U_SURNAME))" Label="Surname" />
 
         <GridSelect Class="mt-5"
-                    Order="3"
+                    Order="5"
                     xs="12" sm="12" md="12" lg="6" xl="6" xxl="6"
                     TModel="USERS"
                     TSourceModel="COUNTRIES"
@@ -72,12 +74,12 @@
                     Label="Country" />
 
         <GridSpacer TModel="USERS"
-                    Order="2"
+                    Order="6"
                     xs="12" sm="12" md="6" lg="6" xl="6" xxl="6" />
 
 
         <GridColumn BindingType="string"
-                    Order="3"
+                    Order="7"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
                     Lines="3"
                     TModel="USERS" BindingField="@(nameof(USERS.U_DESCRIPTION))" Label="Description" />

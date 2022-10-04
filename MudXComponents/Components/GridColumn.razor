@@ -16,12 +16,7 @@
     }
     else
     {
-        //var type = Context.GetType().GetProperty(BindingField).PropertyType;
-
-        //var d1 = typeof(MudSelect<>);
-        //Type[] typeArgs = { type };
-        //var genericMudSelect = d1.MakeGenericType(typeArgs);
-
+        Disabled = !EnabledOnEdit;
         <MudTextField Value="CurrentValue"
                       Class="@Class"
                       Style="@Style"
