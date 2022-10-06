@@ -22,7 +22,6 @@
                        ViewState="ViewState.Create"
                        Color="Color.Tertiary"
                        PageSize="MaxWidth.Medium"
-                      
                        StartIcon="@Icons.Filled.Add"
                        TModel="USERS"/>
 
@@ -64,12 +63,12 @@
                     xs="12" sm="12" md="12" lg="6" xl="6" xxl="6"
                     TModel="USERS"
                     TSourceModel="COUNTRIES"
-                    DataSource="@countries"
+                    DataSource="@countries.Value"
                     Dense="true"
                     Placeholder="Seciniz"
                     BindingField="@(nameof(USERS.U_COUNTRY_CODE))"
-                    TextField="@(nameof(COUNTRIES.C_CODE))"
-                    ValueField="@(nameof(COUNTRIES.C_DESC))"
+                    TextField="@(nameof(COUNTRIES.C_DESC))"
+                    ValueField="@(nameof(COUNTRIES.C_CODE))"
                     Label="Country" />
 
         <GridSpacer TModel="USERS"
@@ -121,18 +120,20 @@
 
 @code{
 
-    public List<COUNTRIES> countries { get; set; }
+    public Lazy<ObservableCollection<COUNTRIES>> countries { get; set; }
 
     protected override Task OnInitializedAsync()
     {
-        DataSource = new System.Collections.ObjectModel.ObservableCollection<USERS>();
+        DataSource = new ObservableCollection<USERS>();
 
-        countries = new List<COUNTRIES>
-            {
-                new (){ C_CODE = "CY", C_DESC = "Cyprus"},
-                new (){ C_CODE = "CountryCode", C_DESC = "Description"},
+        countries = new Lazy<ObservableCollection<COUNTRIES>>(() => new ObservableCollection<COUNTRIES>
+        {
+            new (){ C_CODE = "CY", C_DESC = "Cyprus"},
+            new (){ C_CODE = "CountryCode", C_DESC = "Description"},
 
-            };
+        });
+            
+       
         return base.OnInitializedAsync();
     }
 

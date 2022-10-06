@@ -21,7 +21,7 @@ public class ColumnBase<TModel> : ComponentBase where TModel : new()
     [Parameter]
     public string Style { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string BindingField { get; set; }
 
     [Parameter, AllowNull]

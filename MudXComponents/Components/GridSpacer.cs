@@ -10,6 +10,12 @@ namespace MudXComponents.Components
         [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
         public ComponentTypes ComponentType { get; set; }
 
+        //[Parameter]
+        /// <summary>
+        /// required here to bypass editor requirement
+        /// </summary>
+        public string BindingField { get; set; }
+
         protected override Task OnInitializedAsync()
         {
             Console.WriteLine($"am I here Yet");

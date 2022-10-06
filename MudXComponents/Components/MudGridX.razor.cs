@@ -17,6 +17,14 @@ namespace MudXComponents.Components
 
     public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
+        [Parameter]
+        public string Height { get; set; }
+
+        [Parameter, AllowNull]
+        public bool FixedHeader { get; set; } = true;
+
+        [Parameter, AllowNull]
+        public bool FixedFooter { get; set; } = true;
 
         [CascadingParameter(Name =nameof(SmartCrud))]
         private bool _smartCrud { get; set; }
@@ -357,11 +365,13 @@ namespace MudXComponents.Components
         {
             if (string.IsNullOrEmpty(_searchString)) return true;
 
-            var properties = typeof(TModel).GetProperties().ToList();
+            var searchableFields = Components.Where(x => x.BindingField is not null).Select(x => x.BindingField);
 
-            foreach (var prop in properties)
+            //var properties = typeof(TModel).GetProperties().ToList();
+
+            foreach (var fieldName in searchableFields)
             {
-                var columnValue = model.GetPropertyValue(prop.Name);
+                var columnValue = model.GetPropertyValue(fieldName);
 
                 if (columnValue is null) continue;
                 

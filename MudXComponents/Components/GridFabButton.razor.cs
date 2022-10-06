@@ -10,6 +10,7 @@ namespace MudXComponents.Components;
 
 public partial class GridFabButton<TModel> : ColumnBase<TModel>, IButton where TModel : new()
 {
+    public string BindingField { get; set; }
 
     [Parameter, AllowNull]
     public EventCallback<TModel> OnClick { get; set; }

@@ -8,12 +8,13 @@
 @{
     if (ComponentType == ComponentTypes.Grid)
     {
-        @DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField) == Context.GetPropertyValue(BindingField))?.GetPropertyValue(TextField)
-    }
+        var result = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField).ToString() == Context.GetPropertyValue(BindingField)?.ToString())?.GetPropertyValue(TextField);
+
+        @result
+     }
     else
     {
 
-        Console.WriteLine($"Datasource count is : {DataSource.Count()}");
         var currentValue = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
 
         <MudSelect T="TSourceModel"

@@ -1,25 +1,16 @@
 ﻿<Properties StartupConfiguration="{71CC3E59-04B8-4FE6-B510-81F174000003}|Default">
-  <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.ItemProperties.MudXComponents.Examples PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/GridColumn.razor">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/GridSelect.razor">
     <Files>
       <File FileName="MudXComponents/Components/MudXPage.razor.cs" Line="106" Column="1" IsPinned="True" />
       <File FileName="MudXComponents/Components/MudGridX.razor.cs" Line="221" Column="65" IsPinned="True" />
       <File FileName="MudXComponents/Components/MudGridX.razor" Line="73" Column="32" IsPinned="True" />
-      <File FileName="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" Line="86" Column="22" IsPinned="True" />
+      <File FileName="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" Line="67" Column="49" IsPinned="True" />
       <File FileName="MudXComponents/Components/MudXPage.razor" Line="42" Column="106" IsPinned="True" />
-      <File FileName="MudXComponents/Extensions/DependencyExtensions.cs" Line="23" Column="50" />
-      <File FileName="MudXComponents/Components/GridCheckBox.razor.cs" Line="128" Column="34" />
-      <File FileName="MudXComponents/Components/GridCheckBox.razor" Line="26" Column="29" />
-      <File FileName="MudXComponents/Components/GridSelect.razor.cs" Line="67" Column="4" />
-      <File FileName="MudXComponents/Components/ColumnBase.cs" Line="75" Column="17" />
-      <File FileName="MudXComponents/Components/GridColumn.razor.cs" Line="18" Column="52" />
-      <File FileName="MudXComponents/Components/GridFabButton.razor" Line="1" Column="1" />
-      <File FileName="MudXComponents/Components/GridColumn.razor" Line="9" Column="1" />
-      <File FileName="MudXComponents.Shared/USERS.cs" Line="21" Column="31" />
-      <File FileName="MudXComponents/Extensions/RenderExtensions.cs" Line="74" Column="10" />
+      <File FileName="MudXComponents/Components/GridSelect.razor" Line="12" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -27,35 +18,25 @@
           <Node name="MudXComponentSolution" expanded="True">
             <Node name="MudXComponents" expanded="True">
               <Node name="Components" expanded="True">
-                <Node name="GridCheckBox.razor" expanded="True" />
-                <Node name="GridColumn.razor" expanded="True" />
-                <Node name="MudGridX.razor" expanded="True">
-                  <Node name="MudGridX.razor.cs" selected="True" />
-                </Node>
+                <Node name="GridSelect.razor" expanded="True" />
               </Node>
-              <Node name="Extensions" expanded="True" />
             </Node>
             <Node name="MudXComponents.Examples" expanded="True">
               <Node name="Pages" expanded="True">
                 <Node name="Grids" expanded="True" />
               </Node>
+              <Node name="_Imports.razor" selected="True" />
             </Node>
             <Node name="MudXComponents.Shared" expanded="True" />
           </Node>
         </State>
       </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>propName</Value>
-        </State>
-      </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Extensions/RenderExtensions.cs" relfile="MudXComponents/Extensions/RenderExtensions.cs" line="66" column="1" />
-      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Extensions/RenderExtensions.cs" relfile="MudXComponents/Extensions/RenderExtensions.cs" line="46" column="1" />
+      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Components/GridSelect.razor" relfile="MudXComponents/Components/GridSelect.razor" line="10" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

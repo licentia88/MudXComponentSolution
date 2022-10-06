@@ -6,6 +6,7 @@ using MudXComponents.Extensions;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace MudXComponents.Components;
 
@@ -23,13 +24,13 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter]
     public Origin TransformOrigin { get; set; } = Origin.TopCenter;
 
-    [Parameter]
+    [Parameter,EditorRequired]
     public string TextField { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public string ValueField { get; set; }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public IEnumerable<TSourceModel> DataSource { get; set; }
 
     [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
