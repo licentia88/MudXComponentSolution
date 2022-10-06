@@ -18,6 +18,8 @@ public class USERS
 
     public string U_COUNTRY_CODE { get; set; }
 
+    public bool U_IS_CHECKED { get; set; }
+
     [ForeignKey(nameof(U_COUNTRY_CODE))]
     public COUNTRIES COUNTRIES { get; set; }
 

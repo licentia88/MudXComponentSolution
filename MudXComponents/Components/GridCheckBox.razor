@@ -21,14 +21,15 @@
     }
     else
     {
-        var isChecked = (bool)Context.GetPropertyValue(BindingField);
+        var value = Context.GetPropertyValue(BindingField);
+
+        var isChecked = (bool)(value??false);
 
         <MudCheckBox T="bool" Class="@Class"
                      CheckedChanged="OnValueChanged"
                      Style="@Style"
-                     CheckedIcon="@CheckedIcon"
                      Dense="@Dense"
-                     Disabled="@Disabled"
+                     Disabled="@Disabled" 
                      Error="@Error"
                      ErrorId="@ErrorId"
                      ErrorText="@ErrorText"
@@ -38,14 +39,13 @@
                      Color="@Color"
                      Required="@Required"
                      RequiredError="@RequiredError"
+
                      ReadOnly="@ReadOnly"
-                     IndeterminateIcon="@IndeterminateIcon"
                      KeyboardEnabled="@KeyboardEnabled"
                      Size="@Size"
                      StopClickPropagation="@StopClickPropagation"
                      TriState="false"
                      UnCheckedColor="@UnCheckedColor"
-                     UncheckedIcon="@UncheckedIcon"
                      Validation="@Validation"
                      Culture="@Culture" />
 

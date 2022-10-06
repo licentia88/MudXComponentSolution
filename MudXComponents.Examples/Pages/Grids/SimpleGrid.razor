@@ -36,8 +36,7 @@
     </HeaderButtons>
 
     <GridColumns>
-        <GridColumn
-                    BindingType="int"
+        <GridColumn BindingType="int"
                     Order="1"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
                     TModel="USERS"
@@ -84,6 +83,13 @@
                     Lines="3"
                     TModel="USERS" BindingField="@(nameof(USERS.U_DESCRIPTION))" Label="Description" />
 
+        <GridCheckBox
+                    UnCheckedColor="Color.Primary"
+                    Order="7"
+                    xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
+                    TrueText="Evet" FalseText="Hayir"
+                    TModel="USERS" BindingField="@(nameof(USERS.U_IS_CHECKED))" Label="CheckTest" />
+        
     </GridColumns>
 
     <GridButtons>

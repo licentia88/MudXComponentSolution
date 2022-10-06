@@ -21,20 +21,20 @@ public partial class GridCheckBox<TModel> : ColumnBase<TModel> where TModel : ne
     [Parameter]
     public bool ReadOnly { get; set; }
 
-    [Parameter]
-    public string IndeterminateIcon { get; set; }
+    //[Parameter]
+    //public string IndeterminateIcon { get; set; } 
 
     [Parameter]
-    public Color Color { get; set; }
-    
-    [Parameter]
-    public string  CheckedIcon { get; set; }
+    public Color Color { get; set; } = Color.Primary;
+
+    //[Parameter]
+    //public string  CheckedIcon { get; set; }
 
     [Parameter]
     public bool Error { get; set; }
 
     [Parameter]
-    public LabelPosition LabelPosition { get; set; }
+    public LabelPosition LabelPosition { get; set; } = LabelPosition.Start;
 
     [Parameter]
     public string ErrorId { get; set; }
@@ -53,50 +53,8 @@ public partial class GridCheckBox<TModel> : ColumnBase<TModel> where TModel : ne
 
     [Parameter]
     public bool Dense { get; set; }
-
-
-    [Parameter]
-    public Variant Variant { get; set; } = Variant.Outlined;
-
-    [Parameter]
-    public int MaxHeight { get; set; } = 300;
-
-    [Parameter]
-    public bool MultiSelection { get; set; }
-
-    [Parameter]
-    public Func<List<string>, string> MultiSelectionTextFunc { get; set; }
-
-    [Parameter]
-    public bool SelectAll { get; set; }
-
-    [Parameter]
-    public string SelectAllText { get; set; }
-
-    [Parameter]
-    public Adornment Adornment { get; set; } = Adornment.End;
-
-    [Parameter]
-    public string AdornmentAriaLabel { get; set; }
-
-    [Parameter]
-    public string OpenIcon { get; set; }
-
-    [Parameter]
-    public Color AdornmentColor { get; set; }
-
-    [Parameter]
-    public string AdornmentIcon { get; set; } = Icons.Filled.ArrowDropDown;
-
-    [Parameter]
-    public string AdornmentText { get; set; }
-
-    [Parameter]
-    public bool AutoFocus { get; set; }
-
-    [Parameter]
-    public bool Clearable { get; set; }
-
+ 
+ 
     [Parameter]
     public bool Disabled { get; set; }
 
@@ -113,10 +71,12 @@ public partial class GridCheckBox<TModel> : ColumnBase<TModel> where TModel : ne
     public bool StopClickPropagation { get; set; }
 
     [Parameter]
-    public Color UnCheckedColor { get; set; }
+    public Color UnCheckedColor { get; set; } = Color.Secondary;
 
-    [Parameter]
-    public string UncheckedIcon { get; set; }
+
+
+    //[Parameter]
+    //public string UncheckedIcon { get; set; }
 
     [Parameter]
     public Func<bool, IEnumerable<string>> Validation { get; set; }
