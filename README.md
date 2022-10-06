@@ -7,6 +7,13 @@ On top of mudblazor, MudXComponents is a component library that offers more capa
 Setup:
 
 1. Install via nuget
+
+
+ <div>
+   <span>dotnet add package MudXComponents --version 1.0.2</span>   
+ </div>
+        
+        
 2. Register in program.cs
 
 
@@ -34,16 +41,8 @@ Required parameters for MudGridX
 6. OnUpdate
 
 
-Sample Usage (More usages in examples)
+Sample Usage in examples project. More will be added soon
 
-<dl>
-  <dt>Definition list</dt>
-  <dd>Is something people use sometimes.</dd>
-
-  <dt>Markdown in HTML</dt>
-  <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
-</dl>
-
-Result
+ 
 
 
