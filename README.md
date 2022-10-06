@@ -7,7 +7,8 @@ On top of mudblazor, MudXComponents is a component library that offers more capa
 Setup:
 
 1. Install via nuget
-dotnet add package MudXComponents --version 1.0.1
+
+dotnet add package MudXComponents --version 1.0.2
 
 2. Register in program.cs
 
