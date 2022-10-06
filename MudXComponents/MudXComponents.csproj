@@ -31,6 +31,7 @@
       <None Remove="FastDeepCloner" />
       <None Remove="MemoryCache\" />
       <None Remove="Microsoft.Extensions.Caching.Memory" />
+      <None Remove="Attributes\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Args\" />
@@ -39,5 +40,6 @@
       <Folder Include="Components\" />
       <Folder Include="Interfaces\" />
       <Folder Include="Cache\" />
+      <Folder Include="Attributes\" />
     </ItemGroup>
 </Project>

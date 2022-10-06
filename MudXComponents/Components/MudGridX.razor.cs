@@ -1,5 +1,7 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
@@ -7,6 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
+using MudXComponents.Attributes;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
 using MudXComponents.Interfaces;
@@ -29,7 +32,7 @@ namespace MudXComponents.Components
         [CascadingParameter(Name =nameof(SmartCrud))]
         private bool _smartCrud { get; set; }
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public bool SmartCrud { get { return _smartCrud; } set { _smartCrud = value; } }
 
  
@@ -39,10 +42,10 @@ namespace MudXComponents.Components
 
 
 
-        [CascadingParameter(Name = nameof(ParentContext))]
+        [CascadingParameter(Name = nameof(ParentContext)), ParameterPass]
         public object ParentContext { get; set; }
 
-        [Parameter,AllowNull]
+        [Parameter,AllowNull, ParameterPass]
         public bool EnableModelValidation { get; set; } 
         //private MudTable<TModel> MyTable { get; set; }
 
@@ -69,20 +72,20 @@ namespace MudXComponents.Components
 
         #endregion Page Commands
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull,ParameterPass]
         public virtual EventCallback<TModel> OnCreate { get; set; }
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public virtual EventCallback<TModel> OnDelete { get; set; }
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public virtual EventCallback<TModel> OnUpdate { get; set; }
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public virtual EventCallback<TModel> OnBeforeSubmit { get; set; }
 
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public virtual EventCallback<MudXPage<TModel>> OnLoad { get; set; }
 
 
@@ -112,17 +115,19 @@ namespace MudXComponents.Components
         [Parameter, AllowNull]
         public RenderFragment<TModel> GridButtons { get; set; }
 
-        [Parameter, AllowNull]
+        [Parameter, AllowNull, ParameterPass]
         public RenderFragment DetailGrid { get; set; }
 
         private string _searchString = "";
 
+        [ParameterPass]
         public ObservableCollection<ColumnBase<TModel>> Components { get; set; } = new();
 
         private bool isFirstRender = true;
 
+        [ParameterPass]
         [CascadingParameter(Name =nameof(IsChild))]
-        internal bool IsChild { get; set; }
+        internal  bool IsChild { get; set; }
 
       
 
@@ -240,21 +245,33 @@ namespace MudXComponents.Components
 
                     var paramList = new List<(string key, object value)>();
 
-                    paramList.Add((nameof(MudXPage<TModel>.Components), Components));
-                    paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
-                    paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
-                    paramList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
-                    paramList.Add((nameof(MudXPage<TModel>.OnLoad), OnLoad));
-                    paramList.Add((nameof(MudXPage<TModel>.OnBeforeSubmit), OnBeforeSubmit));
+                    var myParams = this.GetType().GetProperties(System.Reflection.BindingFlags.Public
+                                                               |System.Reflection.BindingFlags.NonPublic
+                                                               |System.Reflection.BindingFlags.Instance)
+                        .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(ParameterPassAttribute))).ToList();
+
+                    foreach (var par in myParams)
+                    {
+                        paramList.Add((par.Name, this.GetPropertyValue(par.Name)));
+                    }
+
+                    //paramList.Add((nameof(MudXPage<TModel>.Components), Components));
+                    //paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
+                    //paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
+                    //paramList.Add((nameof(MudXPage<TModel>.OnDelete), OnDelete));
+                    //paramList.Add((nameof(MudXPage<TModel>.OnLoad), OnLoad));
+                    //paramList.Add((nameof(MudXPage<TModel>.OnBeforeSubmit), OnBeforeSubmit));
  
-                    paramList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
-                    paramList.Add((nameof(MudXPage<TModel>.DetailGrid), DetailGrid));
+                    //paramList.Add((nameof(MudXPage<TModel>.EnableModelValidation), EnableModelValidation));
+                    //paramList.Add((nameof(MudXPage<TModel>.DetailGrid), DetailGrid));
+                    
+                    //paramList.Add((nameof(MudXPage<TModel>.IsChild), IsChild));
+                    //paramList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
+                    //paramList.Add((nameof(MudXPage<TModel>.ParentContext), ParentContext));
+
+                    paramList.Add((nameof(MudXPage<TModel>.ParentGrid), this));
                     paramList.Add((nameof(MudXPage<TModel>.ViewState), button.ViewState));
                     paramList.Add((nameof(MudXPage<TModel>.DialogTitle), button.Title));
-                    paramList.Add((nameof(MudXPage<TModel>.IsChild), IsChild));
-                    paramList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
-                    paramList.Add((nameof(MudXPage<TModel>.ParentContext), ParentContext));
-                    paramList.Add((nameof(MudXPage<TModel>.ParentGrid), this));
                     //ParentGrid
                     button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowDialogAsync<MudXPage<TModel>>(CurrentModel,button.PageSize, paramList.ToArray()));
 
