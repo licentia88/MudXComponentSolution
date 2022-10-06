@@ -8,8 +8,12 @@ Setup:
 
 1. Install via nuget
 
-dotnet add package MudXComponents --version 1.0.2
 
+ <div>
+   <span>dotnet add package MudXComponents --version 1.0.2</span>   
+ </div>
+        
+        
 2. Register in program.cs
 
 
