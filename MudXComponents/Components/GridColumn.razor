@@ -1,4 +1,4 @@
-﻿@typeparam TModel   where TModel : new()
+﻿@typeparam TModel   where TModel :  new()
 @typeparam BindingType
 @inherits ColumnBase<TModel>
 
@@ -9,7 +9,7 @@
 
 @{
     CurrentValue = Context.GetPropertyValue<TModel, BindingType>(BindingField); //as BindingType;
-
+ 
     if (ComponentType == ComponentTypes.Grid)
     {
         @CurrentValue

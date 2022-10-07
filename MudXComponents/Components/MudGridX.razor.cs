@@ -9,6 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
 using MudBlazor;
 using MudBlazor.Services;
+using MudXComponents.Args;
 using MudXComponents.Attributes;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
@@ -73,16 +74,16 @@ namespace MudXComponents.Components
         #endregion Page Commands
 
         [Parameter, AllowNull,ParameterPass]
-        public virtual EventCallback<TModel> OnCreate { get; set; }
+        public virtual EventCallback<GridXArgs<TModel>> OnCreate { get; set; }
 
         [Parameter, AllowNull, ParameterPass]
-        public virtual EventCallback<TModel> OnDelete { get; set; }
+        public virtual EventCallback<GridXArgs<TModel>> OnDelete { get; set; }
 
         [Parameter, AllowNull, ParameterPass]
-        public virtual EventCallback<TModel> OnUpdate { get; set; }
+        public virtual EventCallback<GridXArgs<TModel>> OnUpdate { get; set; }
 
         [Parameter, AllowNull, ParameterPass]
-        public virtual EventCallback<TModel> OnBeforeSubmit { get; set; }
+        public virtual EventCallback<GridXArgs<TModel>> OnBeforeSubmit { get; set; }
 
 
         [Parameter, AllowNull, ParameterPass]
@@ -342,6 +343,7 @@ namespace MudXComponents.Components
 
             var newParamList = parameters.ToList();
 
+            newParamList.Add((nameof(MudXPage<TModel>.Index), DataSource.IndexOf(viewModel)));
             newParamList.Add((nameof(MudXPage<TModel>.ViewModel), cloned));
             newParamList.Add((nameof(MudXPage<TModel>.Original), viewModel));
 
@@ -349,8 +351,6 @@ namespace MudXComponents.Components
 
             var dialogResult = await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
 
-
-        
 
             return dialogResult;
 

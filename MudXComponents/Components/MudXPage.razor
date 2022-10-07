@@ -51,14 +51,16 @@
 
                     if (SmartCrud)
                     {
-                        <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
-                            <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
-                                <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
-                                    @DetailGrid
-                                </CascadingValue>
+                        <div class="pb-5">
+                            <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
+                                <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
+                                    <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
+                                        @DetailGrid
+                                    </CascadingValue>
 
+                                </CascadingValue>
                             </CascadingValue>
-                        </CascadingValue>
+                        </div>
                     }
 
 

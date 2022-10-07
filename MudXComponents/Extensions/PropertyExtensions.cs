@@ -47,8 +47,9 @@ public static class PropertyExtensions
 
     public static object GetPropertyValue(this object obj, string propName)
     {
-        var valueToReturn = obj.GetType().GetProperty(propName)?.GetValue(obj);
-
+        var valueToReturn = obj.GetType().GetProperty(propName, System.Reflection.BindingFlags.Public
+                                                                |System.Reflection.BindingFlags.NonPublic
+                                                                |System.Reflection.BindingFlags.Instance)?.GetValue(obj);
 
         return valueToReturn;
 

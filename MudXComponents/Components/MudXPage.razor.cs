@@ -10,17 +10,23 @@ using static MudBlazor.CategoryTypes;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Components.Forms;
+using MudXComponents.Args;
 
 namespace MudXComponents.Components
 {
 	public partial class MudXPage<TModel> : UIMudBase<TModel>, IDisposable where TModel : new() 
 	{
+        private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel };
+
 
         [Inject]
         public IMemoryCache MemoryCache { get; set; }
 
         [Parameter]
         public TModel Original { get; set; }
+
+        [Parameter]
+        public int Index { get; set; }
 
         [Parameter,EditorBrowsable(EditorBrowsableState.Never)]
         public MudGridX<TModel> ParentGrid { get; set; }
@@ -56,16 +62,16 @@ namespace MudXComponents.Components
         public ObservableCollection<ColumnBase<TModel>> Components { get; set; }
 
         [Parameter]
-        public EventCallback<TModel> OnCreate { get; set; }
+        public EventCallback<GridXArgs<TModel>> OnCreate { get; set; }
 
         [Parameter]
-        public EventCallback<TModel> OnUpdate { get; set; }
+        public EventCallback<GridXArgs<TModel>> OnUpdate { get; set; }
 
         [Parameter]
-        public EventCallback<TModel> OnDelete { get; set; }
+        public EventCallback<GridXArgs<TModel>> OnDelete { get; set; }
 
         [Parameter]
-        public EventCallback<TModel> OnBeforeSubmit{ get; set; }
+        public EventCallback<GridXArgs<TModel>> OnBeforeSubmit{ get; set; }
 
         [Parameter]
         public EventCallback<MudXPage<TModel>> OnLoad { get; set; }
@@ -102,8 +108,7 @@ namespace MudXComponents.Components
             if (ViewModel is null) return;
 
               
-
-            await  OnBeforeSubmit.InvokeAsync(ViewModel);
+            await  OnBeforeSubmit.InvokeAsync(CreateArgs);
 
             if (ViewState == ViewState.Create)
             {
@@ -122,7 +127,7 @@ namespace MudXComponents.Components
                 }
                 else
                 {
-                    await OnCreate.InvokeAsync(ViewModel);
+                    await OnCreate.InvokeAsync(CreateArgs);
                 }
             }
             else if (ViewState == ViewState.Update)
@@ -142,14 +147,14 @@ namespace MudXComponents.Components
                 }
                 else
                 {
-                    await OnCreate.InvokeAsync(ViewModel);
+                    await OnUpdate.InvokeAsync(CreateArgs);
                 }
 
-                await OnUpdate.InvokeAsync(ViewModel);
+                await OnUpdate.InvokeAsync(CreateArgs);
             }
             else if (ViewState == ViewState.Remove)
             {
-                await OnDelete.InvokeAsync(ViewModel);
+                await OnDelete.InvokeAsync(CreateArgs);
             }
             else
             {

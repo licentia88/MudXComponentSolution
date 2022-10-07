@@ -35,7 +35,7 @@
 
         </MudCardHeader>
 
-         <MudGrid  Style="padding-right:1.75rem!important; padding-top:5%!important" Justify="Justify.FlexEnd">
+         <MudGrid Class="p-4" Justify="Justify.FlexEnd">
 
             @{
                 if (HeaderButtons is not null)
@@ -60,11 +60,11 @@
                    Breakpoint="Breakpoint.None"
                    Filter="new Func<TModel,bool>(SearchFilter)">
 
-             <ToolBarContent>
+             @*<ToolBarContent>
 
 
 
-             </ToolBarContent>
+             </ToolBarContent>*@
 
              <HeaderContent>
 

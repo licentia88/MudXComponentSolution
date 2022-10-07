@@ -1,7 +1,7 @@
 ﻿
 <MudGridX EnableModelValidation="true"
-          EnableSearch="true"
-          EnablePagination="true"
+          EnableSearch="false"
+          EnablePagination="false"
           OnCreate="@CreateCommand"
           OnDelete="@DeleteCommand"
           OnUpdate="@UpdateCommand"
@@ -57,23 +57,23 @@
 
 
 
-    public Task CreateCommand(ORDER_DETAILS model)
+    public Task CreateCommand(GridXArgs<ORDER_DETAILS> args)
     {
-        DataSource.Add(model);
+        DataSource.Add(args.NewData);
         return Task.CompletedTask;
     }
 
-    public Task UpdateCommand(ORDER_DETAILS model)
+    public Task UpdateCommand(GridXArgs<ORDER_DETAILS> args)
     {
-        DataSource.UpdateCollection(model);
+        DataSource[args.Index] = args.NewData;
         return Task.CompletedTask;
     }
 
-    public Task DeleteCommand(ORDER_DETAILS model)
+    public Task DeleteCommand(GridXArgs<ORDER_DETAILS> args)
     {
-        DataSource.RemoveFromCollection(model);
+        DataSource.RemoveAt(args.Index);
         return Task.CompletedTask;
     }
- 
+
 
 }

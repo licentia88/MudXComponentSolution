@@ -3,15 +3,12 @@ using MudXComponents.Enums;
 
 namespace MudXComponents.Args;
 
-public class ProcessEventArgs<T>
+public class GridXArgs<TModel>
 {
-    public T RequestData { get; set; }
+    public TModel OldData { get; set; }
 
-    public T ResponseData { get; set; }
+    public TModel NewData { get; set; }
 
-    public dynamic DynamicArgs { get; set; }
-
-    public ViewState ViewState { get; set; }
- 
+    public int Index { get; set; }
 }
 

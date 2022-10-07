@@ -5,7 +5,7 @@
 @code{}
 
 <MudGridX Context="ctx"
-        SmartCrud="false"
+        SmartCrud="true"
         EnableModelValidation="true"
         EnableSearch="true"
         EnablePagination="true"
@@ -107,7 +107,7 @@
                        TModel="USERS" />
     </GridButtons>
     <DetailGrid>
-        <MudTabs Class="p-5" Color="Color.Info" Style="width:100%">
+        <MudTabs Class="pt-5" Color="Color.Info" Style="width:100%">
             <MudTabPanel Text="Orders">
                 <OrdersGrid />
             </MudTabPanel>
@@ -132,26 +132,26 @@
             new (){ C_CODE = "CountryCode", C_DESC = "Description"},
 
         });
-            
-       
+
+
         return base.OnInitializedAsync();
     }
 
-    public Task CreateCommand(USERS model)
+    public Task CreateCommand(GridXArgs<USERS> args)
     {
-        DataSource.Add(model);
+        DataSource.Add(args.NewData);
         return Task.CompletedTask;
     }
 
-    public Task UpdateCommand(USERS model)
+    public Task UpdateCommand(GridXArgs<USERS> args)
     {
-        DataSource.UpdateCollection(model);
+        DataSource[args.Index] = args.NewData;
         return Task.CompletedTask;
     }
 
-    public Task DeleteCommand(USERS model)
+    public Task DeleteCommand(GridXArgs<USERS> args)
     {
-        DataSource.RemoveFromCollection(model);
+        DataSource.RemoveAt(args.Index);
         return Task.CompletedTask;
     }
 

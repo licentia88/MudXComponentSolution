@@ -1,7 +1,7 @@
 ﻿
 <MudGridX EnableModelValidation="true"
-          EnableSearch="true"
-          EnablePagination="true"
+         EnableSearch="false"
+          EnablePagination="false"
           OnCreate="@CreateCommand"
           OnDelete="@DeleteCommand"
           OnUpdate="@UpdateCommand"
@@ -67,21 +67,21 @@
 
 
 
-    public Task CreateCommand(TRANSACTIONS model)
+    public Task CreateCommand(GridXArgs<TRANSACTIONS> args)
     {
-        DataSource.Add(model);
+        DataSource.Add(args.NewData);
         return Task.CompletedTask;
     }
 
-    public Task UpdateCommand(TRANSACTIONS model)
+    public Task UpdateCommand(GridXArgs<TRANSACTIONS> args)
     {
-        DataSource.UpdateCollection(model);
+        DataSource[args.Index] = args.NewData;
         return Task.CompletedTask;
     }
 
-    public Task DeleteCommand(TRANSACTIONS model)
+    public Task DeleteCommand(GridXArgs<TRANSACTIONS> args)
     {
-        DataSource.RemoveFromCollection(model);
+        DataSource.RemoveAt(args.Index);
         return Task.CompletedTask;
     }
 
@@ -89,7 +89,6 @@
     public Task OnLoadAsync(MudXPage<TRANSACTIONS> frm)
     {
 
-        frm.ViewModel.T_DATE = DateTime.Now.Date;
         return Task.CompletedTask;
     }
 
