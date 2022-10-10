@@ -7,11 +7,17 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace MudXComponents.Components;
 
 public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where TModel : new() where TSourceModel : class
 {
+    public TSourceModel CurrentValue { get; set; }
+
+    [Parameter]
+    public EventCallback<TSourceModel> ValueChanged { get; set; }
+
     [Parameter]
     public string Placeholder { get; set; }
 
@@ -191,7 +197,10 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter]
     public bool Required { get; set; }
 
-    private void OnValueChanged(TSourceModel model)
+   
+  
+
+    public void OnValueChanged(TSourceModel model)
     {
         Context.SetPropertyValue(BindingField, model.GetPropertyValue(ValueField));
     }

@@ -34,7 +34,7 @@
  
     </HeaderButtons>
 
-    <GridColumns>
+    <GridColumns >
         <GridColumn BindingType="int"
                     Order="1"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
@@ -163,8 +163,31 @@
 
     }
 
+    public IEnumerable<COUNTRIES> OriginalCountryDataSource { get; set; }
+
+
     public async Task OnLoad(MudXPage<USERS> page)
     {
-        Console.WriteLine();
+        var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(ViewModel.U_COUNTRY_CODE));
+        countryCombo.Placeholder = "test";
+        //OriginalCountryDataSource = countryCombo.DataSource;
+
+        countryCombo.ValueChanged = EventCallback.Factory.Create<COUNTRIES>(this, (COUNTRIES arg) => CountryChanged(page,arg));
+        //countryCombo.DataSource = new ObservableCollection<COUNTRIES>();
+
+        //countryCombo.Where= countryCombo.DataSource.Where(x => x.C_CODE == page.ViewModel.U_COUNTRY_CODE);
+
+        //countryCombo.va.ValueChanged =
+
+
+    }
+
+    public void CountryChanged(MudXPage<USERS> page,COUNTRIES country)
+    {
+        OriginalCountryDataSource = new ObservableCollection<COUNTRIES>();
+        var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(ViewModel.U_COUNTRY_CODE));
+        //countryCombo.Placeholder = "test";
+        page.StateHasChanged();
+
     }
 }

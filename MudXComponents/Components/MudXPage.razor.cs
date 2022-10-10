@@ -164,7 +164,17 @@ namespace MudXComponents.Components
             MudDialog.Close();
         }
 
- 
+        public TComponent GetComponent<TComponent>(string FieldName) where TComponent :ColumnBase<TModel>
+        {
+            var component = Components.FirstOrDefault(x => x.BindingField is not null && x.BindingField == FieldName);
+
+            return (TComponent)component;
+        }
+
+        public new void StateHasChanged()
+        {
+            base.StateHasChanged();
+        }
         public void Dispose()
         {
             //TODO: MEMORY CACHE DISPOSE OLDUGUNDA ICINDEKI DATALARIN SILINDIGINDEN EMIN OL

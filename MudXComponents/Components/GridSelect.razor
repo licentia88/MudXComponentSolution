@@ -11,11 +11,13 @@
         var result = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField).ToString() == Context.GetPropertyValue(BindingField)?.ToString())?.GetPropertyValue(TextField);
 
         @result
-     }
+    }
     else
     {
+        if(!ValueChanged.HasDelegate)
+             ValueChanged = EventCallback.Factory.Create<TSourceModel>(this, x => OnValueChanged(x));
 
-        var currentValue = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
+        CurrentValue = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
 
         <MudSelect T="TSourceModel"
                    Adornment="@Adornment"
@@ -31,7 +33,7 @@
                    Style="@Style"
                    Label="@Label"
                    Disabled="@Disabled"
-                   Value="@currentValue"
+                   Value="@CurrentValue"
                    ToStringFunc="@StringConverter"
                    Placeholder="@Placeholder"
                    Variant="@Variant"
@@ -77,7 +79,7 @@
                    PopoverClass="@PopoverClass"
                    TransformOrigin="@TransformOrigin"
                    UncheckedIcon="@UncheckedIcon"
-                   ValueChanged="OnValueChanged">
+                   ValueChanged="ValueChanged">
 
             @{
                 foreach (var data in DataSource)

@@ -9,9 +9,15 @@
 
 @{
     CurrentValue = Context.GetPropertyValue<TModel, BindingType>(BindingField); //as BindingType;
- 
+
     if (ComponentType == ComponentTypes.Grid)
     {
+        if(typeof(BindingType) == typeof(DateTime) || typeof(BindingType) == typeof(Nullable<DateTime>))
+        {
+            @Convert.ToDateTime(CurrentValue).ToString(Format);
+        }
+        else
+
         @CurrentValue
     }
     else
