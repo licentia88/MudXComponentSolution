@@ -36,6 +36,11 @@ public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where
     [Parameter, EditorRequired]
     public string ValueField { get; set; }
 
+
+    [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
+    public Func<TSourceModel,bool> WhereStatement { get; set; }
+
+
     [Parameter, EditorRequired]
     public IEnumerable<TSourceModel> DataSource { get; set; }
 

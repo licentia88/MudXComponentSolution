@@ -137,7 +137,7 @@
 
     public Lazy<ObservableCollection<CITIES>> Cities { get; set; }
 
- 
+
     protected override Task OnInitializedAsync()
     {
         DataSource = new ObservableCollection<USERS>();
@@ -192,11 +192,13 @@
 
     public async Task OnLoad(MudXPage<USERS> page)
     {
-        var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(ViewModel.U_COUNTRY_CODE));
-         
+        var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(USERS.U_COUNTRY_CODE));
+        var cityCombo = page.GetComponent<GridSelect<USERS, CITIES>>(nameof(USERS.U_CITY_CODE));
+
+        cityCombo.WhereStatement = X => X.CIT_COUNTRY_CODE == page.ViewModel.U_COUNTRY_CODE;
 
         countryCombo.ValueChanged = EventCallback.Factory.Create<COUNTRIES>(this, (COUNTRIES arg) => CountryChanged(page,arg));
-        
+
 
     }
 
@@ -204,11 +206,13 @@
     {
         //OriginalCountryDataSource = new ObservableCollection<COUNTRIES>();
 
-        var cityCombo = page.GetComponent<GridSelect<USERS, CITIES>>(nameof(ViewModel.U_CITY_CODE));
+        var cityCombo = page.GetComponent<GridSelect<USERS, CITIES>>(nameof(USERS.U_CITY_CODE));
+
+        cityCombo.WhereStatement = X => X.CIT_COUNTRY_CODE == country.C_CODE;
 
         page.ViewModel.U_COUNTRY_CODE = country.C_CODE;
 
-        cityCombo.DataSource = Cities.Value.Where(x=> x.CIT_COUNTRY_CODE.Equals(country.C_CODE));
+        //cityCombo.DataSource = Cities.Value.Where(x=> x.CIT_COUNTRY_CODE.Equals(country.C_CODE));
 
         page.StateHasChanged();
 

@@ -6,6 +6,9 @@
 @if (Context is null) { return; }
 
 @{
+
+    var actualDataSource = WhereStatement is null ? DataSource : DataSource.Where(WhereStatement).ToList();
+
     if (ComponentType == ComponentTypes.Grid)
     {
         var result = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField).ToString() == Context.GetPropertyValue(BindingField)?.ToString())?.GetPropertyValue(TextField);
@@ -17,7 +20,7 @@
         if(!ValueChanged.HasDelegate)
              ValueChanged = EventCallback.Factory.Create<TSourceModel>(this, x => OnValueChanged(x));
 
-        CurrentValue = DataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
+        CurrentValue = actualDataSource.FirstOrDefault(x => x.GetPropertyValue(ValueField)?.ToString() == Context.GetPropertyValue(BindingField)?.ToString());
 
         <MudSelect T="TSourceModel"
                    Adornment="@Adornment"
@@ -82,7 +85,7 @@
                    ValueChanged="ValueChanged">
 
             @{
-                foreach (var data in DataSource)
+                foreach (var data in actualDataSource)
                 {
                     <MudSelectItem Value="@data" />
                 }

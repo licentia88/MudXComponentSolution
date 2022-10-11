@@ -291,10 +291,10 @@ namespace MudXComponents.Components
 
        
 
-        protected virtual TModel OnClose()
-        {
-            return !DialogResult.Cancelled ? ViewModel : default;
-        }
+        //protected virtual TModel OnClose()
+        //{
+        //    return !DialogResult.Cancelled ? ViewModel : default;
+        //}
 
         public virtual async ValueTask<DialogResult> ShowDialogAsync<TMudXPage>(params (string key, object value)[] parameters) where TMudXPage : UIBase
         {
@@ -325,7 +325,7 @@ namespace MudXComponents.Components
 
             var newParamList = parameters.ToList();
 
-            newParamList.Add((nameof(ViewModel), cloned));
+            newParamList.Add((nameof(MudXPage<TModel>.ViewModel), cloned));
 
             return await ShowDialogAsync<TMudXPage>(newParamList.ToArray());
         }

@@ -18,6 +18,8 @@ namespace MudXComponents.Components
 	{
         private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel };
 
+        [Parameter, AllowNull]
+        public TModel ViewModel { get; set; }
 
         [Inject]
         public IMemoryCache MemoryCache { get; set; }
@@ -102,7 +104,6 @@ namespace MudXComponents.Components
 
         protected virtual void Cancel()
         {
-            ViewModel = Original;
             MudDialog.Cancel();
         }
 
