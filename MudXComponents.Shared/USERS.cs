@@ -18,10 +18,15 @@ public class USERS
 
     public string U_COUNTRY_CODE { get; set; }
 
+    public string U_CITY_CODE { get; set; }
+
     public bool U_IS_CHECKED { get; set; }
 
     [ForeignKey(nameof(U_COUNTRY_CODE))]
     public COUNTRIES COUNTRIES { get; set; }
+
+    [ForeignKey(nameof(U_CITY_CODE))]
+    public CITIES CITIES { get; set; }
 
     [ForeignKey(nameof(Shared.ORDERS.OR_USER_REFNO))]
     public ICollection<ORDERS> ORDERS { get; set; } = new HashSet<ORDERS>();

@@ -4,8 +4,8 @@
 
 @code{}
 
-<MudGridX Context="ctx"
-        SmartCrud="true"
+<MudGridX 
+        SmartCrud="false"
         EnableModelValidation="true"
         EnableSearch="true"
         EnablePagination="true"
@@ -34,7 +34,7 @@
  
     </HeaderButtons>
 
-    <GridColumns >
+    <GridColumns>
         <GridColumn BindingType="int"
                     Order="1"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
@@ -60,7 +60,7 @@
 
         <GridSelect Class="mt-5"
                     Order="5"
-                    xs="12" sm="12" md="12" lg="6" xl="6" xxl="6"
+                    xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
                     TModel="USERS"
                     TSourceModel="COUNTRIES"
                     DataSource="@countries.Value"
@@ -70,10 +70,24 @@
                     TextField="@(nameof(COUNTRIES.C_DESC))"
                     ValueField="@(nameof(COUNTRIES.C_CODE))"
                     Label="Country" />
-
         <GridSpacer TModel="USERS"
+                    Order="3"
+                    xs="12" sm="12" md="12" lg="1" xl="1" xxl="1" />
+
+        <GridSelect Class="mt-5"
                     Order="6"
-                    xs="12" sm="12" md="6" lg="6" xl="6" xxl="6" />
+                    xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
+                    TModel="USERS"
+                    TSourceModel="CITIES"
+                    DataSource="@Cities.Value"
+                    Dense="true"
+                    Placeholder="Seciniz"
+                    BindingField="@(nameof(USERS.U_CITY_CODE))"
+                    TextField="@(nameof(CITIES.CIT_DESC))"
+                    ValueField="@(nameof(CITIES.CIT_CODE))"
+                    Label="City" />
+
+
 
 
         <GridColumn BindingType="string"
@@ -82,13 +96,12 @@
                     Lines="3"
                     TModel="USERS" BindingField="@(nameof(USERS.U_DESCRIPTION))" Label="Description" />
 
-        <GridCheckBox
-                    UnCheckedColor="Color.Primary"
-                    Order="7"
-                    xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
-                    TrueText="Evet" FalseText="Hayir"
-                    TModel="USERS" BindingField="@(nameof(USERS.U_IS_CHECKED))" Label="CheckTest" />
-        
+        <GridCheckBox UnCheckedColor="Color.Primary"
+                      Order="7"
+                      xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
+                      TrueText="Evet" FalseText="Hayir"
+                      TModel="USERS" BindingField="@(nameof(USERS.U_IS_CHECKED))" Label="CheckTest" />
+
     </GridColumns>
 
     <GridButtons>
@@ -122,15 +135,27 @@
 
     public Lazy<ObservableCollection<COUNTRIES>> countries { get; set; }
 
+    public Lazy<ObservableCollection<CITIES>> Cities { get; set; }
+
+ 
     protected override Task OnInitializedAsync()
     {
         DataSource = new ObservableCollection<USERS>();
 
+
         countries = new Lazy<ObservableCollection<COUNTRIES>>(() => new ObservableCollection<COUNTRIES>
         {
             new (){ C_CODE = "CY", C_DESC = "Cyprus"},
-            new (){ C_CODE = "CountryCode", C_DESC = "Description"},
+            new (){ C_CODE = "US", C_DESC = "United States"},
 
+        });
+
+
+        Cities = new Lazy<ObservableCollection<CITIES>>(() => new ObservableCollection<CITIES>
+        {
+            new (){ CIT_CODE = "NIC", CIT_DESC = "Nicosia", CIT_COUNTRY_CODE = "CY"},
+
+            new (){ CIT_CODE = "NY", CIT_DESC = "New York", CIT_COUNTRY_CODE = "US"},
         });
 
 
@@ -163,30 +188,28 @@
 
     }
 
-    public IEnumerable<COUNTRIES> OriginalCountryDataSource { get; set; }
 
 
     public async Task OnLoad(MudXPage<USERS> page)
     {
         var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(ViewModel.U_COUNTRY_CODE));
-        countryCombo.Placeholder = "test";
-        //OriginalCountryDataSource = countryCombo.DataSource;
+         
 
         countryCombo.ValueChanged = EventCallback.Factory.Create<COUNTRIES>(this, (COUNTRIES arg) => CountryChanged(page,arg));
-        //countryCombo.DataSource = new ObservableCollection<COUNTRIES>();
-
-        //countryCombo.Where= countryCombo.DataSource.Where(x => x.C_CODE == page.ViewModel.U_COUNTRY_CODE);
-
-        //countryCombo.va.ValueChanged =
-
+        
 
     }
 
     public void CountryChanged(MudXPage<USERS> page,COUNTRIES country)
     {
-        OriginalCountryDataSource = new ObservableCollection<COUNTRIES>();
-        var countryCombo = page.GetComponent<GridSelect<USERS, COUNTRIES>>(nameof(ViewModel.U_COUNTRY_CODE));
-        //countryCombo.Placeholder = "test";
+        //OriginalCountryDataSource = new ObservableCollection<COUNTRIES>();
+
+        var cityCombo = page.GetComponent<GridSelect<USERS, CITIES>>(nameof(ViewModel.U_CITY_CODE));
+
+        page.ViewModel.U_COUNTRY_CODE = country.C_CODE;
+
+        cityCombo.DataSource = Cities.Value.Where(x=> x.CIT_COUNTRY_CODE.Equals(country.C_CODE));
+
         page.StateHasChanged();
 
     }

@@ -80,6 +80,9 @@ namespace MudXComponents.Components
       
         protected override async Task OnInitializedAsync()
         {
+
+            ViewModel = ViewModel.ToImmutable();
+
             CacheKey = MemoryCache.Get<String>(nameof(CacheKey));
 
             SubmitText = SubmitText.Equals(string.Empty)? ViewState.ToString() :SubmitText;
@@ -99,6 +102,7 @@ namespace MudXComponents.Components
 
         protected virtual void Cancel()
         {
+            ViewModel = Original;
             MudDialog.Cancel();
         }
 
@@ -164,6 +168,12 @@ namespace MudXComponents.Components
             MudDialog.Close();
         }
 
+        /// <summary>
+        /// Gets component by bindingfield
+        /// </summary>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <param name="FieldName"></param>
+        /// <returns></returns>
         public TComponent GetComponent<TComponent>(string FieldName) where TComponent :ColumnBase<TModel>
         {
             var component = Components.FirstOrDefault(x => x.BindingField is not null && x.BindingField == FieldName);
