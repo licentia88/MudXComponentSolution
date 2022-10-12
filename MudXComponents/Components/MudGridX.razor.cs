@@ -119,7 +119,7 @@ namespace MudXComponents.Components
         public RenderFragment<TModel> GridButtons { get; set; }
 
         [Parameter, AllowNull]
-        public RenderFragment DetailGrid { get; set; }
+        public RenderFragment<TModel> DetailGrid { get; set; }
 
         private string _searchString = "";
 

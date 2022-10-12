@@ -58,7 +58,7 @@ namespace MudXComponents.Components
         public bool SmartCrud { get;  set; }
         
         [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
-        public RenderFragment DetailGrid { get; set; }
+        public RenderFragment<TModel> DetailGrid { get; set; }
 
         [Parameter]
         public ObservableCollection<ColumnBase<TModel>> Components { get; set; }
