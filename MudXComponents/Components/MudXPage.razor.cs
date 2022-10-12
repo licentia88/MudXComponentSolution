@@ -104,6 +104,7 @@ namespace MudXComponents.Components
 
         protected virtual void Cancel()
         {
+            //ViewModel = Original;
             MudDialog.Cancel();
         }
 

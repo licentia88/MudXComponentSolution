@@ -49,7 +49,7 @@
 
                     </MudGrid>
 
-                    if (SmartCrud)
+                    if (SmartCrud && DetailGrid is not null)
                     {
                         <div class="pb-5">
                             <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
