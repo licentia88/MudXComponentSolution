@@ -50,7 +50,7 @@ public partial class GridFabButton<TModel> : ColumnBase<TModel>, IButton where T
 
 
     [Parameter, AllowNull]
-    public Color IconColor { get; set; }
+    public Color IconColor { get; set; } = Color.Inherit;
 
 
     [Parameter, AllowNull]

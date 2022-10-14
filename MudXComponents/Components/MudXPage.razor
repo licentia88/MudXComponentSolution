@@ -7,9 +7,9 @@
 @{ if (ViewModel is null) return;}
 
 
-<EditForm Model="@ViewModel" OnValidSubmit="async ()=> await SubmitClick()">
+<EditForm Model="@ViewModel" OnValidSubmit="()=>OnSubmit.InvokeAsync(CreateArgs)">
    
-    <MudDialog DefaultFocus="DefaultFocus.Element" OnBackdropClick="Cancel">
+    <MudDialog DefaultFocus="DefaultFocus.Element" OnBackdropClick="Close">
         <DialogContent>
 
             @{
@@ -70,7 +70,7 @@
 
         </DialogContent>
         <DialogActions>
-            <MudButton OnClick="Cancel">@CancelText</MudButton>
+            <MudButton OnClick="Close">@CancelText</MudButton>
             <MudButton Color="Color.Success" Variant="Variant.Filled" ButtonType="MudBlazor.ButtonType.Submit" >@SubmitText</MudButton>
         </DialogActions>
     </MudDialog>

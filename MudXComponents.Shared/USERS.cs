@@ -11,7 +11,7 @@ public class USERS
 
     public string U_NAME { get; set; }
 
-    [Required(ErrorMessage ="surname field is required")]
+    [Required(ErrorMessage ="jhjj field is required")]
     public string U_SURNAME { get; set; }
 
     public string U_DESCRIPTION { get; set; }

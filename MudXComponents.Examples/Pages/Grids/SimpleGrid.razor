@@ -4,6 +4,7 @@
 
 @code{}
 
+
 <MudGridX 
         SmartCrud="true"
         EnableModelValidation="true"
@@ -30,7 +31,7 @@
             OnClick="() =>  CustomCommand()"
             Color="Color.Tertiary" Style="margin-left:5px"
                        StartIcon="@Icons.Custom.FileFormats.FileMusic"
-                       TModel="DummyModel" />
+                       TModel="DummyModel"  />
  
     </HeaderButtons>
 
@@ -51,7 +52,7 @@
 
         <GridSpacer TModel="USERS"
                     Order="3"
-                    xs="12" sm="12" md="2" lg="2" xl="2" xxl="2" />
+                    xs="12" sm="12" md="12" lg="2" xl="2" xxl="2" />
 
         <GridColumn BindingType="string" Class="mt-5"
                     Order="4"
@@ -70,7 +71,8 @@
                     TextField="@(nameof(COUNTRIES.C_DESC))"
                     ValueField="@(nameof(COUNTRIES.C_CODE))"
                     Label="Country" />
-        <GridSpacer TModel="USERS"
+
+       <GridSpacer TModel="USERS"
                     Order="3"
                     xs="12" sm="12" md="12" lg="2" xl="2" xxl="2" />
 
@@ -183,11 +185,22 @@
     public async Task CustomCommand()
     {
         //await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small);
+        var parameters = new List<(string, object)>
+        {
+            (nameof(MudXPage<DummyModel>.ViewModel), new DummyModel()),
+            (nameof(MudXPage<DummyModel>.OnSubmit),EventCallback.Factory.Create<GridXArgs<DummyModel>>(this,x=> CustomSubmit(x)))
+        };
 
-        await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small,("ViewModel", new DummyModel()));
+        await ShowDialogAsync<MudXPage<DummyModel>>(MaxWidth.Small, parameters.ToArray());
 
     }
 
+
+    public  Task CustomSubmit(GridXArgs<DummyModel> args)
+    {
+        args.Page.Close();
+        return Task.CompletedTask;
+    }
 
 
     public async Task OnLoad(MudXPage<USERS> page)

@@ -16,7 +16,11 @@ namespace MudXComponents.Components
 {
 	public partial class MudXPage<TModel> : UIMudBase<TModel>, IDisposable where TModel : new() 
 	{
-        private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel };
+        private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel, Page = this };
+
+        [Parameter]
+        public EventCallback<GridXArgs<TModel>> OnSubmit { get; set; }
+
 
         [Parameter, AllowNull]
         public TModel ViewModel { get; set; }
@@ -91,6 +95,8 @@ namespace MudXComponents.Components
 
             CancelText = CancelText.Equals(string.Empty) ? "Cancel" : CancelText;
 
+            if (!OnSubmit.HasDelegate)
+                OnSubmit = EventCallback.Factory.Create<GridXArgs<TModel>>(this, async () => await SubmitClick(CreateArgs));
 
             await OnLoad.InvokeAsync(this);
 
@@ -102,18 +108,16 @@ namespace MudXComponents.Components
             await InvokeAsync(() => MudDialog.CancelAll());
         }
 
-        protected virtual void Cancel()
+        public virtual void Close()
         {
             //ViewModel = Original;
             MudDialog.Cancel();
         }
 
-        protected async ValueTask SubmitClick()
+        protected async ValueTask SubmitClick(GridXArgs<TModel> args)
         {
-
-            if (ViewModel is null) return;
-
-              
+            if (args.NewData is null) return;
+      
             await  OnBeforeSubmit.InvokeAsync(CreateArgs);
 
             if (ViewState == ViewState.Create)
@@ -122,11 +126,11 @@ namespace MudXComponents.Components
                 {
                     var listToAdd = ParentContext.GetPropertyValue(typeof(TModel).Name) as ICollection<TModel>;
 
-                    listToAdd.Add(ViewModel);
+                    listToAdd.Add(args.NewData);
                     //MemoryCache.Set()
                     //var method = listToAdd.GetType().GetMethod("Add");
 
-                    ParentGrid.DataSource.Add(ViewModel);
+                    ParentGrid.DataSource.Add(args.NewData);
 
                     MemoryCache.Set($"{CacheKey}{typeof(TModel).Name}", ParentGrid.DataSource);
                     //method.Invoke(listToAdd, new[] { (object)ViewModel });
@@ -144,12 +148,11 @@ namespace MudXComponents.Components
 
                     var index = listToAdd.IndexOf(Original);
  
-                    listToAdd[index] = ViewModel;
+                    listToAdd[index] = args.NewData;
 
                     ParentGrid.DataSource = listToAdd.ToObservableCollection();
 
                     MemoryCache.Set($"{CacheKey}{typeof(TModel).Name}", ParentGrid.DataSource);
-                    //method.Invoke(listToAdd, new[] { (object)ViewModel });
                 }
                 else
                 {
