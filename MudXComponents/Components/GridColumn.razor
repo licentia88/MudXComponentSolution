@@ -1,5 +1,5 @@
-﻿@typeparam TModel   where TModel :  new()
-@typeparam BindingType
+﻿@typeparam TModel   where TModel : new()
+@typeparam BindingType  where BindingType : notnull
 @inherits ColumnBase<TModel>
 
 
@@ -12,65 +12,65 @@
 
     if (ComponentType == ComponentTypes.Grid)
     {
-        if(typeof(BindingType) == typeof(DateTime) || typeof(BindingType) == typeof(Nullable<DateTime>))
+        if (typeof(BindingType) == typeof(DateTime) || typeof(BindingType) == typeof(Nullable<DateTime>))
         {
             @Convert.ToDateTime(CurrentValue).ToString(Format);
         }
         else
 
-        @CurrentValue
-    }
-    else
-    {
-        Disabled = !EnabledOnEdit;
-        <MudTextField Value="CurrentValue"
-                      Class="@Class"
-                      Style="@Style"
-                      T="BindingType"
-                      Immediate="@Immediate"
-                      ValueChanged="OnValueChanged"
-                      Label="@Label"
-                      Variant="@Variant"
-                      Adornment="@Adornment"
-                      AdornmentAriaLabel="@AdornmentAriaLabel"
-                      AdornmentColor="@AdornmentColor"
-                      AdornmentIcon="@AdornmentIcon"
-                      AdornmentText="@AdornmentText"
-                      ReadOnly="@ReadOnly"
-                      Required="@Required"
-                      AutoFocus="@AutoFocus"
-                      Clearable="@Clearable"
-                      Culture="@Culture"
-                      DebounceInterval="@DebounceInterval"
-                      Disabled="@Disabled"
-                      DisableUnderLine="@DisableUnderLine"
-                      Error="@Error"
-                      ErrorId="@ErrorId"
-                      ErrorText="@ErrorText"
-                      RequiredError="@RequiredError"
-                      For="@For"
-                      Format="@Format"
-                      FullWidth="@FullWidth"
-                      HelperText="@HelperText"
-                      HelperTextOnFocus="@HelperTextOnFocus"
-                      IconSize="@IconSize"
-                      InputMode="InputMode"
-                      InputType="@InputType"
-                      Lines="@Lines"
-                      Margin="@Margin"
-                      Mask="@Mask"
-                      MaxLength="@MaxLength"
-                      Pattern="@Pattern"
-                      Placeholder="@Placeholder"
-                      Tag="@Tag"
-                      Validation="@Validation"
-                      UserAttributes="@UserAttributes"
-                      TextUpdateSuppression="@TextUpdateSuppression"
-                      KeyDownPreventDefault="@KeyDownPreventDefault"
-                      KeyPressPreventDefault="@KeyPressPreventDefault"
-                      KeyUpPreventDefault="KeyUpPreventDefault">
-        </MudTextField>
-    }
+            @CurrentValue
+        }
+        else
+        {
+            Disabled = !EnabledOnEdit;
+            <MudTextField Value="CurrentValue"
+                          Class="@Class"
+                          Style="@Style"
+                          T="BindingType"
+                          Immediate="@Immediate"
+                          ValueChanged="OnValueChanged"
+                          Label="@Label"
+                          Variant="@Variant"
+                          Adornment="@Adornment"
+                          AdornmentAriaLabel="@AdornmentAriaLabel"
+                          AdornmentColor="@AdornmentColor"
+                          AdornmentIcon="@AdornmentIcon"
+                          AdornmentText="@AdornmentText"
+                          ReadOnly="@ReadOnly"
+                          Required="@Required"
+                          AutoFocus="@AutoFocus"
+                          Clearable="@Clearable"
+                          Culture="@Culture"
+                          DebounceInterval="@DebounceInterval"
+                          Disabled="@Disabled"
+                          DisableUnderLine="@DisableUnderLine"
+                          Error="@Error"
+                          ErrorId="@ErrorId"
+                          ErrorText="@ErrorText"
+                          RequiredError="@RequiredError"
+                          For="@For"
+                          Format="@Format"
+                          FullWidth="@FullWidth"
+                          HelperText="@HelperText"
+                          HelperTextOnFocus="@HelperTextOnFocus"
+                          IconSize="@IconSize"
+                          InputMode="InputMode"
+                          InputType="@InputType"
+                          Lines="@Lines"
+                          Margin="@Margin"
+                          Mask="@Mask"
+                          MaxLength="@MaxLength"
+                          Pattern="@Pattern"
+                          Placeholder="@Placeholder"
+                          Tag="@Tag"
+                          Validation="@Validation"
+                          UserAttributes="@UserAttributes"
+                          TextUpdateSuppression="@TextUpdateSuppression"
+                          KeyDownPreventDefault="@KeyDownPreventDefault"
+                          KeyPressPreventDefault="@KeyPressPreventDefault"
+                          KeyUpPreventDefault="KeyUpPreventDefault">
+            </MudTextField>
+        }
 }
 
 @code{

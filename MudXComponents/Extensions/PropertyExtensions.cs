@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using FastMember;
 using MudBlazor;
-using static MudBlazor.CategoryTypes;
+using static MudBlazor.CategoryTypes;   
 
 namespace MudXComponents.Extensions;
 
@@ -76,20 +76,21 @@ public static class PropertyExtensions
 
     }
 
-    public static TBindingType GetPropertyValue<TModel, TBindingType>(this TModel obj, string propName)
+    public static TBindingType GetPropertyValue<TModel, TBindingType>(this TModel obj, string propName) where TBindingType : notnull
     {
         var accessor = TypeAccessor.Create(typeof(TModel));
 
-        return (TBindingType)accessor[obj, propName];
+        var valueToReturn = accessor[obj, propName];
 
         //not required until above code throws an exception
         //var valueToReturn = obj.GetType().GetProperty(propName)?.GetValue(obj);
 
-        //if (valueToReturn is null) return default;
+        if (valueToReturn is null) return default;
 
+        return (TBindingType)valueToReturn;
         //var result = TryParse<TBindingType>(valueToReturn, out TBindingType typedValue);
 
-        //return typedValue;
+        //return valueToReturn;
 
     }
 
