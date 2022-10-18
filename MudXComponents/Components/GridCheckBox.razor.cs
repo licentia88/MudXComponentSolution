@@ -34,7 +34,7 @@ public partial class GridCheckBox<TModel> : ColumnBase<TModel> where TModel : ne
     public bool Error { get; set; }
 
     [Parameter]
-    public LabelPosition LabelPosition { get; set; } = LabelPosition.Start;
+    public LabelPosition LabelPosition { get; set; } = LabelPosition.End;
 
     [Parameter]
     public string ErrorId { get; set; }

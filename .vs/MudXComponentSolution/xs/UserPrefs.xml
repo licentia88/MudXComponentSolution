@@ -3,15 +3,13 @@
   <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.ItemProperties.MudXComponents.Examples PreferredExecutionTarget="/Applications/Brave Browser.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/GridColumn.razor">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/MudGridX.razor.cs">
     <Files>
-      <File FileName="MudXComponents/Components/MudXPage.razor.cs" Line="115" Column="1" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudGridX.razor.cs" Line="360" Column="1" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudGridX.razor" Line="6" Column="2" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudXPage.razor" Line="54" Column="41" IsPinned="True" />
-      <File FileName="MudXComponents/Extensions/PropertyExtensions.cs" Line="52" Column="122" />
-      <File FileName="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" Line="1" Column="1" />
-      <File FileName="MudXComponents/Components/GridColumn.razor" Line="17" Column="13" />
+      <File FileName="MudXComponents/Components/MudXPage.razor.cs" Line="118" Column="1" IsPinned="True" />
+      <File FileName="MudXComponents/Components/MudGridX.razor.cs" Line="201" Column="1" IsPinned="True" />
+      <File FileName="MudXComponents/Components/MudGridX.razor" Line="141" Column="31" IsPinned="True" />
+      <File FileName="MudXComponents/Components/MudXPage.razor" Line="10" Column="51" IsPinned="True" />
+      <File FileName="MudXComponents/Extensions/PropertyExtensions.cs" Line="144" Column="13" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -19,12 +17,23 @@
           <Node name="MudXComponentSolution" expanded="True">
             <Node name="MudXComponents" expanded="True">
               <Node name="Components" expanded="True">
-                <Node name="GridColumn.razor" expanded="True">
-                  <Node name="GridColumn.razor.cs" selected="True" />
-                </Node>
+                <Node name="GridCheckBox.razor" expanded="True" />
+                <Node name="GridSelect.razor" expanded="True" />
+                <Node name="MudGridX.razor" expanded="True" />
+                <Node name="MudXPage.razor" expanded="True" />
+              </Node>
+              <Node name="Extensions" expanded="True">
+                <Node name="PropertyExtensions.cs" selected="True" />
               </Node>
             </Node>
+            <Node name="MudXComponents.Shared" expanded="True" />
           </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State>
+          <Value>propName</Value>
+          <Value>CurrentValue</Value>
         </State>
       </Pad>
     </Pads>
@@ -32,7 +41,10 @@
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Components/MudGridX.razor.cs" relfile="MudXComponents/Components/MudGridX.razor.cs" line="389" column="1" />
+      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Components/MudGridX.razor.cs" relfile="MudXComponents/Components/MudGridX.razor.cs" line="392" column="1" />
+      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" relfile="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" line="200" column="1" />
+      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Extensions/PropertyExtensions.cs" relfile="MudXComponents/Extensions/PropertyExtensions.cs" line="32" column="1" />
+      <Breakpoint file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Extensions/PropertyExtensions.cs" relfile="MudXComponents/Extensions/PropertyExtensions.cs" line="38" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

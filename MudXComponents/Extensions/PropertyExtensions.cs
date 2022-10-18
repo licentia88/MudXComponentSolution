@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using FastMember;
 using MudBlazor;
 using static MudBlazor.CategoryTypes;
 
@@ -13,15 +14,19 @@ public static class PropertyExtensions
         {
             var type = inputObject.GetType();
 
-            var propInfo = type.GetProperty(propertyName);
+            var accessor = TypeAccessor.Create(type);
 
-            var propertyType = propInfo?.PropertyType;
+            accessor[inputObject, propertyName] = propertyValue;
 
-            var targetType = IsNullable(propertyType) ? Nullable.GetUnderlyingType(propertyType!) : propertyType;
+            //var propInfo = type.GetProperty(propertyName);
 
-            propertyValue = Convert.ChangeType(propertyValue, targetType!);
+            //var propertyType = propInfo?.PropertyType;
 
-            propInfo?.SetValue(inputObject, propertyValue);
+            //var targetType = IsNullable(propertyType) ? Nullable.GetUnderlyingType(propertyType!) : propertyType;
+
+            //propertyValue = Convert.ChangeType(propertyValue, targetType!);
+
+            //propInfo?.SetValue(inputObject, propertyValue);
         }
         catch (Exception ex)
         {
@@ -33,50 +38,73 @@ public static class PropertyExtensions
     {
         var type = typeof(TModel);
 
-        var propInfo = type.GetProperty(propertyName);
+        var accessor = TypeAccessor.Create(type);
 
-        var propertyType = propInfo?.PropertyType;
+        accessor[inputObject, propertyName] = propertyValue;
 
-        object typedValue ;
-
-        TryParse(propertyValue, propertyType, out typedValue);
+        //not required until above code throws an exception
 
 
-        propInfo?.SetValue(inputObject, typedValue);
+        //var propInfo = type.GetProperty(propertyName);
+
+        //var propertyType = propInfo?.PropertyType;
+
+        //object typedValue ;
+
+        //TryParse(propertyValue, propertyType, out typedValue);
+
+
+        //propInfo?.SetValue(inputObject, typedValue);
     }
 
     public static object GetPropertyValue(this object obj, string propName)
     {
-        var valueToReturn = obj.GetType().GetProperty(propName, System.Reflection.BindingFlags.Public
-                                                                |System.Reflection.BindingFlags.NonPublic
-                                                                |System.Reflection.BindingFlags.Instance)?.GetValue(obj);
 
-        return valueToReturn;
+        var type = obj.GetType();
+
+        var accessor = TypeAccessor.Create(type);
+
+       return  accessor[obj, propName];
+
+        //not required until above code throws an exception
+
+        //var valueToReturn = obj.GetType().GetProperty(propName, System.Reflection.BindingFlags.Public
+        //                                                        |System.Reflection.BindingFlags.NonPublic
+        //                                                        |System.Reflection.BindingFlags.Instance)?.GetValue(obj);
+
+        //return valueToReturn;
 
     }
 
     public static TBindingType GetPropertyValue<TModel, TBindingType>(this TModel obj, string propName)
     {
-        var valueToReturn = obj.GetType().GetProperty(propName)?.GetValue(obj);
+        var accessor = TypeAccessor.Create(typeof(TModel));
 
-        var result = TryParse<TBindingType>(valueToReturn, out TBindingType typedValue);
+        return (TBindingType)accessor[obj, propName];
 
-        return typedValue;
+        //not required until above code throws an exception
+        //var valueToReturn = obj.GetType().GetProperty(propName)?.GetValue(obj);
+
+        //if (valueToReturn is null) return default;
+
+        //var result = TryParse<TBindingType>(valueToReturn, out TBindingType typedValue);
+
+        //return typedValue;
 
     }
 
 
-    public static object GetDefaultValue(this Type objectType)
-    {
-        if (objectType.IsValueType && Nullable.GetUnderlyingType(objectType) == null)
-        {
-            return Activator.CreateInstance(objectType);
-        }
-        else
-        {
-            return null;
-        }
-    }
+    //public static object GetDefaultValue(this Type objectType)
+    //{
+    //    if (objectType.IsValueType && Nullable.GetUnderlyingType(objectType) == null)
+    //    {
+    //        return Activator.CreateInstance(objectType);
+    //    }
+    //    else
+    //    {
+    //        return null;
+    //    }
+    //}
 
     private static bool IsNullable(Type type)
     {
@@ -100,88 +128,88 @@ public static class PropertyExtensions
     //    return Add(parameters, newParameter);
     //}
 
-    public static T[] AddParam<T>(this T[] parameters, T newParameter)
-    {
-        var result = new T[parameters.Length + 1];
+    //public static T[] AddParam<T>(this T[] parameters, T newParameter)
+    //{
+    //    var result = new T[parameters.Length + 1];
 
-        parameters[0] = newParameter;
+    //    parameters[0] = newParameter;
 
-        parameters.CopyTo(result, 1);
+    //    parameters.CopyTo(result, 1);
 
 
 
-        return result;
-    }
+    //    return result;
+    //}
 
-    public static IEnumerable<TType> Exclude<TType, ExcludeType>(this IEnumerable<TType> list)
+    internal static IEnumerable<TType> Exclude<TType, ExcludeType>(this IEnumerable<TType> list)
     {
         return list.Where(x => x is not ExcludeType).Cast<TType>();
     }
 
 
-    public static bool TryParse<TBindingField>(this object targetText, out TBindingField returnValue)
-    {
-        bool returnStatus = false;
+    //public static bool TryParse<TBindingField>(this object targetText, out TBindingField returnValue)
+    //{
+    //    bool returnStatus = false;
 
-        returnValue = default(TBindingField);
+    //    returnValue = default(TBindingField);
 
-        try
-        {
-            var type = typeof(TBindingField);
-            var converter = TypeDescriptor.GetConverter(type);
-
-
-            if (converter != null && converter.IsValid(targetText))
-            {
-                returnValue = (TBindingField)converter.ConvertFrom(targetText);
-                returnStatus = true;
-            }
-            else
-            {
-                returnValue = (TBindingField)Convert.ChangeType(targetText, typeof(TBindingField));
-                returnStatus = true;
-            }
-
-        }
-        catch
-        {
-            // just swallow the exception and return the default values for failure
-        }
-
-        return (returnStatus);
-
-    }
-
-    public static bool TryParse(this object targetText,Type objectType, out object returnValue)
-    {
-        bool returnStatus = false;
-
-        returnValue = objectType.GetDefaultValue();
-
-        try
-        {
-            var type = objectType;
-            var converter = TypeDescriptor.GetConverter(type);
+    //    try
+    //    {
+    //        var type = typeof(TBindingField);
+    //        var converter = TypeDescriptor.GetConverter(type);
 
 
-            if (converter != null && converter.IsValid(targetText))
-            {
-                returnValue = converter.ConvertFrom(targetText);
-                returnStatus = true;
-            }
-            else
-            {
-                returnValue = Convert.ChangeType(targetText, objectType);
-                returnStatus = true;
-            }
+    //        if (converter != null && converter.IsValid(targetText))
+    //        {
+    //            returnValue = (TBindingField)converter.ConvertFrom(targetText);
+    //            returnStatus = true;
+    //        }
+    //        else
+    //        {
+    //            returnValue = (TBindingField)Convert.ChangeType(targetText, typeof(TBindingField));
+    //            returnStatus = true;
+    //        }
 
-        }
-        catch
-        {
-            // just swallow the exception and return the default values for failure
-        }
+    //    }
+    //    catch
+    //    {
+    //        // just swallow the exception and return the default values for failure
+    //    }
 
-        return (returnStatus);
+    //    return (returnStatus);
 
-    }
+    //}
+
+    //public static bool TryParse(this object targetText,Type objectType, out object returnValue)
+    //{
+    //    bool returnStatus = false;
+
+    //    returnValue = objectType.GetDefaultValue();
+
+    //    try
+    //    {
+    //        var type = objectType;
+    //        var converter = TypeDescriptor.GetConverter(type);
+
+
+    //        if (converter != null && converter.IsValid(targetText))
+    //        {
+    //            returnValue = converter.ConvertFrom(targetText);
+    //            returnStatus = true;
+    //        }
+    //        else
+    //        {
+    //            returnValue = Convert.ChangeType(targetText, objectType);
+    //            returnStatus = true;
+    //        }
+
+    //    }
+    //    catch
+    //    {
+    //        // just swallow the exception and return the default values for failure
+    //    }
+
+    //    return (returnStatus);
+
+    //}
 }

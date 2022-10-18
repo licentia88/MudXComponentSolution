@@ -159,7 +159,7 @@ namespace MudXComponents.Components
 
         
 
-        public void ShowDetailAsync(TModel context)
+        internal void ShowDetailAsync(TModel context)
         {
             //if(VisibleDetailKey)
             //if(context.GetPrimaryKeyValue().ToString() == VisibleDetailKey.ToString())
