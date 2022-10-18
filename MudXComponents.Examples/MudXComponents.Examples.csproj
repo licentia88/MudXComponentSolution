@@ -13,7 +13,7 @@
     <Folder Include="Pages\Grids\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MudBlazor" Version="6.0.16" />
+    <PackageReference Include="MudBlazor" Version="6.0.17" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MudXComponents.Shared\MudXComponents.Shared.csproj">
