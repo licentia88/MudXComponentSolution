@@ -193,8 +193,11 @@ namespace MudXComponents.Components
 
         private object VisibleDetailKey;
 
+
+
         protected override async Task OnInitializedAsync()
         {
+           
             if (!IsChild)
             {
                 CacheKey = Guid.NewGuid().ToString();

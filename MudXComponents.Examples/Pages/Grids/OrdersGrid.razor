@@ -1,7 +1,5 @@
-﻿@inherits MudGridX<ORDERS>
-
+﻿
 <MudGridX
-         
           EnableModelValidation="true"
           EnableSearch="false"
           EnablePagination="false"
@@ -61,20 +59,24 @@
                        TModel="ORDERS" />
     </GridButtons>
     <DetailGrid>
-        <MudTabs Class="pt-1 pb-2">
-            <MudTabPanel Text="Order Detail">
-                <OrderDetails />
-            </MudTabPanel>
-          
-        </MudTabs>
+        <CascadingValue Value="context" Name="ParentContext">
+            <MudTabs Class="pt-1 pb-2">
+                <MudTabPanel Text="Order Detail">
+                    <OrderDetails />
+                </MudTabPanel>
+
+            </MudTabs>
+        </CascadingValue>
+       
     </DetailGrid>
 </MudGridX>
 
 @code{
 
-    public System.Collections.ObjectModel.ObservableCollection<ORDERS> DataSource { get; set; } = new();
 
+    public  System.Collections.ObjectModel.ObservableCollection<ORDERS> DataSource { get; set; } = new();
 
+    
 
     public Task CreateCommand(GridXArgs<ORDERS> args)
     {

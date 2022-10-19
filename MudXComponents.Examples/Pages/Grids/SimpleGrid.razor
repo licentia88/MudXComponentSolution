@@ -6,7 +6,7 @@
 
 
 <MudGridX 
-        SmartCrud="true"
+        SmartCrud="false"
         EnableModelValidation="true"
         EnableSearch="true"
         EnablePagination="true"
@@ -122,14 +122,16 @@
                        TModel="USERS" />
     </GridButtons>
     <DetailGrid>
-        <MudTabs Class="pt-5" Color="Color.Info" Style="width:100%">
-            <MudTabPanel Text="Orders">
-                <OrdersGrid  />
-            </MudTabPanel>
-            <MudTabPanel Text="Transactions">
-                <TransactionsGrid />
-            </MudTabPanel>
-        </MudTabs>
+        @*<CascadingValue Value="@(new USERS { U_NAME = "ASIM"})" Name="ParentContext">*@
+            <MudTabs Class="pt-5" Color="Color.Info" Style="width:100%">
+                <MudTabPanel Text="Orders" >
+                    <OrdersGrid  />
+                </MudTabPanel>
+                <MudTabPanel Text="Transactions">
+                    <TransactionsGrid />
+                </MudTabPanel>
+            </MudTabs>
+        @*</CascadingValue>*@
     </DetailGrid>
 </MudGridX>
 
