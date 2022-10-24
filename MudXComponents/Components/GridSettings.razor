@@ -7,19 +7,22 @@
     </MudCardHeader>
     <MudCardContent>
 
-        <div class="d-flex justify-center p-auto">
-            <MudSwitch @bind-Checked="@GridX.EnablePagination"
-                       ThumbIcon="@(GridX.EnablePagination==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
-                       ThumbIconColor="@(GridX.EnablePagination==true ? Color.Success : Color.Error)">Pagination</MudSwitch>
-
-            <MudSwitch @bind-Checked="@GridX.EnableSearch"
-                       ThumbIcon="@(GridX.EnableSearch==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
-                       ThumbIconColor="@(GridX.EnableSearch==true ? Color.Success : Color.Error)">Search</MudSwitch>
-
-            <MudSwitch @bind-Checked="@GridX.EnableModelValidation"
-                       ThumbIcon="@(GridX.EnableModelValidation==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
-                       ThumbIconColor="@(GridX.EnableModelValidation==true ? Color.Success : Color.Error)">Validation</MudSwitch>
-        </div>
+        <MudGrid>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                <MudTextField @bind-Value="@GridX.Height" Label="Height" />
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                <MudSwitch @bind-Checked="@GridX.EnableSearch"
+                           ThumbIcon="@(GridX.EnableSearch==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="@(GridX.EnableSearch==true ? Color.Success : Color.Error)">Search</MudSwitch>
+            </MudItem>
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                <MudSwitch @bind-Checked="@GridX.EnableModelValidation"
+                           ThumbIcon="@(GridX.EnableModelValidation==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="@(GridX.EnableModelValidation==true ? Color.Success : Color.Error)">Validation</MudSwitch>
+            </MudItem>
+        </MudGrid>
+        
       
 
     </MudCardContent>

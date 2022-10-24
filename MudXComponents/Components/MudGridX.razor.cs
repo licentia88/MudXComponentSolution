@@ -17,7 +17,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 {
 
     [Parameter]
-    public string Height { get; set; }
+    public string Height { get; set; }  
 
     [Parameter, AllowNull]
     public bool FixedHeader { get; set; } = true;
@@ -55,11 +55,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     [Parameter]
     public bool EnableSearch { get; set; }
 
-    /// <summary>
-    /// Displays Pagination
-    /// </summary>
-    [Parameter]
-    public bool EnablePagination { get; set; }
+    
 
     #region Page Information
 

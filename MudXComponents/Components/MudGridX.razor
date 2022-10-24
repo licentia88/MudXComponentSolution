@@ -67,7 +67,7 @@
  
 
          <MudTable
-                   Height="@Height"
+                   Height="@(Height+"px")"
                    FixedFooter="@FixedFooter"
                    FixedHeader="@FixedHeader"
                    Elevation="0"
@@ -85,18 +85,20 @@
 
              <HeaderContent>
 
-                    
+
                  @{
                      if (DetailGrid is not null && !SmartCrud)
                      {
-                        <MudTh></MudTh>
+                         <MudTh></MudTh>
                      }
 
                      foreach (var item in GetComponentOf<ColumnBase<TModel>>())
                      {
+
                          <MudTh>
-                             @item.Label
+                             <MudTableSortLabel SortBy="new Func<TModel, object>(x=> x.GetPropertyValue(item.BindingField))">@item.Label</MudTableSortLabel>
                          </MudTh>
+
                      }
 
                  }
@@ -174,12 +176,7 @@
              </ChildRowContent>
 
              <PagerContent>
-                 @{
-                     if (EnablePagination)
-                     {
-                         <MudTablePager />
-                     }
-                 }
+                 <MudTablePager />
              </PagerContent>
 
 
