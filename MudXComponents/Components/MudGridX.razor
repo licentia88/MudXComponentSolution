@@ -41,6 +41,8 @@
                             CloseOnEscapeKey = true,
                             DisableBackdropClick = true
                             };
+
+                                       
                         var dialog =  DialogService.Show<GridSettings<TModel>>("Settings",new DialogParameters { ["GridX"]=this },dialogOptions);
 
                         var result = await dialog.Result;
@@ -67,6 +69,7 @@
  
 
          <MudTable
+                   Virtualize="@Virtualize"
                    Height="@(Height+"px")"
                    FixedFooter="@FixedFooter"
                    FixedHeader="@FixedHeader"
@@ -74,6 +77,9 @@
                    Items="@DataSource"
                    Dense="true"
                    Hover="true"
+                   MultiSelection="@MultiSelection"
+                   SelectedItems="@SelectedItems"
+                   SelectedItemChanged="@SelectedItemsChanged"
                    Breakpoint="Breakpoint.None"
                    Filter="new Func<TModel,bool>(SearchFilter)">
 
@@ -176,7 +182,7 @@
              </ChildRowContent>
 
              <PagerContent>
-                 <MudTablePager />
+                 <MudTablePager PageSizeOptions="new int[] { 10,25,50,100, DataSource.Count == 0 ?999:DataSource.Count}" />
              </PagerContent>
 
 

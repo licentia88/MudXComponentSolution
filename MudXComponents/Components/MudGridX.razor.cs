@@ -15,6 +15,13 @@ namespace MudXComponents.Components;
 
 public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 {
+    public HashSet<TModel> SelectedItems { get; set; }
+
+    [Parameter]
+    public bool Virtualize { get; set; }
+
+    [Parameter]
+    public bool MultiSelection { get; set; }
 
     [Parameter]
     public string Height { get; set; }  
@@ -80,6 +87,8 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     [Parameter, AllowNull]
     public virtual EventCallback<MudXPage<TModel>> OnLoad { get; set; }
 
+    [Parameter, AllowNull]
+    public virtual EventCallback<TModel> SelectedItemsChanged { get; set; }
 
 
     #region Dialog

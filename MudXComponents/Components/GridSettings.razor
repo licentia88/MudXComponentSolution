@@ -16,10 +16,17 @@
                            ThumbIcon="@(GridX.EnableSearch==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
                            ThumbIconColor="@(GridX.EnableSearch==true ? Color.Success : Color.Error)">Search</MudSwitch>
             </MudItem>
+
             <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
-                <MudSwitch @bind-Checked="@GridX.EnableModelValidation"
-                           ThumbIcon="@(GridX.EnableModelValidation==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
-                           ThumbIconColor="@(GridX.EnableModelValidation==true ? Color.Success : Color.Error)">Validation</MudSwitch>
+                <MudSwitch @bind-Checked="@GridX.Virtualize"
+                           ThumbIcon="@(GridX.Virtualize==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="@(GridX.Virtualize==true ? Color.Success : Color.Error)">Virtualize</MudSwitch>
+            </MudItem>
+
+            <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                <MudSwitch @bind-Checked="@GridX.MultiSelection"
+                           ThumbIcon="@(GridX.MultiSelection==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                           ThumbIconColor="@(GridX.MultiSelection==true ? Color.Success : Color.Error)">MultiSelection</MudSwitch>
             </MudItem>
         </MudGrid>
         
