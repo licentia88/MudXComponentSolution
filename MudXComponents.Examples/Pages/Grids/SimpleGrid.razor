@@ -36,14 +36,14 @@
     </HeaderButtons>
 
     <GridColumns>
-        <GridColumn BindingType="int"
+        <GridXColumn BindingType="int"
                     Order="1"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
                     TModel="USERS"
                     BindingField="@(nameof(USERS.U_ROWID))"
                     Label="rowid" />
 
-        <GridColumn BindingType="string" Class="mt-5"
+        <GridXColumn BindingType="string" Class="mt-5"
                     Order="2"
                     xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
                     TModel="USERS"
@@ -54,7 +54,7 @@
                     Order="3"
                     xs="12" sm="12" md="12" lg="2" xl="2" xxl="2" />
 
-        <GridColumn BindingType="string" Class="mt-5"
+        <GridXColumn BindingType="string" Class="mt-5"
                     Order="4"
                     xs="12" sm="12" md="12" lg="5" xl="5" xxl="5"
                     TModel="USERS" BindingField="@(nameof(USERS.U_SURNAME))" Label="Surname" />
@@ -92,7 +92,7 @@
 
 
 
-        <GridColumn BindingType="string"
+        <GridXColumn BindingType="string"
                     Order="7"
                     xs="12" sm="12" md="12" lg="12" xl="12" xxl="12"
                     Lines="3"

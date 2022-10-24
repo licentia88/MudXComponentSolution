@@ -15,7 +15,7 @@ namespace MudXComponents.Components;
 
  
 
-public partial class GridColumn<TModel, BindingType> : ColumnBase<TModel> where TModel : new() where BindingType : notnull
+public partial class GridXColumn<TModel, BindingType> : ColumnBase<TModel> where TModel : new() where BindingType : notnull
 {
 
     [Parameter, EditorBrowsable(EditorBrowsableState.Never)]

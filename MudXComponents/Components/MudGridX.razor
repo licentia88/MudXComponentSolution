@@ -24,14 +24,31 @@
                     @{
                         if (EnableSearch)
                         {
-                            <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            <MudTextField  @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mr-5"></MudTextField>
 
                         }
                     }
 
                 </MudGrid>
-
             </CardHeaderContent>
+
+            <CardHeaderActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" OnClick="@(async()=>
+                    {
+                        var dialogOptions = new DialogOptions
+                        {
+                            CloseButton = true,
+                            CloseOnEscapeKey = true,
+                            DisableBackdropClick = true
+                            };
+                        var dialog =  DialogService.Show<GridSettings<TModel>>("Settings",new DialogParameters { ["GridX"]=this },dialogOptions);
+
+                        var result = await dialog.Result;
+
+                       
+
+                    })" />
+            </CardHeaderActions>
 
         </MudCardHeader>
 

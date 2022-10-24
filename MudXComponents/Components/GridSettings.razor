@@ -1,0 +1,45 @@
+﻿
+@typeparam TModel where TModel: new()
+
+<MudCard Style="min-width:600px!important">
+    <MudCardHeader>
+        
+    </MudCardHeader>
+    <MudCardContent>
+
+        <div class="d-flex justify-center p-auto">
+            <MudSwitch @bind-Checked="@GridX.EnablePagination"
+                       ThumbIcon="@(GridX.EnablePagination==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                       ThumbIconColor="@(GridX.EnablePagination==true ? Color.Success : Color.Error)">Pagination</MudSwitch>
+
+            <MudSwitch @bind-Checked="@GridX.EnableSearch"
+                       ThumbIcon="@(GridX.EnableSearch==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                       ThumbIconColor="@(GridX.EnableSearch==true ? Color.Success : Color.Error)">Search</MudSwitch>
+
+            <MudSwitch @bind-Checked="@GridX.EnableModelValidation"
+                       ThumbIcon="@(GridX.EnableModelValidation==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+                       ThumbIconColor="@(GridX.EnableModelValidation==true ? Color.Success : Color.Error)">Validation</MudSwitch>
+        </div>
+      
+
+    </MudCardContent>
+    
+</MudCard>
+
+@code{
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+
+
+    [Parameter]
+    public MudGridX<TModel> GridX { get; set; }
+
+    void Close() => MudDialog.Close(DialogResult.Ok(true));
+
+
+    protected override Task OnInitializedAsync()
+    {
+        return base.OnInitializedAsync();
+    }
+
+    
+}
