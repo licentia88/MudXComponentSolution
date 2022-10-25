@@ -98,7 +98,7 @@
                          <MudTh></MudTh>
                      }
 
-                     foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                     foreach (var item in GetComponentOf<ColumnBase<TModel>>().Where(x => x.VisibleOnGrid))
                      {
 
                          <MudTh>
@@ -138,7 +138,7 @@
 
                  @{
 
-                     foreach (var item in GetComponentOf<ColumnBase<TModel>>())
+                     foreach (var item in GetComponentOf<ColumnBase<TModel>>().Where(x=>x.VisibleOnGrid))
                      {
                          <MudTd @onclick:stopPropagation="true">
                              @item.RenderComponent(context, ComponentTypes.Grid)

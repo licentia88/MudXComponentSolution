@@ -384,7 +384,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     {
         if (string.IsNullOrEmpty(_searchString)) return true;
 
-        var searchableFields = Components.Where(x => x.BindingField is not null).Select(x => x.BindingField);
+        var searchableFields = Components.Where(x => x.BindingField is not null && x.VisibleOnGrid).Select(x => x.BindingField);
 
         //var properties = typeof(TModel).GetProperties().ToList();
 

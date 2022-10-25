@@ -34,6 +34,10 @@ public class ColumnBase<TModel> : ComponentBase where TModel : new()
     [Parameter, AllowNull]
     public bool VisibleOnEdit { get; set; } = true;
 
+
+    [Parameter, AllowNull]
+    public bool VisibleOnGrid { get; set; } = true;
+
     [Parameter, AllowNull]
     public bool EnabledOnEdit { get; set; } = true;
 
