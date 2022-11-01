@@ -1,25 +1,28 @@
-﻿using System;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
 using Microsoft.Extensions.Caching.Memory;
-using static MudBlazor.CategoryTypes;
-using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Components.Forms;
 using MudXComponents.Args;
 
 namespace MudXComponents.Components
 {
-	public partial class MudXPage<TModel> : UIMudBase<TModel>, IDisposable where TModel : new() 
-	{
+    public partial class MudXPage<TModel> : UIMudBase<TModel>, IDisposable where TModel : new()
+    {
+       
+
         private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel, Page = this };
 
         [Parameter]
         public EventCallback<GridXArgs<TModel>> OnSubmit { get; set; }
+
+        [CascadingParameter(Name = nameof(TopLevel))]
+        private object _topLevel { get; set; }
+
+        [Parameter, AllowNull]
+        public object TopLevel { get => _topLevel; set => _topLevel = value; }
 
 
         [Parameter, AllowNull]
@@ -34,7 +37,7 @@ namespace MudXComponents.Components
         [Parameter]
         public int Index { get; set; }
 
-        [Parameter,EditorBrowsable(EditorBrowsableState.Never)]
+        [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
         public MudGridX<TModel> ParentGrid { get; set; }
 
         [Parameter]
@@ -59,8 +62,8 @@ namespace MudXComponents.Components
         public bool IsChild { get; set; }
 
         [Parameter]
-        public bool SmartCrud { get;  set; }
-        
+        public bool SmartCrud { get; set; }
+
         [Parameter, EditorBrowsable(EditorBrowsableState.Never)]
         public RenderFragment<TModel> DetailGrid { get; set; }
 
@@ -77,26 +80,30 @@ namespace MudXComponents.Components
         public EventCallback<GridXArgs<TModel>> OnDelete { get; set; }
 
         [Parameter]
-        public EventCallback<GridXArgs<TModel>> OnBeforeSubmit{ get; set; }
+        public EventCallback<GridXArgs<TModel>> OnBeforeSubmit { get; set; }
 
         [Parameter]
         public EventCallback<MudXPage<TModel>> OnLoad { get; set; }
 
-        private string CacheKey { get; set; }
-      
+        [Parameter]
+        public string CacheKey { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
 
             ViewModel = ViewModel.ToImmutable();
 
-            CacheKey = MemoryCache.Get<String>(nameof(CacheKey));
+            //CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
 
-            SubmitText = SubmitText.Equals(string.Empty)? ViewState.ToString() :SubmitText;
+            SubmitText = SubmitText.Equals(string.Empty) ? ViewState.ToString() : SubmitText;
 
             CancelText = CancelText.Equals(string.Empty) ? "Cancel" : CancelText;
 
             if (!OnSubmit.HasDelegate)
                 OnSubmit = EventCallback.Factory.Create<GridXArgs<TModel>>(this, async () => await SubmitClick(CreateArgs));
+
+            if (!IsChild)
+                TopLevel = this;
 
             await OnLoad.InvokeAsync(this);
 
@@ -114,26 +121,29 @@ namespace MudXComponents.Components
             MudDialog.Cancel();
         }
 
-        protected async ValueTask SubmitClick(GridXArgs<TModel> args)
+        protected async ValueTask SubmitClick(GridXArgs<TModel> args, bool FromChild = false)
         {
             if (args.NewData is null) return;
-      
-            await  OnBeforeSubmit.InvokeAsync(CreateArgs);
+
+            await OnBeforeSubmit.InvokeAsync(CreateArgs);
+            var KeyValue = ParentContext?.GetPrimaryKeyValue();
 
             if (ViewState == ViewState.Create)
             {
                 if (IsChild && SmartCrud)
                 {
-                    var listToAdd = ParentContext.GetPropertyValue(typeof(TModel).Name) as ICollection<TModel>;
+                   
+                    if (KeyValue.IsNullOrDefault())
+                    {
+                        await ((dynamic)TopLevel).SubmitFromChild();
 
-                    listToAdd.Add(args.NewData);
-                    //MemoryCache.Set()
-                    //var method = listToAdd.GetType().GetMethod("Add");
+                        PropertyExtensions.SetParentChildRelation(((dynamic)TopLevel).ViewModel, ViewModel);
 
-                    ParentGrid.DataSource.Add(args.NewData);
+                        
+                    }
 
-                    MemoryCache.Set($"{CacheKey}{typeof(TModel).Name}", ParentGrid.DataSource);
-                    //method.Invoke(listToAdd, new[] { (object)ViewModel });
+                    await OnCreate.InvokeAsync(CreateArgs);
+
                 }
                 else
                 {
@@ -144,22 +154,16 @@ namespace MudXComponents.Components
             {
                 if (IsChild && SmartCrud)
                 {
-                    var listToAdd = ParentContext.GetPropertyValue(typeof(TModel).Name) as IList<TModel>;
+                 
+                    await OnUpdate.InvokeAsync(CreateArgs);
 
-                    var index = listToAdd.IndexOf(Original);
- 
-                    listToAdd[index] = args.NewData;
-
-                    ParentGrid.DataSource = listToAdd.ToObservableCollection();
-
-                    MemoryCache.Set($"{CacheKey}{typeof(TModel).Name}", ParentGrid.DataSource);
                 }
                 else
                 {
                     await OnUpdate.InvokeAsync(CreateArgs);
                 }
 
-                await OnUpdate.InvokeAsync(CreateArgs);
+
             }
             else if (ViewState == ViewState.Remove)
             {
@@ -170,7 +174,8 @@ namespace MudXComponents.Components
                 return;
             }
 
-            MudDialog.Close();
+            if(!FromChild)
+                MudDialog.Close();
         }
 
         /// <summary>
@@ -179,7 +184,7 @@ namespace MudXComponents.Components
         /// <typeparam name="TComponent"></typeparam>
         /// <param name="FieldName"></param>
         /// <returns></returns>
-        public TComponent GetComponent<TComponent>(string FieldName) where TComponent :ColumnBase<TModel>
+        public TComponent GetComponent<TComponent>(string FieldName) where TComponent : ColumnBase<TModel>
         {
             var component = Components.FirstOrDefault(x => x.BindingField is not null && x.BindingField == FieldName);
 
@@ -193,6 +198,14 @@ namespace MudXComponents.Components
         public void Dispose()
         {
             //TODO: MEMORY CACHE DISPOSE OLDUGUNDA ICINDEKI DATALARIN SILINDIGINDEN EMIN OL
+        }
+
+        public async Task SubmitFromChild()
+        {
+               ViewState = ViewState.Create;
+               await SubmitClick(CreateArgs,true);
+
+              ViewState = ViewState.Update;
         }
     }
 }
