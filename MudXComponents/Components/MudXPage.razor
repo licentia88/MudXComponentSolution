@@ -55,8 +55,12 @@
                             <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
                                 <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
                                     <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
-                                        @DetailGrid(ViewModel)
-                                    </CascadingValue>
+                                         <CascadingValue Value="@CacheKey" Name="@(nameof(MudGridX<TModel>.CacheKey))">
+                                                 <CascadingValue Value="@TopLevel" Name="@(nameof(MudGridX<TModel>.TopLevel))">
+                                                      @DetailGrid(ViewModel)
+                                                  </CascadingValue>                                  
+                                             </CascadingValue>
+                                            </CascadingValue>
 
                                 </CascadingValue>
                             </CascadingValue>
