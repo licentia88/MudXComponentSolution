@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
@@ -15,7 +16,7 @@ namespace MudXComponents.Components;
 
 public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 {
-    public HashSet<TModel> SelectedItems { get; set; }
+    public HashSet<TModel> SelectedItems { get; set; } = new HashSet<TModel>();
 
     [Parameter]
     public bool Virtualize { get; set; }
@@ -38,12 +39,13 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     [Parameter, AllowNull]
     public bool SmartCrud { get { return _smartCrud; } set { _smartCrud = value; } }
 
-
+    [CascadingParameter(Name =nameof(TopLevel))]
+    public object TopLevel { get; set; }
 
     [Inject]
     public IMemoryCache MemoryCache { get; set; }
 
-
+    public IDialogReference DialogReference { get; set; }
 
     [CascadingParameter(Name = nameof(ParentContext))]
     public object ParentContext { get; set; }
@@ -136,6 +138,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
                            //.SetPriority(CacheItemPriority.NeverRemove)
                            .RegisterPostEvictionCallback(PostEvictionCallBack, cache);
 
+    [CascadingParameter(Name = nameof(CacheKey))]
     public string CacheKey { get; set; }
 
     public MudGridX()
@@ -195,19 +198,10 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
     protected override async Task OnInitializedAsync()
     {
-       
-        if (!IsChild)
-        {
-            CacheKey = Guid.NewGuid().ToString();
-
-            MemoryCache.Set<string>(nameof(CacheKey), CacheKey, options(MemoryCache));
-
-            CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
-        }
-
+ 
         if(IsChild)
         {
-            CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
+            //CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
 
             ReloadDataSource();
 
@@ -258,6 +252,15 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
                 //     paramList.Add((par.Name, this.GetPropertyValue(par.Name)));
                 // }
 
+                if (!IsChild)
+                {
+                    CacheKey = Guid.NewGuid().ToString();
+
+                    MemoryCache.Set(nameof(CacheKey), CacheKey, options(MemoryCache));
+
+                    CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
+                }
+
                 paramList.Add((nameof(MudXPage<TModel>.Components), Components));
                 paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
                 paramList.Add((nameof(MudXPage<TModel>.OnUpdate), OnUpdate));
@@ -275,6 +278,10 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
                 paramList.Add((nameof(MudXPage<TModel>.ParentGrid), this));
                 paramList.Add((nameof(MudXPage<TModel>.ViewState), button.ViewState));
                 paramList.Add((nameof(MudXPage<TModel>.DialogTitle), button.Title));
+
+                paramList.Add((nameof(MudXPage<TModel>.CacheKey), CacheKey));
+                paramList.Add((nameof(MudXPage<TModel>.TopLevel), TopLevel));
+                
                 //ParentGrid
                 button.OnClick = EventCallback.Factory.Create<TModel>(this, callback: async () => await ShowDialogAsync<MudXPage<TModel>>(CurrentModel,button.PageSize, paramList.ToArray()));
 
@@ -308,9 +315,9 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
         var dialogTItle = parameters.FirstOrDefault(x => x.key.Equals(nameof(MudXPage<TModel>.DialogTitle)));
 
-        var dialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), Parameters, Options);
+        DialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), Parameters, Options);
 
-        return await dialogReference.Result;
+        return await DialogReference.Result;
 
         
 
@@ -366,6 +373,9 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
         {
             foreach (var data in existingData)
             {
+                if (DataSource.Any(x => x.Equals(data))) 
+                    continue;
+
                 DataSource.Add(data);
             }
         }
