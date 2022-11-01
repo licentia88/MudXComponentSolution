@@ -16,7 +16,7 @@ public static class EFExtensions
     {
         if (model is null) throw new NullReferenceException($"{typeof(TModel).Name} is null");
 
-        var key = GetKey(typeof(TModel));
+        var key = GetKey(model.GetType());
 
         return model!.GetType().GetProperty(key)?.GetValue(model);
     }
@@ -29,7 +29,6 @@ public static class EFExtensions
     /// <exception cref="KeyNotFoundException"></exception>
     public static string GetKey(this Type entityType)
     {
-        var test = entityType.GetProperties().ToList();
         var attributeInfo = entityType.GetProperties()
             .FirstOrDefault(x => x.CustomAttributes.Any(y => y.AttributeType.Equals(typeof(KeyAttribute))));
 

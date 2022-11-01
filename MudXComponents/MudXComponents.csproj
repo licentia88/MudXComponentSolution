@@ -33,6 +33,7 @@
       <None Remove="Microsoft.Extensions.Caching.Memory" />
       <None Remove="Attributes\" />
       <None Remove="FastMember" />
+      <None Remove="Helpers\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Args\" />
@@ -42,5 +43,6 @@
       <Folder Include="Interfaces\" />
       <Folder Include="Cache\" />
       <Folder Include="Attributes\" />
+      <Folder Include="Helpers\" />
     </ItemGroup>
 </Project>

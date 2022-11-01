@@ -78,7 +78,7 @@
                    Dense="true"
                    Hover="true"
                    MultiSelection="@MultiSelection"
-                   SelectedItems="@SelectedItems"
+                   @bind-SelectedItems="@SelectedItems"
                    SelectedItemChanged="@SelectedItemsChanged"
                    Breakpoint="Breakpoint.None"
                    Filter="new Func<TModel,bool>(SearchFilter)">

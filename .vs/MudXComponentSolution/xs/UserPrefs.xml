@@ -1,34 +1,34 @@
 ﻿<Properties StartupConfiguration="{71CC3E59-04B8-4FE6-B510-81F174000003}|Default">
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint enabled="false" file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Components/MudGridX.razor" relfile="MudXComponents/Components/MudGridX.razor" line="45" column="1" />
-      <Breakpoint enabled="false" file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents/Components/MudGridX.razor" relfile="MudXComponents/Components/MudGridX.razor" line="25" column="1" />
+      <Breakpoint enabled="false" file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" relfile="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" line="169" column="1" />
+      <Breakpoint enabled="false" file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" relfile="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" line="175" column="1" />
+      <Breakpoint enabled="false" file="/Users/asimgunduz/RiderProjects/MudXComponentSolution/MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" relfile="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" line="181" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.ItemProperties.MudXComponents.Examples PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <DisabledProjects>
+    <String>GeneratorService/GeneratorService.csproj</String>
+    <String>Generator/Generator.csproj</String>
+  </DisabledProjects>
   <MonoDevelop.Ide.ItemProperties.MudXExamples PreferredExecutionTarget="/Applications/Brave Browser.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents/Components/MudGridX.razor">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor">
     <Files>
-      <File FileName="MudXComponents/Components/MudXPage.razor.cs" Line="88" Column="1" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudGridX.razor.cs" Line="399" Column="5" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudXPage.razor" Line="52" Column="1" IsPinned="True" />
-      <File FileName="MudXComponents/Components/MudGridX.razor" Line="43" Column="54" />
-      <File FileName="MudXComponents/Components/GridSettings.razor" Line="1" Column="1" />
+      <File FileName="MudXComponents/Components/MudXPage.razor.cs" Line="180" Column="1" />
+      <File FileName="MudXComponents.Examples/Pages/Grids/OrdersGrid.razor" Line="61" Column="49" />
+      <File FileName="MudXComponents/Helpers/EFGridM.cs" Line="28" Column="14" />
+      <File FileName="MudXComponents/Components/MudGridX.razor.cs" Line="27" Column="45" />
+      <File FileName="MudXComponents.Examples/Pages/Grids/SimpleGrid.razor" Line="169" Column="1" />
+      <File FileName="MudXComponents/Components/GridSettings.razor" Line="25" Column="1" />
+      <File FileName="MudXComponents/Components/MudGridX.razor" Line="96" Column="59" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MudXComponentSolution" expanded="True">
-            <Node name="MudXComponents" expanded="True">
-              <Node name="Components" expanded="True">
-                <Node name="GridCheckBox.razor" expanded="True" />
-                <Node name="GridSelect.razor" expanded="True" />
-                <Node name="GridXColumn.razor" expanded="True" />
-                <Node name="MudGridX.razor" expanded="True" selected="True" />
-                <Node name="MudXPage.razor" expanded="True" />
-              </Node>
-            </Node>
+          <Node name="MudXComponentSolution" expanded="True" selected="True">
             <Node name="MudXComponents.Examples" expanded="True">
               <Node name="Pages" expanded="True">
                 <Node name="Grids" expanded="True" />
@@ -39,6 +39,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

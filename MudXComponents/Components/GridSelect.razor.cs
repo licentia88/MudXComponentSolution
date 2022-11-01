@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Components.Web;
 
 namespace MudXComponents.Components;
 
-public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where TModel : new() where TSourceModel : class
+public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where TModel : new() where TSourceModel : class, new ()
 {
     public TSourceModel CurrentValue { get; set; }
 
