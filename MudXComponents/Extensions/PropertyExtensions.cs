@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using FastMember;
 using MudBlazor;
 using static MudBlazor.CategoryTypes;   
@@ -55,6 +56,28 @@ public static class PropertyExtensions
 
 
         //propInfo?.SetValue(inputObject, typedValue);
+    }
+    public static string GetForeignKey<TParent, TChild>() where TParent : class where TChild : class
+    {
+        var keyData = typeof(TParent).GetProperty(typeof(TChild).Name).CustomAttributes
+            .FirstOrDefault(y => y.AttributeType == typeof(ForeignKeyAttribute))?.ConstructorArguments
+            .FirstOrDefault().Value;
+
+        if (keyData is null)
+            return null;
+
+        return keyData.ToString();
+    }
+
+    public static void SetParentChildRelation<TParent, TChild>(TParent parentModel, TChild childModel) where TParent : class where TChild : class
+    {
+        var primaryKey = typeof(TParent).GetKey();
+
+        var foreignKey = GetForeignKey<TParent, TChild>();
+
+        var primaryKeyValue = parentModel.GetType().GetProperty(primaryKey)?.GetValue(parentModel);
+
+        childModel.GetType().GetProperty(foreignKey)?.SetValue(childModel, primaryKeyValue);
     }
 
     public static object GetPropertyValue(this object obj, string propName)
