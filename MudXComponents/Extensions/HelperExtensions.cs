@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Text.Json;
 
 namespace MudXComponents.Extensions;
@@ -11,7 +11,7 @@ public static class HelperExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="enumerableList"></param>
     /// <returns></returns>
-    public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerableList)
+    public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> enumerableList)
     {
         return enumerableList != null ? new ObservableCollection<T>(enumerableList) : new();
     }
