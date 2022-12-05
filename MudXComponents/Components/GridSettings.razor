@@ -1,4 +1,4 @@
-﻿
+ 
 @typeparam TModel where TModel: new()
 
 <MudCard Style="min-width:600px!important">
@@ -11,13 +11,14 @@
             <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                 <MudTextField @bind-Value="@GridX.Height" Label="Height" />
             </MudItem>
+
             <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                 <MudSwitch @bind-Checked="@GridX.EnableSearch"
                            ThumbIcon="@(GridX.EnableSearch==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
                            ThumbIconColor="@(GridX.EnableSearch==true ? Color.Success : Color.Error)">Search</MudSwitch>
             </MudItem>
 
-            <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
+                <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                 <MudSwitch @bind-Checked="@GridX.SmartCrud"
                            ThumbIcon="@(GridX.SmartCrud==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
                            ThumbIconColor="@(GridX.SmartCrud==true ? Color.Success : Color.Error)">Smart Crud</MudSwitch>
@@ -32,10 +33,10 @@
             <MudItem xs="12" sm="12" md="12" lg="12" xl="12" xxl="12">
                 <MudSwitch @bind-Checked="@GridX.MultiSelection"
                            ThumbIcon="@(GridX.MultiSelection==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
-                           ThumbIconColor="@(GridX.MultiSelection==true ? Color.Success : Color.Error)">MultiSelection</MudSwitch>
+                           ThumbIconColor="@(GridX.MultiSelection==true ? Color.Success : Color.Error)">Multi Selection</MudSwitch>
             </MudItem>
 
-
+         
         </MudGrid>
         
       
@@ -45,8 +46,8 @@
 </MudCard>
 
 @code{
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
 
     [Parameter]
     public MudGridX<TModel> GridX { get; set; }
