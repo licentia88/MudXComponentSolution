@@ -1,4 +1,4 @@
-﻿
+
 <MudGridX EnableModelValidation="true" 
           EnableSearch="false"
           OnCreate="@CreateCommand"
@@ -59,20 +59,26 @@
     public Task CreateCommand(GridXArgs<ORDER_DETAILS> args)
     {
         DataSource.Add(args.NewData);
+        args.Page.Close();
         return Task.CompletedTask;
     }
-
     public Task UpdateCommand(GridXArgs<ORDER_DETAILS> args)
     {
-        DataSource[args.Index] = args.NewData;
+        var index = ((Collection<ORDER_DETAILS>)DataSource).IndexOf(args.OldData);
+
+        ((Collection<ORDER_DETAILS>)DataSource)[index] = args.NewData;
+
+        args.Page.Close();
         return Task.CompletedTask;
     }
 
     public Task DeleteCommand(GridXArgs<ORDER_DETAILS> args)
     {
-        DataSource.RemoveAt(args.Index);
+        DataSource.Remove(args.OldData);
+        args.Page.Close();
         return Task.CompletedTask;
     }
+     
 
 
 }
