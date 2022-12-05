@@ -1,6 +1,4 @@
-﻿using System;
 using MudXComponents.Components;
-using MudXComponents.Enums;
 
 namespace MudXComponents.Args;
 
@@ -13,5 +11,7 @@ public class GridXArgs<TModel> where TModel: new()
     public TModel NewData { get; set; }
 
     public int Index { get; set; }
+
+    public bool FromChild { get; set; }
 }
 
