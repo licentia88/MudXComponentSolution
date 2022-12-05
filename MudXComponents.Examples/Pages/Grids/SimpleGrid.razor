@@ -168,18 +168,25 @@
     public Task CreateCommand(GridXArgs<USERS> args)
     {
         DataSource.Add(args.NewData);
+        args.Page.Close();
         return Task.CompletedTask;
     }
 
     public Task UpdateCommand(GridXArgs<USERS> args)
     {
-        DataSource[args.Index] = args.NewData;
+        var index = ((Collection<USERS>)DataSource).IndexOf(args.OldData);
+
+        ((Collection<USERS>)DataSource)[index] = args.NewData;
+
+        args.Page.Close();
+
         return Task.CompletedTask;
     }
 
     public Task DeleteCommand(GridXArgs<USERS> args)
     {
-        DataSource.RemoveAt(args.Index);
+        DataSource.Remove(args.OldData);
+        args.Page.Close();
         return Task.CompletedTask;
     }
 
