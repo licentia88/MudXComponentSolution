@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MudXComponents.Extensions;
@@ -29,7 +29,7 @@ public static class EFExtensions
     /// <exception cref="KeyNotFoundException"></exception>
     public static string GetKey(this Type entityType)
     {
-        var attributeInfo = entityType.GetProperties()
+         var attributeInfo = entityType.GetProperties()
             .FirstOrDefault(x => x.CustomAttributes.Any(y => y.AttributeType.Equals(typeof(KeyAttribute))));
 
         if (attributeInfo is null) throw new KeyNotFoundException("Key not found");
