@@ -1,11 +1,8 @@
-﻿using System;
 using Microsoft.AspNetCore.Components;
 using MudXComponents.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Xml.Linq;
 using MudXComponents.Extensions;
-using Microsoft.AspNetCore.Components.Rendering;
 
 namespace MudXComponents.Components;
 
