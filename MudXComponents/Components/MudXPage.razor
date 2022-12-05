@@ -55,13 +55,13 @@
                             <CascadingValue Value="ViewModel" Name="@(nameof(MudGridX<TModel>.ParentContext))">
                                 <CascadingValue Value="true" Name="@(nameof(MudGridX<TModel>.IsChild))">
                                     <CascadingValue Value="@SmartCrud" Name="@(nameof(MudGridX<TModel>.SmartCrud))">
-                                         <CascadingValue Value="@CacheKey" Name="@(nameof(MudGridX<TModel>.CacheKey))">
-                                                 <CascadingValue Value="@TopLevel" Name="@(nameof(MudGridX<TModel>.TopLevel))">
-                                                      @DetailGrid(ViewModel)
-                                                  </CascadingValue>                                  
-                                             </CascadingValue>
-                                            </CascadingValue>
-
+                                      <CascadingValue Value="@GetTopLevel()" Name="@(nameof(MudGridX<TModel>.TopLevel))">
+                                            <CascadingValue Value="@(EventCallback.Factory.Create(this,async () => await SubmitFromChild()))" 
+                                                            Name="@(nameof(MudGridX<TModel>.ChildSubmit))">
+                                                          @DetailGrid(ViewModel)
+                                            </CascadingValue>  
+                                        </CascadingValue>  
+                                     </CascadingValue>    
                                 </CascadingValue>
                             </CascadingValue>
                         </div>
