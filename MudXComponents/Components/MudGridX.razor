@@ -1,4 +1,4 @@
-﻿@typeparam TModel where TModel : new()
+@typeparam TModel where TModel : new()
 @inherits UIMudBase<TModel>
 
 <CascadingValue Value="this" Name="ParentComponent">
@@ -78,7 +78,7 @@
                    Dense="true"
                    Hover="true"
                    MultiSelection="@MultiSelection"
-                   @bind-SelectedItems="@SelectedItems"
+                   @bind-SelectedItems="SelectedItems"
                    SelectedItemChanged="@SelectedItemsChanged"
                    Breakpoint="Breakpoint.None"
                    Filter="new Func<TModel,bool>(SearchFilter)">
