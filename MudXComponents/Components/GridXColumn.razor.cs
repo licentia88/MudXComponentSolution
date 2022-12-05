@@ -1,19 +1,13 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using MudXComponents.Enums;
 using MudBlazor;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
-using Microsoft.AspNetCore.Components.Web;
-using static MudBlazor.CategoryTypes;
-using System.Threading;
-using static MudBlazor.Colors;
-using System.Timers;
-using MudXComponents.Extensions;
 
 namespace MudXComponents.Components;
 
- 
+
 
 public partial class GridXColumn<TModel, BindingType> : ColumnBase<TModel> where TModel : new() where BindingType : notnull
 {
