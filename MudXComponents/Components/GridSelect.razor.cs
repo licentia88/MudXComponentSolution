@@ -1,4 +1,3 @@
-﻿using System;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using MudXComponents.Enums;
@@ -6,12 +5,10 @@ using MudXComponents.Extensions;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq.Expressions;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace MudXComponents.Components;
 
-public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where TModel : new() where TSourceModel : class, new ()
+public partial class GridSelect<TModel, TSourceModel> : ColumnBase<TModel> where TModel : new() where TSourceModel : class, new()
 {
     public TSourceModel CurrentValue { get; set; }
 
