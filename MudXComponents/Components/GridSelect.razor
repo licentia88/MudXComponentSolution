@@ -1,5 +1,5 @@
-﻿@typeparam TModel        where TModel : new()
-@typeparam TSourceModel  where TSourceModel : class, new () 
+@typeparam TModel        where TModel : new()
+@typeparam TSourceModel  where TSourceModel : class, new()
 
 @inherits ColumnBase<TModel>
 
@@ -85,8 +85,13 @@
                    ValueChanged="ValueChanged">
 
             @{
+                //<MudSelectItem  />
+                var empty = new TSourceModel();
+                <MudSelectItem Value="@empty"  />
+
                 foreach (var data in actualDataSource)
                 {
+                   
                     <MudSelectItem Value="@data" />
                 }
             }
