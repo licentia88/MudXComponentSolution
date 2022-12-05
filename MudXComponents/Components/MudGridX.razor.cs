@@ -1,9 +1,7 @@
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Caching.Memory;
 using MudBlazor;
 using MudXComponents.Args;
 using MudXComponents.Enums;
@@ -16,6 +14,7 @@ namespace MudXComponents.Components;
 
 public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 {
+    
     public HashSet<TModel> SelectedItems { get; set; } = new HashSet<TModel>();
 
     [Parameter]
@@ -39,13 +38,13 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     [Parameter, AllowNull]
     public bool SmartCrud { get { return _smartCrud; } set { _smartCrud = value; } }
 
+
     [CascadingParameter(Name =nameof(TopLevel))]
     public object TopLevel { get; set; }
 
-    [Inject]
-    public IMemoryCache MemoryCache { get; set; }
+    [CascadingParameter(Name = nameof(ChildSubmit))]
+    public EventCallback ChildSubmit { get; set; }
 
-    public IDialogReference DialogReference { get; set; }
 
     [CascadingParameter(Name = nameof(ParentContext))]
     public object ParentContext { get; set; }
@@ -56,7 +55,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
 
     [Parameter, AllowNull]
-    public ObservableCollection<TModel> DataSource { get; set; }
+    public ICollection<TModel> DataSource { get; set; }
 
     /// <summary>
     /// Displays the Search bar
@@ -131,15 +130,8 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     internal  bool IsChild { get; set; }
 
   
-
-    private MemoryCacheEntryOptions options(IMemoryCache cache) => new MemoryCacheEntryOptions()
-                           .SetSlidingExpiration(TimeSpan.FromMinutes(10))
-                           .SetAbsoluteExpiration(TimeSpan.FromMinutes(10))
-                           //.SetPriority(CacheItemPriority.NeverRemove)
-                           .RegisterPostEvictionCallback(PostEvictionCallBack, cache);
-
-    [CascadingParameter(Name = nameof(CacheKey))]
-    public string CacheKey { get; set; }
+ 
+    
 
     public MudGridX()
     {
@@ -195,24 +187,6 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
     private object VisibleDetailKey;
 
 
-
-    protected override async Task OnInitializedAsync()
-    {
- 
-        if(IsChild)
-        {
-            //CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
-
-            ReloadDataSource();
-
-
-        }
-
-        await base.OnInitializedAsync();
-    }
-
-    
-
     private List<TType> GetComponentOf<TType>()
     {
         return  Components.
@@ -241,25 +215,7 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
                 var paramList = new List<(string key, object value)>();
 
-                // var myParams = this.GetType().GetProperties(System.Reflection.BindingFlags.Public
-                //                                            |System.Reflection.BindingFlags.NonPublic
-                //                                            |System.Reflection.BindingFlags.Instance)
-                //     
-                //     .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(ParameterAttribute))).ToList();
-
-                // foreach (var par in myParams)
-                // {
-                //     paramList.Add((par.Name, this.GetPropertyValue(par.Name)));
-                // }
-
-                if (!IsChild)
-                {
-                    CacheKey = Guid.NewGuid().ToString();
-
-                    MemoryCache.Set(nameof(CacheKey), CacheKey, options(MemoryCache));
-
-                    CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
-                }
+             
 
                 paramList.Add((nameof(MudXPage<TModel>.Components), Components));
                 paramList.Add((nameof(MudXPage<TModel>.OnCreate), OnCreate));
@@ -272,14 +228,14 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
                 paramList.Add((nameof(MudXPage<TModel>.DetailGrid), DetailGrid));
                 
                 paramList.Add((nameof(MudXPage<TModel>.IsChild), IsChild));
-                paramList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
                 paramList.Add((nameof(MudXPage<TModel>.ParentContext), ParentContext));
 
                 paramList.Add((nameof(MudXPage<TModel>.ParentGrid), this));
                 paramList.Add((nameof(MudXPage<TModel>.ViewState), button.ViewState));
                 paramList.Add((nameof(MudXPage<TModel>.DialogTitle), button.Title));
 
-                paramList.Add((nameof(MudXPage<TModel>.CacheKey), CacheKey));
+                paramList.Add((nameof(MudXPage<TModel>.ChildSubmit), ChildSubmit));
+
                 paramList.Add((nameof(MudXPage<TModel>.TopLevel), TopLevel));
                 
                 //ParentGrid
@@ -315,9 +271,9 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
         var dialogTItle = parameters.FirstOrDefault(x => x.key.Equals(nameof(MudXPage<TModel>.DialogTitle)));
 
-        DialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), Parameters, Options);
+        var dialogReference = DialogService.Show<TMudXPage>(dialogTItle.value?.ToString(), Parameters, Options);
 
-        return await DialogReference.Result;
+        return await dialogReference.Result;
 
         
 
@@ -352,9 +308,10 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
         var newParamList = parameters.ToList();
 
-        newParamList.Add((nameof(MudXPage<TModel>.Index), DataSource.IndexOf(viewModel)));
+        newParamList.Add((nameof(MudXPage<TModel>.Index), ((Collection<TModel>)DataSource).IndexOf(viewModel)));
         newParamList.Add((nameof(MudXPage<TModel>.ViewModel), cloned));
         newParamList.Add((nameof(MudXPage<TModel>.Original), viewModel));
+        newParamList.Add((nameof(MudXPage<TModel>.SmartCrud), SmartCrud));
 
         Options.MaxWidth = pageSize;
 
@@ -362,29 +319,6 @@ public partial class MudGridX<TModel> : UIMudBase<TModel> where TModel : new()
 
 
         return dialogResult;
-
-    }
-
-    private void ReloadDataSource()
-    {
-        var existingData = MemoryCache.Get<ObservableCollection<TModel>>($"{CacheKey}{typeof(TModel).Name}");
-
-        if (existingData is not null && existingData.Any())
-        {
-            foreach (var data in existingData)
-            {
-                if (DataSource.Any(x => x.Equals(data))) 
-                    continue;
-
-                DataSource.Add(data);
-            }
-        }
-    }
-
-    private async void PostEvictionCallBack(object cacheKey, object cacheValue, EvictionReason evictionReason, object state)
-    {
-
-        await InvokeAsync(() => MudDialog?.CancelAll());
 
     }
 
