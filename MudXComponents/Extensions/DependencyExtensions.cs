@@ -1,4 +1,3 @@
-﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MudXComponents.Extensions;
@@ -19,7 +18,7 @@ public static class DependencyExtensions
 
     public static void InjectServices(this IServiceCollection service)
     {
-        service.AddMemoryCache();
+        //service.AddMemoryCache();
         //service.AddScoped<JavaScriptService>();
         //service.AddScoped<PageMemoryService>();
         //service.AddScoped<SiteManagerService>();
