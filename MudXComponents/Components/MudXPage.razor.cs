@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MudXComponents.Enums;
 using MudXComponents.Extensions;
-using Microsoft.Extensions.Caching.Memory;
 using System.Diagnostics.CodeAnalysis;
 using MudXComponents.Args;
 
@@ -13,7 +12,7 @@ namespace MudXComponents.Components
     {
        
 
-        private GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel, Page = this };
+        public GridXArgs<TModel> CreateArgs => new GridXArgs<TModel> { Index = Index, OldData = Original, NewData = ViewModel, Page = this, FromChild = FromChild };
 
         [Parameter]
         public EventCallback<GridXArgs<TModel>> OnSubmit { get; set; }
@@ -24,13 +23,17 @@ namespace MudXComponents.Components
         [Parameter, AllowNull]
         public object TopLevel { get => _topLevel; set => _topLevel = value; }
 
+        public bool IsLastPage { get; set; }
+        //public  bool Abort { get; set; }
+
+        //public bool Saved { get; set; }
+
+
 
         [Parameter, AllowNull]
         public TModel ViewModel { get; set; }
 
-        [Inject]
-        public IMemoryCache MemoryCache { get; set; }
-
+      
         [Parameter]
         public TModel Original { get; set; }
 
@@ -61,6 +64,8 @@ namespace MudXComponents.Components
         [Parameter]
         public bool IsChild { get; set; }
 
+        public bool FromChild { get; set; }
+
         [Parameter]
         public bool SmartCrud { get; set; }
 
@@ -86,14 +91,11 @@ namespace MudXComponents.Components
         public EventCallback<MudXPage<TModel>> OnLoad { get; set; }
 
         [Parameter]
-        public string CacheKey { get; set; }
+        public EventCallback ChildSubmit { get; set; } 
 
         protected override async Task OnInitializedAsync()
         {
-
             ViewModel = ViewModel.ToImmutable();
-
-            //CacheKey = MemoryCache.Get<string>(nameof(CacheKey));
 
             SubmitText = SubmitText.Equals(string.Empty) ? ViewState.ToString() : SubmitText;
 
@@ -104,78 +106,76 @@ namespace MudXComponents.Components
 
             if (!IsChild)
                 TopLevel = this;
+            //else
+            //{
+            //    ((dynamic)TopLevel).Abort = false;
+            //}
 
             await OnLoad.InvokeAsync(this);
 
             await base.OnInitializedAsync();
         }
 
+        private object GetTopLevel()
+        {
+            if (IsChild) return this;
+
+            return TopLevel;
+        }
         public async void OnExpire()
         {
             await InvokeAsync(() => MudDialog.CancelAll());
         }
 
         public virtual void Close()
-        {
-            //ViewModel = Original;
+        {      
             MudDialog.Cancel();
         }
 
-        protected async ValueTask SubmitClick(GridXArgs<TModel> args, bool FromChild = false)
+        protected async ValueTask SubmitClick(GridXArgs<TModel> args)
         {
-            if (args.NewData is null) return;
+            IsLastPage = true;
+            await SubmitClick(args, false); 
+        }
+
+        protected async ValueTask SubmitClick(GridXArgs<TModel> args, bool fromChild)
+        {
+            //if (args.NewData is null) return;
+
+            FromChild = fromChild;
 
             await OnBeforeSubmit.InvokeAsync(CreateArgs);
-            var KeyValue = ParentContext?.GetPrimaryKeyValue();
 
             if (ViewState == ViewState.Create)
             {
                 if (IsChild && SmartCrud)
                 {
-                   
-                    if (KeyValue.IsNullOrDefault())
+                    if (ChildSubmit.HasDelegate)
                     {
-                        await ((dynamic)TopLevel).SubmitFromChild();
+                        await ChildSubmit.InvokeAsync();
 
                         PropertyExtensions.SetParentChildRelation(((dynamic)TopLevel).ViewModel, ViewModel);
-
-                        
                     }
-
-                    await OnCreate.InvokeAsync(CreateArgs);
-
                 }
-                else
-                {
-                    await OnCreate.InvokeAsync(CreateArgs);
-                }
+
+                await OnCreate.InvokeAsync(CreateArgs);
+                
+
             }
-            else if (ViewState == ViewState.Update)
+            else  if (ViewState == ViewState.Update && !FromChild)
             {
-                if (IsChild && SmartCrud)
-                {
-                 
-                    await OnUpdate.InvokeAsync(CreateArgs);
-
-                }
-                else
-                {
-                    await OnUpdate.InvokeAsync(CreateArgs);
-                }
-
-
+                await OnUpdate.InvokeAsync(CreateArgs);
             }
+
             else if (ViewState == ViewState.Remove)
             {
                 await OnDelete.InvokeAsync(CreateArgs);
             }
-            else
-            {
-                return;
-            }
 
-            if(!FromChild)
-                MudDialog.Close();
+
+            //Şimdilik kaldırılsın, işlem başarılı olursa ekran kapatlsın
+            //if(!FromChild)
+            //    MudDialog.Close();
         }
 
         /// <summary>
@@ -200,12 +200,14 @@ namespace MudXComponents.Components
             //TODO: MEMORY CACHE DISPOSE OLDUGUNDA ICINDEKI DATALARIN SILINDIGINDEN EMIN OL
         }
 
+
         public async Task SubmitFromChild()
         {
-               ViewState = ViewState.Create;
-               await SubmitClick(CreateArgs,true);
+            await SubmitClick(CreateArgs, true);
+            //await ChildSubmit.InvokeAsync();
+            //await SubmitClick(CreateArgs);
 
-              ViewState = ViewState.Update;
+
         }
     }
 }
